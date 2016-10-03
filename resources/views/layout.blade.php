@@ -11,7 +11,11 @@
     @yield('css_partial')
   </head>
   <body>
-    @yield('body')
+    <div class="wrapper">
+      @include('parts.header')
+      @yield('body')
+      @include('parts.footer')
+    </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     @yield('js_partial')
   </body>
