@@ -2,6 +2,15 @@
 
 return [
 
+      /*
+    |--------------------------------------------------------------------------
+    | アプリ固有変数
+    |--------------------------------------------------------------------------
+    */
+    // ユーザー宛メールの送信元メールアドレス
+    'from_system_address'   => env('FROM_SYSTEM_ADDRESS', 'kebasoku.net@gmail.com'),
+    'from_system_address_name'   => env('FROM_SYSTEM_ADDRESS_NAME', 'OmoideMap'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -39,7 +48,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Tokyo',
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +61,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ja',
 
     /*
     |--------------------------------------------------------------------------
@@ -192,6 +201,7 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+        'AppUtil'   => App\Helpers\AppUtil::class,
 
     ],
 
