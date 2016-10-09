@@ -7,7 +7,7 @@
 @endif
 
 @if(Session::has('flash_message'))
-<ul>
+<ul class="parts_errormessage">
     <li>{{Session::get('flash_message')}}</li>
 </ul>
 @endif

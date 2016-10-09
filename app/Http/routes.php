@@ -53,8 +53,16 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 // 会員ページ
 /////////////////////////////////////////////////////////////////////////////
 
+// マイページ
 Route::group(['middleware' => 'auth'], function (){
   Route::group(['prefix' => 'mypage'], function() {
-      Route::get('/', 'MypageController@getIndex');
+    // top
+    Route::get('/', 'MypageController@getIndex');
+
+    // 記事投稿ページ
+    Route::group(['prefix' => 'a_post'], function() {
+      Route::get('/', 'MypageController@getArticlePost');
+      Route::post('/', 'MypageController@postArticlePost');
+    });
   });
 });

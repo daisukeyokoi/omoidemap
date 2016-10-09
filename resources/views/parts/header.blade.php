@@ -10,7 +10,11 @@
         @else
           <a href="{{url('/logout')}}"><li>ログアウト</li></a>
         @endif
-        <a href="{{url('/register')}}"><li>アカウント作成</li></a>
+        @if (!Auth::user())
+            <a href="{{url('/register')}}"><li>アカウント作成</li></a>
+        @else
+            <a href="{{url('/mypage')}}"><li>マイページ</li></a>
+        @endif
         <a href="#"><li>Ranking</li></a>
         <a href="#"><li>New</li></a>
       </ul>

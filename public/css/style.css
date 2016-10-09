@@ -19,6 +19,24 @@ h1 {
   position: relative;
 }
 
+.none {
+    display: none;
+}
+
+.error_message {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.parts_errormessage {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+    list-style: none;
+    padding: 0;
+}
+
 /* ========================================
   ヘッダー
 ======================================== */
@@ -152,6 +170,43 @@ header h1 {
   margin: 20px 4%;
 }
 
+
+/* ========================================
+  マイページ
+======================================== */
+.mypage_list {
+  margin-top: 100px;
+}
+
+/* ========================================
+  記事投稿
+======================================== */
+.a_p_box {
+  width: 80%;
+  height: auto;
+  margin: 100px auto;
+}
+
+.photo_zone_text {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.a_p_box_title {
+  font-size: 20px;
+  padding: 10px 5%;
+  background-color: #EDEFED;
+}
+
+#addImages {
+  margin-top: 30px;
+}
+
+#upload_btn {
+  width: 20%;
+  display: block;
+  margin: 20px auto;
+}
 
 /* ========================================
   フッター
