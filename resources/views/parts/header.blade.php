@@ -16,7 +16,7 @@
             <a href="{{url('/mypage')}}"><li>マイページ</li></a>
         @endif
         <a href="#"><li>Ranking</li></a>
-        <a href="#"><li>New</li></a>
+        <a href="{{url('/new_post')}}"><li>New</li></a>
       </ul>
     </div>
   </div>

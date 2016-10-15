@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
           'email' => 'a@gmail.com',
           'password' => bcrypt('aaaaaa'),
           "confirmation_token" => "",
-					"confirmed_at" => Carbon::now(),
+          "confirmed_at" => Carbon::now(),
       ]);
     }
 }

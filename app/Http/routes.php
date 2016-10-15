@@ -44,9 +44,25 @@ Route::group(['prefix' => 'login'], function() {
   Route::post('/', 'Auth\AuthController@postLogin');
 });
 
+// 新着記事を表示
+Route::group(['prefix' => 'new_post'], function() {
+    Route::get('/', 'TopController@getNewPost');
+});
+
+// ajax県取得
+Route::any('/get_prefectures', 'TopController@ajaxGetPrefectures');
+
 
 // ログアウト (認証済みが前提だが未認証でもokなのでフィルタ外)
 Route::get('/logout', 'Auth\AuthController@getLogout');
+
+// 画像表示
+Route::get('/show/{image}', 'TopController@showImage');
+
+// 記事詳細ページ
+Route::group(['prefix' => 'article'], function() {
+    Route::get('/detail/{id}', 'TopController@getArticleDetail');
+});
 
 
 /////////////////////////////////////////////////////////////////////////////

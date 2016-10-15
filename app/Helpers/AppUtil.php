@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Input;
 use App\PostsImage;
 
 class AppUtil {
-  /** 汎用フラグ：OFF(0) */
+    /** 汎用フラグ：OFF(0) */
 	const FLG_OFF = 0;
 	/** 汎用フラグ：ON(1) */
 	const FLG_ON  = 1;
@@ -115,4 +115,77 @@ class AppUtil {
 		}
 		return $img;
 	}
+
+    //////////////////////////////////////////////////////////////
+	// 投稿の年代のリスト
+	//////////////////////////////////////////////////////////////
+
+    const CHILD_AGE    = 1;
+    const TEEN_AGE     = 2;
+    const TWENTIES     = 3;
+    const THIRTIES     = 4;
+    const FORTIES      = 5;
+    const FIFTIES      = 6;
+    const SIXTIES      = 7;
+    const OVER_SIXTIES = 8;
+
+    public static function photoAgeList() {
+        $list = [];
+        $list['子供時代']  = self::CHILD_AGE;
+        $list['10代']     = self::TEEN_AGE;
+        $list['20代']     = self::TWENTIES;
+        $list['30代']     = self::THIRTIES;
+        $list['40代']     = self::FORTIES;
+        $list['50代']     = self::FIFTIES;
+        $list['60代']     = self::SIXTIES;
+        $list['60代以上']  = self::OVER_SIXTIES;
+        return $list;
+    }
+
+    public static function photoAgeLabel() {
+        $label = [];
+        $label[self::CHILD_AGE]    = '子供時代';
+        $label[self::TEEN_AGE]     = '10代';
+        $label[self::TWENTIES]     = '20代';
+        $label[self::THIRTIES]     = '30代';
+        $label[self::FORTIES]      = '40代';
+        $label[self::FIFTIES]      = '50代';
+        $label[self::SIXTIES]      = '60代';
+        $label[self::OVER_SIXTIES] = '60代以上';
+        return $label;
+    }
+
+    //////////////////////////////////////////////////////////////
+	// 投稿の感情のリスト
+	//////////////////////////////////////////////////////////////
+    const HAPPY     = 1;
+    const SAD       = 2;
+    const FUN       = 3;
+    const NOSTALGIC = 4;
+
+    public static function photoFeelingList() {
+        $list = [];
+        $list['嬉しい'] = self::HAPPY;
+        $list['悲しい'] = self::SAD;
+        $list['楽しい'] = self::FUN;
+        $list['懐かしい'] = self::NOSTALGIC;
+        return $list;
+    }
+
+    public static function photoFeelingLabel() {
+        $label = [];
+        $label[self::HAPPY]     = '嬉しい';
+        $label[self::SAD]       = '悲しい';
+        $label[self::FUN]       = '楽しい';
+        $label[self::NOSTALGIC] = '懐かしい';
+        return $label;
+    }
+
+    //////////////////////////////////////////////////////////////
+	// 郵便番号の削除
+	//////////////////////////////////////////////////////////////
+    public static function postNumberRemove($address) {
+        $new_address = preg_replace("/(〒|ZIP：)\d{3}-\d{4}/", '', $address);
+        return $new_address;
+    }
 }

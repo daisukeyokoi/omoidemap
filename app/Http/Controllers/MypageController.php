@@ -19,19 +19,22 @@ use App\Tag;
 use App\Post;
 use App\PostsTag;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class MypageController extends Controller
 {
     // マイページTopを表示
     public function getIndex() {
       $user = Auth::user();
-      return view('mypage.index', compact('user'));
+      $posts = Post::paginate(20);
+      return view('mypage.index', compact('user', 'posts'));
     }
 
     // 投稿ページ表示
     public function getArticlePost() {
         $tags = Tag::take(10)->get();
-        return view('mypage.articlepost.index', compact('tags'));
+        $today = Carbon::now();
+        return view('mypage.articlepost.index', compact('tags', 'today'));
     }
 
     // 写真アップロード
@@ -43,10 +46,13 @@ class MypageController extends Controller
             $post->user_id = Auth::user()->id;
             $post->age     = $request->photo_age;
             $post->feeling = $request->photo_feeling;
+            $post->title   = $request->photo_title;
             $post->episode = $request->episode;
             $post->address = $request->address;
             $post->lat     = $request->lat;
             $post->lng     = $request->lng;
+            Log::info('a');
+            $post->photo_date    = $request->photo_year. '-'. $request->photo_month. '-01';
             $post->save();
 
             // タグの生成

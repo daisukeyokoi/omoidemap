@@ -22,17 +22,26 @@ class CreatePostsTable extends Migration
             // 写真をとった時の感情
             $table->integer('feeling');
 
+            // 思い出のタイトル
+            $table->text('title');
+
             // 写真を撮った時のエピソード
             $table->text('episode');
 
             // 写真をとった場所の住所
             $table->string('address');
 
+            // いいね数
+            $table->integer('good_count');
+
             // 緯度
             $table->string('lat');
 
             // 経度
             $table->string('lng');
+
+            // 撮影日
+            $table->date('photo_date');
 
             $table->timestamps();
 

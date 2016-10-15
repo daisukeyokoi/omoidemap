@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Tag extends Model
+class Prefecture extends Model
 {
-    protected $table = 'tags';
+    protected $table = 'prefectures';
 
     ////////////////////////////////////////////////////////////////////////////
 	// util
 	////////////////////////////////////////////////////////////////////////////
-    public function postsTags() {
-        return $this->hasMany('App\PostsTag');
+    public function region() {
+        return $this->hasOne('App\Region');
     }
 }

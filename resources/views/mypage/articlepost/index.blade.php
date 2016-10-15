@@ -9,11 +9,10 @@
 }
 
 .dropzone .dz-preview .dz-image {
-  width: 150px;
-  height: 150px;
+  width: 400px;
+  height: 400px;
 }
 .dz-image img {
-  width: 150px;
 }
 .dropzone .dz-preview .dz-remove {
   font-size: 30px;
@@ -27,7 +26,7 @@
 }
 
 .dropzone .dz-preview {
-  margin: 16px 7%;
+  margin: 10px 25%;
 }
 .map-embed
 {
@@ -60,11 +59,18 @@
 {
 	max-width: none ;
 }
+ul {
+    list-style: none;
+    padding: 0;
+}
 </style>
 @stop
 @section('body')
 <div class="a_p_box">
     @include('parts.errormessage')
+    <ul id="article_error_message">
+        <li></li>
+    </ul>
     <div class="a_p_box_title">
         記事を投稿しよう！
     </div>
@@ -75,8 +81,9 @@
         <input type="hidden" name="lat" id="lat">
         <input type="hidden" name="lng" id="lng">
         <input type="hidden" name="address" id="address_true">
+        <input type="hidden" id="jp_flg" value="{{AppUtil::FLG_ON}}">
         <div class="dz-default dz-message">
-            <p class="photo_zone_text">写真を追加してください(最大で3枚まで)</p>
+            <p class="photo_zone_text">思い出の場所の写真を追加してください(1枚まで)</p>
             <span class="photo_zone_text">枠内に写真をドロップorクリックして選択！</span>
         </div>
     </form>
@@ -87,23 +94,40 @@
             この写真を撮ったときのあなたの年代を入力してください。
         </p>
         <select id="photo_age" class="form-control">
-            <option value="1">子供時代</option>
-            <option value="2">青春時代</option>
-            <option value="3">20代</option>
-            <option value="4">30代</option>
+            @foreach (AppUtil::photoAgeList() as $key => $value)
+                <option value="{{$value}}">{{$key}}</option>
+            @endforeach
         </select>
+    </div>
+    <div class="photo_date">
+        <p>
+            この写真の撮影日を入力してください。
+        </p>
+        <select id="photo_year">
+            @for ($i = 0; $i < 70; $i ++)
+                <option value="{{$today->year - $i}}">{{$today->year - $i}}</option>
+            @endfor
+        </select>年
+        <select id="photo_month">
+            @for ($i = 1; $i < 13; $i ++)
+                <option value="{{str_pad($i, 2, 0, STR_PAD_LEFT)}}" @if ($today->month == str_pad($i, 2, 0, STR_PAD_LEFT)) selected @endif>{{$i}}</option>
+            @endfor
+        </select>月
     </div>
     <div class="photo_feeling" class="form-control">
         <p>
             この写真を撮ったときのあなたの気持ちを入力してください。
         </p>
         <select id="photo_feeling" class="form-control">
-            <option value="1">嬉しい</option>
-            <option value="2">楽しい</option>
-            <option value="3">悲しい</option>
-            <option value="4">懐かしい</option>
+            @foreach (AppUtil::photoFeelingList() as $key => $value)
+                <option value="{{$value}}">{{$key}}</option>
+            @endforeach
         </select>
     </div>
+    <p>(必須)</p>
+    <p>思い出のタイトルを入力してください</p>
+    <input type="text" id="photo_title" placeholder="思い出のタイトルを30文字以内で入力してください。" maxlength="30" class="form-control">
+    <p id="photo_title_error" class="none error_message">日本以外を選択しないでください。</p>
     <p>
         この写真にまつわるエピソードを入力してください。
     </p>
@@ -128,6 +152,7 @@
     <div class="map-embed">
     	<div id="map-canvas">ここに地図が表示されます</div>
     </div>
+    <p id="map_error" class="none error_message">日本以外を選択しないでください。</p>
     <input type="button" class="btn btn-success" id="upload_btn" value="投稿する" >
 </div>
 <!-- ロードのモーダル -->
@@ -168,18 +193,26 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsACv6SiwiUKM1YnUg2_nIfrjSnYzFke0" type="text/javascript"></script>
 <script type="text/javascript">
 //////////////////// dropzone
+    if ($(window).width() <= 600) {
+        var thumbnailHeight = "200";
+        var thumbnailWidth = "200";
+    }else {
+        var thumbnailHeight = "400";
+        var thumbnailWidth = "400";
+    }
     // dropzoneの設定
     var dropzone = new Dropzone ("#addImages", {
-        maxFilesize: 2,
+        thumbnailHeight: thumbnailHeight,
+        thumbnailWidth: thumbnailWidth,
         uploadMultiple: true,
         parallelUploads:100,
         addRemoveLinks: true,
         acceptedFiles:'image/*',
         dictInvalidFileType: "画像ファイルを選択してください。",
-        maxFilesize:1,
+        maxFilesize:5,
         dictFileTooBig: "ファイルが大きすぎます",
-        maxFiles:3,
-        dictMaxFilesExceeded: "一度にアップロード出来るのは3ファイルまでです。",
+        maxFiles:1,
+        dictMaxFilesExceeded: "一度にアップロード出来るのは1ファイルまでです。",
         dictRemoveFile: "",
         autoProcessQueue: false,
         success: function(file, response) {
@@ -202,11 +235,14 @@
     // 投稿する
     $("#upload_btn").on('click', function() {
         $(".ds_input").remove();
-        $("#episode_error").remove();
+        $(".error_message").remove();
         var flg = articleValidation();
         createInput('photo_age', $("#photo_age").val());
         createInput('photo_feeling', $("#photo_feeling").val());
         createInput('episode', $("#episode").val());
+        createInput('photo_year', $("#photo_year").val());
+        createInput('photo_month', $("#photo_month").val());
+        createInput('photo_title', $("#photo_title").val());
         $(":checkbox[name='tags[]']:checked").each(function (index, checkbox) {
             createInput('tags[]', $(checkbox).val());
         });
@@ -238,10 +274,9 @@
 /////////////////////////////// function
 
     // エラーのところにスクロール
-    function scrollPosition (position_id) {
-        var position = $(position_id).offset().top;
+    function scrollPosition () {
         $("html,body").animate({
-            scrollTop: position
+            scrollTop: 0
         }, {
             queue : false
         });
@@ -249,20 +284,47 @@
 
     // validation
     function articleValidation () {
+        var error_list = $("#article_error_message");
         var success_flg = true;
-        if ($("#img_flg").val() != 1) {
-            scrollPosition(".a_p_box_title");
-            $("#photo_error").removeClass('none');
-            episodeErrorMessage(success_flg);
-            success_flg = false;
+        if ($("#img_flg").val() != {{AppUtil::FLG_ON}}) {
+            success_flg = validationMessageScroll('img_flg', error_list);
+        }
+        if ($("#photo_title").val() == "") {
+            success_flg = validationMessageScroll('photo_title', error_list);
+        }
+        if ($("#episode").val() == "") {
+            success_flg = validationMessageScroll('episode', error_list);
         }else {
-            if ($("#episode").val() == "") {
-                success_flg = episodeErrorMessage(success_flg);
-                $("#episode").focus();
-            }else {
-                success_flg = episodeErrorMessage(success_flg);
+            if ($("#episode").val().length < 10) {
+                success_flg = validationMessageScroll('episode_min', error_list);
             }
-            $("#photo_error").addClass('none');
+        }
+        if ($("#jp_flg").val() != {{AppUtil::FLG_ON}}) {
+            success_flg = validationMessageScroll('jp_flg', error_list);
+        }
+        return success_flg;
+    }
+
+    // validation message, scroll
+    function validationMessageScroll(name, error_list) {
+        scrollPosition();
+        success_flg = false;
+        switch (name) {
+            case 'img_flg':
+                error_list.append("<li class='error_message'>写真を選択してください。</p>");
+                break;
+            case 'photo_title':
+                error_list.append("<li class='error_message'>思い出のタイトルを入力してください。</p>");
+                break;
+            case 'episode':
+                error_list.append("<li class='error_message'>エピソードを入力してください。</p>");
+                break;
+            case 'episode_min':
+                error_list.append("<li class='error_message'>エピソードは10文字以上で入力してください。</p>");
+                break;
+            case 'jp_flg':
+                error_list.append("<li class='error_message'>日本以外は選択しないでください。</p>");
+                break;
         }
         return success_flg;
     }
@@ -400,6 +462,7 @@
                 // 住所を取得(日本の場合だけ「日本, 」を削除)
                 var address_true = results[0].formatted_address.replace(/^日本, /, '');
                 document.getElementById('address_true').value = address_true;
+                jpCheck(results);
 
                 // クリックイベントを追加
                 map.addListener('click', function(e) {
@@ -441,6 +504,7 @@
 
                 var address_true = results[0].formatted_address.replace(/^日本, /, '');
                 document.getElementById('address_true').value = address_true;
+                jpCheck(results);
 
                 map.addListener('click', function(e) {
                     getClickLatLng(e.latLng, map);
@@ -451,6 +515,14 @@
                 console.log('Geocode was not successful for the following reason: ' + status);
             }
         });
+    }
+
+    function jpCheck(results) {
+        if (results[0].formatted_address.slice(0,2) != '日本') {
+            $("#jp_flg").val({{AppUtil::FLG_OFF}});
+        }else {
+            $("#jp_flg").val({{AppUtil::FLG_ON}});
+        }
     }
 
 </script>
