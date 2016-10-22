@@ -154,54 +154,6 @@ a:hover {
 					</a>
 				</li>
 			@endforeach
-			<li class="none" id="article_clone">
-				<a href="">
-					<div class="top_article_list_left">
-						<div class="top_article_list_left_left">
-							<div class="top_article_list_photo_age">
-								<p>年代</p>
-								<p></p>
-							</div>
-							<div class="top_article_list_photo_feeling">
-								<p>
-									撮影時の気持ち
-								</p>
-								<p></p>
-							</div>
-						</div>
-						<div class="top_article_list_left_right">
-							<h2 class="top_article_title"></h2>
-							<p></p>
-							<div class="top_article_place">
-								<p>
-									撮影場所
-								</p>
-								<p>
-									{{preg_replace("/(〒|ZIP：)\d{3}-\d{4}/", '', $post->address)}}
-								</p>
-							</div>
-							<div class="good_field_text">
-								<span>いいね！</span>
-								<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-								<span>1</span>
-								<span>コメント</span>
-								<i class="fa fa-commenting-o" aria-hidden="true"></i>
-								<span>1</span>
-								<span>by&nbsp;{{$post->user->nickname}}</span>
-							</div>
-							<div class="top_tag_field">
-								<span>タグ:</span>
-								@foreach($post->postsTags as $post_tag)
-									<span>{{$post_tag->tag->name}}</span>
-								@endforeach
-							</div>
-						</div>
-					</div>
-					<div class="top_article_list_img">
-						<img src="{{url($post->oneImage->image)}}">
-					</div>
-				</a>
-			</li>
 		</ul>
 	</article>
 	<div class="top_pagination">
@@ -324,31 +276,31 @@ $(function(){
 		});
 	});
 
-	$("#submit_button").on('click', function() {
-		var keyword = $("#keyword").val();
-		var region = $("#regions").val();
-		var prefecture = $("#prefectures").val();
-		$.ajax({
-			type: "POST",
-			url: "{{url('/get/article_list')}}",
-			data: {
-				"keyword": keyword,
-				"region": region,
-				"prefecture": prefecture
-			},
-			success: function(res) {
-				if (res.message == 'success') {
-					var $list = $("#article_clone").clone();
-					$(".article_list").remove();
-					if (res.articles.length == 0) {
-						$(".top_article_list").children('ul').append('<p>該当する思い出はありません</p>');
-					}else {
-						
-					}
-				}
-			}
-		});
-	});
+	// $("#submit_button").on('click', function() {
+	// 	var keyword = $("#keyword").val();
+	// 	var region = $("#regions").val();
+	// 	var prefecture = $("#prefectures").val();
+	// 	$.ajax({
+	// 		type: "POST",
+	// 		url: "{{url('/get/article_list')}}",
+	// 		data: {
+	// 			"keyword": keyword,
+	// 			"region": region,
+	// 			"prefecture": prefecture
+	// 		},
+	// 		success: function(res) {
+	// 			if (res.message == 'success') {
+	// 				var $list = $("#article_clone").clone();
+	// 				$(".article_list").remove();
+	// 				if (res.articles.length == 0) {
+	// 					$(".top_article_list").children('ul').append('<p>該当する思い出はありません</p>');
+	// 				}else {
+	//
+	// 				}
+	// 			}
+	// 		}
+	// 	});
+	// });
 });
 </script>
 @stop
