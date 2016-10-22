@@ -112,11 +112,15 @@ class AuthController extends Controller
   /**
 	 * ログイン
 	 */
-  public function getLogin() {
+  public function getLogin(Request $request) {
     if (Auth::check()){
 		  return redirect(url('/mypage'));
     }
-
+    if (isset($request->a_d)) {
+        session()->put('a_d', $request->a_d);
+    }else {
+        session()->forget('a_d');
+    }
     return view('login.index');
    }
 
@@ -125,28 +129,28 @@ class AuthController extends Controller
 	 */
 	public function postLogin(Request $request){
 		$rules = [
-			'email' => 'required|email|max:255',
+			'email'    => 'required|email|max:255',
 			'password' => 'required|max:64|min:6|alpha_num',
 			'remember' => 'in:0,1'
 		];
-    $messages = [
-      'email.required' => 'メールアドレスを入力してください。',
-      'email.email'    => 'メールアドレスを入力してください。',
-      'email.max'      => 'メールアドレスは255文字以内で入力してください。'
-    ];
+        $messages = [
+          'email.required' => 'メールアドレスを入力してください。',
+          'email.email'    => 'メールアドレスを入力してください。',
+          'email.max'      => 'メールアドレスは255文字以内で入力してください。'
+        ];
 		$validator = Validator::make($request->all(), $rules);
 		if ($validator->fails()){
 			return back()->withErrors($validator)->withInput($request->all());
 		}
 
-		$email = $request->email;
+		$email    = $request->email;
 		$password = $request->password;
 		$remember = $request->has('remember', 0);
 
 		// 認証処理
 		if (Auth::attempt(['email' => $email, 'password' => $password, 'confirmation_token' => ''], $remember)){
-			if (session()->has('redirect')) {
-				return redirect(session()->pull('redirect', '/'));
+			if (session()->has('a_d')) {
+				return redirect(url('/article/detail', session()->pull('a_d')));
 			} else {
 				return redirect(url('/mypage'));
 			}

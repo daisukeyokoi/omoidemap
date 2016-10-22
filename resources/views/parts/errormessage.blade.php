@@ -1,7 +1,7 @@
 @if (isset($errors) && count($errors) > 0)
-<ul>
+<ul class="parts_errormessage">
     @foreach ($errors->all() as $error)
-    <li>{{ $error }}</li>
+        <li>{{ $error }}</li>
     @endforeach
 </ul>
 @endif

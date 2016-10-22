@@ -20,5 +20,13 @@ class UsersTableSeeder extends Seeder
           "confirmation_token" => "",
           "confirmed_at" => Carbon::now(),
       ]);
+
+      DB::table('users')->insert([
+          'nickname' => 'bbb',
+          'email' => 'b@gmail.com',
+          'password' => bcrypt('aaaaaa'),
+          "confirmation_token" => "",
+          "confirmed_at" => Carbon::now(),
+      ]);
     }
 }

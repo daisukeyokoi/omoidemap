@@ -51,13 +51,21 @@ Route::group(['prefix' => 'new_post'], function() {
 
 // ajax県取得
 Route::any('/get_prefectures', 'TopController@ajaxGetPrefectures');
+// ajaxいいね
+Route::any('/plus_good', 'TopController@ajaxPlusGood');
+// ajax記事取得
+Route::any('/get/article_list', 'TopController@ajaxGetArticle');
 
 
 // ログアウト (認証済みが前提だが未認証でもokなのでフィルタ外)
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
 // 画像表示
-Route::get('/show/{image}', 'TopController@showImage');
+Route::group(['prefix' => 'show'], function() {
+    Route::get('/{image}', 'TopController@showImage');
+    Route::get('/user/{id}', 'TopController@showUserImage');
+});
+
 
 // 記事詳細ページ
 Route::group(['prefix' => 'article'], function() {
@@ -82,3 +90,6 @@ Route::group(['middleware' => 'auth'], function (){
     });
   });
 });
+
+// コメント投稿
+Route::post('/post/comment', 'TopController@postComment');
