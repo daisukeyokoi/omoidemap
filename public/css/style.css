@@ -122,26 +122,19 @@ header h1 {
     padding-bottom: 10px;
     font-size: 22px;
 }
-.top_map_left {
-    width: 70%;
-    height: auto;
-    float: left;
-}
-.top_map_right {
+.top_map_search {
     width: 30%;
+    margin-bottom: 20px;
+}
+.top_map_main {
+    width: 100%;
     height: auto;
-    float: right;
 }
 .keyword_search_text {
     font-size: 20px;
     font-weight: bold;
     margin: 10px 2%;
     text-align: center;
-}
-.keyword_search {
-    width: 90%;
-    margin: 0 auto;
-    margin-bottom: 20px;
 }
 .place_search_text {
     font-size: 20px;
@@ -153,12 +146,6 @@ header h1 {
     width: 90%;
     margin: 0 auto;
     margin-bottom: 20px;
-}
-
-.search_submit {
-    width: 30%;
-    margin: 30px auto;
-    display: block;
 }
 
 .top_description {
@@ -214,6 +201,7 @@ header h1 {
     float: left;
     font-size: 18px;
     padding-left: 2%;
+    width: 18%;
 }
 .top_article_list_left_right {
     float: left;
@@ -222,6 +210,7 @@ header h1 {
     position: relative;
     overflow: hidden;
     height: 100%;
+    width: 75%;
 }
 .top_article_title {
     margin-bottom: 10px;

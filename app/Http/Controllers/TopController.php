@@ -19,18 +19,40 @@ use Illuminate\Support\Facades\Auth;
 
 class TopController extends Controller
 {
-    public function index() {
+    ///////////////////////// Topページ /////////////////////
+    // Topページ表示
+    public function index(Request $request) {
         $regions = Region::all();
-        $posts = Post::paginate(20);
-        return view('top', compact('regions', 'prefectures', 'posts'));
+        $posts = Post::all();
+        return view('top', compact('regions', 'posts'));
     }
 
+    //　県取得
+    public function ajaxGetPrefectures(Request $request) {
+        $prefectures = Prefecture::where('region_id', $request->region_id)->get();
+        return response()->json([
+            'prefectures' => $prefectures
+        ]);
+    }
+
+    // 記事取得
+    public function ajaxGetArticle(Request $request) {
+        $posts = Post::mapRange($request->sw_lat, $request->sw_lng, $request->ne_lat, $request->ne_lng)->get();
+        return response()->json([
+            'posts' => $posts
+        ]);
+    }
+
+
+    ///////////////////////// 新着ページ//////////////
     // 新着記事表示
     public function getNewPost() {
         $posts = Post::all();
         return view('new.index', compact('posts'));
     }
 
+
+    ////////////////////////画像表示関連//////////////
     // 画像表示
     public function showImage($image) {
         $path = 'images/'. $image;
@@ -52,41 +74,7 @@ class TopController extends Controller
         }
     }
 
-    //　県取得
-    public function ajaxGetPrefectures(Request $request) {
-        $prefectures = Prefecture::where('region_id', $request->region_id)->get();
-        return response()->json([
-            'prefectures' => $prefectures
-        ]);
-    }
-
-    // 記事取得
-    public function ajaxGetArticle(Request $request) {
-        if (empty(array_filter($request->all()))) {
-            return response()->json([
-                'message' => 'empty'
-            ]);
-        }
-        $query = Post::orderBy('created_at', 'desc');
-        if (isset($request->keyword)) {
-            $query = $query->where('title', 'like', '%' .$request->keyword. '%')->orwhere('episode', 'like', '%'. $request->keyword. '%');
-        }
-        if (isset($request->region)) {
-            $prefectures = Prefecture::where('region_id', $request->region)->get();
-            foreach ($prefectures as $prefecture) {
-                $query = $query->orwhere('address', 'like', '%'. $prefecture->name. '%');
-            }
-        }
-        if (isset($request->prefecture)) {
-            $query = $query->where('address', 'like', '%'. $request->prefecture. '%');
-        }
-        $articles = $query->get();
-        return response()->json([
-            'message' => 'success',
-            'articles' => $articles
-        ]);
-    }
-
+    ////////////////////////// 記事詳細ページ///////////////////////
     // 記事詳細ページ
     public function getArticleDetail($id) {
         $article = Post::find($id);
