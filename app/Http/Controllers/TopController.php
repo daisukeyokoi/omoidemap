@@ -38,8 +38,21 @@ class TopController extends Controller
     // 記事取得
     public function ajaxGetArticle(Request $request) {
         $posts = Post::mapRange($request->sw_lat, $request->sw_lng, $request->ne_lat, $request->ne_lng)->get();
+        $articles = [];
+        foreach($posts as $post) {
+            $articles[] = [
+                [
+                    'url' => url('/article/detail', $post->id),
+                    'image' => "'" .url($post->oneImage->image)."'",
+                    'title' => mb_strimwidth($post->title, 0, 20, '...'),
+                    'address' => mb_strimwidth(explode(' ', $post->address)[1], 0, 25, '...'),
+                    'goods' => count($post->goods),
+                    'comments' => count($post->comments)
+                ]
+            ];
+        }
         return response()->json([
-            'posts' => $posts
+            'articles' => $articles
         ]);
     }
 

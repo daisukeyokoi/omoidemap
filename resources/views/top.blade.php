@@ -9,7 +9,7 @@
 .map-embed
 {
 	max-width: 100% ;
-	height: 0 ;
+	height: 600px;
 	margin: 0 ;
 	padding: 0 0 56.25% ;
 
@@ -79,7 +79,6 @@ a:hover {
 		</a>
 	</div>
 	<div class="top_map">
-		<h2>思い出マップ</h2>
 		<div class="top_map_search">
 			<form action="{{url('/')}}" onsubmit="keywordSubmit(); return false;">
 				<div class="input-group">
@@ -101,62 +100,6 @@ a:hover {
 	<article class="top_article_list">
 		<h2>思い出</h2>
 		<ul>
-			<!-- @foreach($posts as $post)
-				<li class="article_list">
-					<a href="{{url('/article/detail', $post->id)}}">
-						<div class="top_article_list_left">
-							<div class="top_article_list_left_left">
-								<div class="top_article_list_photo_age">
-									<p>年代</p>
-									<p>
-										{{AppUtil::photoAgeLabel()[$post->age]}}
-									</p>
-								</div>
-								<div class="top_article_list_photo_feeling">
-									<p>
-										撮影時の気持ち
-									</p>
-									<p>
-										{{AppUtil::photoFeelingLabel()[$post->feeling]}}
-									</p>
-								</div>
-							</div>
-							<div class="top_article_list_left_right">
-								<h2 class="top_article_title">{{$post->title}}</h2>
-								<p>
-									{{$post->episode}}
-								</p>
-								<div class="top_article_place">
-									<p>
-										撮影場所
-									</p>
-									<p>
-										{{preg_replace("/(〒|ZIP：)\d{3}-\d{4}/", '', $post->address)}}
-									</p>
-								</div>
-								<div class="good_field_text">
-		                            <span>いいね！</span>
-									<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-									<span>1</span>
-									<span>コメント</span>
-									<i class="fa fa-commenting-o" aria-hidden="true"></i>
-									<span>1</span>
-									<span>by&nbsp;{{$post->user->nickname}}</span>
-		                        </div>
-								<div class="top_tag_field">
-									<span>タグ:</span>
-									@foreach($post->postsTags as $post_tag)
-									 	<span>{{$post_tag->tag->name}}</span>
-									@endforeach
-								</div>
-							</div>
-						</div>
-						<div class="top_article_list_img">
-							<img src="{{url($post->oneImage->image)}}">
-						</div>
-					</a>
-				</li>
-			@endforeach -->
 		</ul>
 	</article>
 	<div class="top_pagination">
@@ -204,24 +147,38 @@ CustomMarker.prototype.draw = function() {
 
 	var div = this.div;
 	var span = this.span;
+	var markerData = this.markerData;
+	var map = this.map;
 
 	if (!div) {
 
 		div = this.div = document.createElement('div');
-		//span = this.span = document.createElement('span');
-
 		div.className = 'marker';
 		div.style.backgroundImage = 'url(' + this.markerData.image + ')';
-		//span.className = 'marker_num';
-		//var textNode = document.createTextNode(this.count);
-		//span.appendChild(textNode);
 
 		if (typeof(self.args.marker_id) !== 'undefined') {
 			div.dataset.marker_id = self.args.marker_id;
 		}
 
-		// クリックイベント
-		google.maps.event.addDomListener(div, "click", function(event) {
+		var uluru = {lat: markerData.lat, lng: markerData.lng};
+		var infowindow = new google.maps.InfoWindow({
+			content: '<div class="marker_img" style="background-image:url(' + markerData['image'] + ');"></div>'
+					+ '<div class="marker_title">' + markerData['title'] + '</div>'
+					+ '<div class="marker_good_field"><span>いいね!</span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i><span>' + markerData['good'] + '</span>'
+					+ '<span>コメント</span><i class="fa fa-commenting-o" aria-hidden="true"></i><span>' + markerData['comment'] + '</span></div>',
+			position: uluru
+		});
+
+		google.maps.event.addDomListener(div, "click", function() {
+			location.href = markerData.url;
+		});
+
+		google.maps.event.addDomListener(div, "mouseover", function() {
+			infowindow.open(map);
+		});
+
+		google.maps.event.addDomListener(div, "mouseout", function() {
+			infowindow.close();
 		});
 
 		var panes = this.getPanes();
@@ -232,8 +189,8 @@ CustomMarker.prototype.draw = function() {
 	var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
 
 	if (point) {
-		div.style.left = (point.x - 10) + 'px';
-		div.style.top = (point.y - 20) + 'px';
+		div.style.left = (point.x - 20) + 'px';
+		div.style.top = (point.y - 10) + 'px';
 		//span.style.left = (point.x + 15) + 'px';
 		//span.style.top = (point.y + 5) + 'px';
 	}
@@ -263,7 +220,7 @@ function init() {
 
     // 地図のオプションを設定する
     var mapOptions = {
-        zoom: 6,
+        zoom: 5,
         center: latlng ,		// 中心座標 [latlng]
 		scrollwheel: false,
     };
@@ -344,10 +301,28 @@ function dispLatLang(map) {
 			'ne_lng': latlng.getNorthEast().lng()
 		},
 		success: function(res) {
-			$(".top_article_list").children('ul').children('p').fadeOut('normal');
-			if (res.posts.length != 0) {
-				for (var i = 0; i < res.posts.length; i++) {
-					$(".top_article_list").children('ul').append('<p>' + res.posts[i].title + '</p>').hide().fadeIn('normal');
+			$(".top_article_list").children('ul').children('a').remove();
+			if (res.articles.length != 0) {
+				for (var i = 0; i < res.articles.length; i++) {
+					$(".top_article_list")
+					.children('ul')
+					.append(
+						'<a href="' + res.articles[i][0].url + '">'
+						+	'<li>'
+						+		'<div class="article_list_img" style="background-image: url(' + res.articles[i][0].image +')"></div>'
+						+		'<div class="article_list_data">'
+						+			'<p class="article_list_data_title">' + res.articles[i][0].title + '</p>'
+						+			'<p class="article_list_data_address">' + res.articles[i][0].address + '</p>'
+						+			'<span>いいね！</span>'
+				        +           '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>'
+				        +           '<span>' + res.articles[i][0].goods + '</span>'
+						+			'<span>コメント</span>'
+					    +           '<i class="fa fa-commenting-o" aria-hidden="true"></i>'
+					    +			'<span>' + res.articles[i][0].comments + '</span>'
+						+		'</div>'
+						+	'</li>'
+						+'</a>'
+					).hide().fadeIn('normal');
 				}
 			}else {
 				$(".top_article_list").children('ul').append('<p>該当するものはありません</p>');
