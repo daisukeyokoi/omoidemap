@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Comment;
 use App\Good;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\AppUtil;
 
 class TopController extends Controller
 {
@@ -44,8 +45,8 @@ class TopController extends Controller
                 [
                     'url' => url('/article/detail', $post->id),
                     'image' => "'" .url($post->oneImage->image)."'",
-                    'title' => mb_strimwidth($post->title, 0, 20, '...'),
-                    'address' => mb_strimwidth(explode(' ', $post->address)[1], 0, 25, '...'),
+                    'title' => mb_strimwidth($post->title, 0, 30, '...'),
+                    'address' => mb_strimwidth(AppUtil::postNumberRemove($post->address), 0, 30, '...'),
                     'goods' => count($post->goods),
                     'comments' => count($post->comments)
                 ]

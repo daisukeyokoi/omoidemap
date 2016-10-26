@@ -68,6 +68,15 @@ a:hover {
 	background-size: cover;
 	background-repeat: no-repeat;
 }
+#next {
+	float: right;
+}
+#prev {
+	float: left;
+}
+.top_loading_img {
+	text-align: center;
+}
 </style>
 @stop
 @section('body')
@@ -100,6 +109,9 @@ a:hover {
 	<article class="top_article_list">
 		<h2>思い出</h2>
 		<ul>
+			<div class="top_loading_img">
+				<img src="{{url('/loading.gif')}}">
+			</div>
 		</ul>
 	</article>
 	<div class="top_pagination">
@@ -129,7 +141,9 @@ var markerData = [
 var marker = [];
 var infoWindow = [];
 var map;
-
+var current_num = 0;
+var res_articles = [];
+var page_num = 1;
 ////////////////// カスタムマーカー
 function CustomMarker(latlng, map, args, markerData) {
 	this.latlng = latlng;
@@ -290,6 +304,9 @@ function postLatLangZoom(map) {
 }
 
 function dispLatLang(map) {
+	$(".top_loading_img").css('display', '');
+	current_num = 0;
+	res_articles = [];
 	var latlng = map.getBounds();
 	$.ajax({
 		type: "POST",
@@ -301,28 +318,20 @@ function dispLatLang(map) {
 			'ne_lng': latlng.getNorthEast().lng()
 		},
 		success: function(res) {
+			res_articles = res.articles;
+			$(".top_loading_img").css('display', 'none');
 			$(".top_article_list").children('ul').children('a').remove();
-			if (res.articles.length != 0) {
-				for (var i = 0; i < res.articles.length; i++) {
+			$(".top_article_list").children('ul').children('p').remove();
+			$(".top_article_list").children('ul').children('input').remove();
+			if (res_articles.length != 0) {
+				for (var i = 0; i < 6; i++) {
+					current_num = articleListDesign(res_articles, i, current_num);
+				}
+				if (current_num == 6) {
 					$(".top_article_list")
 					.children('ul')
-					.append(
-						'<a href="' + res.articles[i][0].url + '">'
-						+	'<li>'
-						+		'<div class="article_list_img" style="background-image: url(' + res.articles[i][0].image +')"></div>'
-						+		'<div class="article_list_data">'
-						+			'<p class="article_list_data_title">' + res.articles[i][0].title + '</p>'
-						+			'<p class="article_list_data_address">' + res.articles[i][0].address + '</p>'
-						+			'<span>いいね！</span>'
-				        +           '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>'
-				        +           '<span>' + res.articles[i][0].goods + '</span>'
-						+			'<span>コメント</span>'
-					    +           '<i class="fa fa-commenting-o" aria-hidden="true"></i>'
-					    +			'<span>' + res.articles[i][0].comments + '</span>'
-						+		'</div>'
-						+	'</li>'
-						+'</a>'
-					).hide().fadeIn('normal');
+					.append('<input type="button" class="btn btn-primary" id="next" value="Next&nbsp;>">')
+					.hide().fadeIn('normal');
 				}
 			}else {
 				$(".top_article_list").children('ul').append('<p>該当するものはありません</p>');
@@ -383,6 +392,69 @@ function keywordSubmit() {
 	addressFocus(address, map);
 }
 
+$(document).on('click', '#next', function() {
+	page_num += 1;
+	NextPrev();
+});
+
+$(document).on('click', '#prev', function() {
+	page_num -= 1;
+	current_num = 6 * (page_num - 1);
+	NextPrev();
+});
+
+// next, prev
+function NextPrev() {
+	$(".top_article_list").children('ul').children('a').remove();
+	$(".top_article_list").children('ul').children('p').remove();
+	$(".top_article_list").children('ul').children('input').remove();
+	if (res_articles.length - current_num > 6) {
+		var length = current_num + 6;
+	}else {
+		var length = current_num + (res_articles.length - current_num);
+	}
+	for (var i = current_num; i < length; i++) {
+		current_num = articleListDesign(res_articles, i, current_num);
+	}
+	if (current_num < res_articles.length) {
+		$(".top_article_list")
+		.children('ul')
+		.append('<input type="button" class="btn btn-primary" id="next" value="Next&nbsp;>">')
+		.hide().fadeIn('normal');
+	}
+	if (current_num > 6) {
+		$(".top_article_list")
+		.children('ul')
+		.append('<input type="button" class="btn btn-primary" id="prev" value="<&nbsp;Prev">')
+		.hide().fadeIn('normal');
+	}
+}
+
+// 記事リスト作成
+function articleListDesign(res_articles, i, current_num) {
+	$(".top_article_list")
+	.children('ul')
+	.append(
+		'<a href="' + res_articles[i][0].url + '">'
+		+	'<li>'
+		+		'<div class="article_list_img" style="background-image: url(' + res_articles[i][0].image +')"></div>'
+		+		'<div class="article_list_data">'
+		+			'<p class="article_list_data_title">' + res_articles[i][0].title + '</p>'
+		+			'<p class="article_list_data_address">' + res_articles[i][0].address + '</p>'
+		+			'<span>いいね！</span>'
+		+           '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>'
+		+           '<span>' + res_articles[i][0].goods + '</span>'
+		+			'<span>コメント</span>'
+		+           '<i class="fa fa-commenting-o" aria-hidden="true"></i>'
+		+			'<span>' + res_articles[i][0].comments + '</span>'
+		+		'</div>'
+		+	'</li>'
+		+'</a>'
+	).hide().fadeIn('normal');
+	return current_num += 1;
+}
+
+
 ////////////// googlemap 終わり
 
 $(function(){
@@ -401,43 +473,17 @@ $(function(){
         });
     });
 
-	$("#regions").on('change', function() {
-		var region_id = $(this).val();
-		$.ajax({
-			type: "POST",
-			url: "{{url('/get_prefectures')}}",
-			data: {
-				"region_id": region_id
-			},
-			success: function(res) {
-				for(var i = 0; i < res.prefectures.length; i ++) {
-					$("#prefectures").append("<option value='" + res.prefectures[i].id + "'>" + res.prefectures[i].name + "</option>");
-				}
-			}
-		});
-	});
-
-	// $("#submit_button").on('click', function() {
-	// 	var keyword = $("#keyword").val();
-	// 	var region = $("#regions").val();
-	// 	var prefecture = $("#prefectures").val();
+	// $("#regions").on('change', function() {
+	// 	var region_id = $(this).val();
 	// 	$.ajax({
 	// 		type: "POST",
-	// 		url: "{{url('/get/article_list')}}",
+	// 		url: "{{url('/get_prefectures')}}",
 	// 		data: {
-	// 			"keyword": keyword,
-	// 			"region": region,
-	// 			"prefecture": prefecture
+	// 			"region_id": region_id
 	// 		},
 	// 		success: function(res) {
-	// 			if (res.message == 'success') {
-	// 				var $list = $("#article_clone").clone();
-	// 				$(".article_list").remove();
-	// 				if (res.articles.length == 0) {
-	// 					$(".top_article_list").children('ul').append('<p>該当する思い出はありません</p>');
-	// 				}else {
-	//
-	// 				}
+	// 			for(var i = 0; i < res.prefectures.length; i ++) {
+	// 				$("#prefectures").append("<option value='" + res.prefectures[i].id + "'>" + res.prefectures[i].name + "</option>");
 	// 			}
 	// 		}
 	// 	});
