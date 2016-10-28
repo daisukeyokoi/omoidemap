@@ -1,4 +1,12 @@
 @extends('layout')
+@section('css_partial')
+<style>
+    ul {
+        padding: 0;
+        list-style: none;
+    }
+</style>
+@stop
 @section('body')
   <div class="login_box">
     <div class="login_box_title">

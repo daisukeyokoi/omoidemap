@@ -74,6 +74,23 @@ a:hover {
         </div>
     </div>
     <div class="article_detail_comment_tag_field">
+        <div class="article_detail_tag">
+            <div class="article_detail_tag_header">
+                <i class="fa fa-tags" aria-hidden="true"></i>
+                <span>タグ</span>
+            </div>
+            <div class="article_detail_tag_content">
+                @if (count($article->postsTags) != 0)
+                    <ul>
+                        @foreach ($article->postsTags as $postTag)
+                            <a href="{{url('/tag', $postTag->tag->id)}}"><li>{{$postTag->tag->name}}</li></a>
+                        @endforeach
+                    </ul>
+                @else
+                    <p>タグ付けされていません</p>
+                @endif
+            </div>
+        </div>
         <div class="article_detail_comment">
             <div class="article_detail_comment_header">
                 <i class="fa fa-commenting-o" aria-hidden="true"></i>
@@ -110,19 +127,6 @@ a:hover {
                         <a href="{{url('/login?a_d='. $article->id)}}"><input type="button" value="ログインしてコメントする" class="btn btn-warning"></a>
                     </div>
                 @endif
-            </div>
-        </div>
-        <div class="article_detail_tag">
-            <div class="article_detail_tag_header">
-                <i class="fa fa-tags" aria-hidden="true"></i>
-                <span>タグ</span>
-            </div>
-            <div class="article_detail_tag_content">
-                <ul>
-                    @foreach ($article->postsTags as $postTag)
-                        <li>{{$postTag->tag->name}}</li>
-                    @endforeach
-                </ul>
             </div>
         </div>
     </div>

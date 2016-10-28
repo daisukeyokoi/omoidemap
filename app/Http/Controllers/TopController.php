@@ -17,6 +17,8 @@ use App\Comment;
 use App\Good;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\AppUtil;
+use App\Tag;
+use App\PostsTag;
 
 class TopController extends Controller
 {
@@ -38,15 +40,20 @@ class TopController extends Controller
 
     // 記事取得
     public function ajaxGetArticle(Request $request) {
-        $posts = Post::mapRange($request->sw_lat, $request->sw_lng, $request->ne_lat, $request->ne_lng)->get();
+        $posts = Post::mapRange($request->sw_lat, $request->sw_lng, $request->ne_lat, $request->ne_lng)
+                        ->orderBy('created_at', 'desc')
+                        ->get()
+                        ->sortByDesc(function($post) {
+                            return $post->goods->count();
+                        });
         $articles = [];
         foreach($posts as $post) {
             $articles[] = [
                 [
                     'url' => url('/article/detail', $post->id),
                     'image' => "'" .url($post->oneImage->image)."'",
-                    'title' => mb_strimwidth($post->title, 0, 30, '...'),
-                    'address' => mb_strimwidth(AppUtil::postNumberRemove($post->address), 0, 30, '...'),
+                    'title' => $post->title,
+                    'address' => AppUtil::postNumberRemove($post->address),
                     'goods' => count($post->goods),
                     'comments' => count($post->comments)
                 ]
@@ -152,5 +159,26 @@ class TopController extends Controller
         $comment->save();
         session()->flash('flash_message', 'コメントの投稿が完了しました。');
         return redirect(url('/article/detail', $comment->post_id));
+    }
+
+    ////////////////////////// タグページ///////////////////////
+    public function getTagArticle($id) {
+        $tag = Tag::find($id);
+        if (empty($tag)) {
+            abort(404);
+        }
+        foreach($tag->postsTags as $postTag) {
+            $p_id[] = $postTag->post_id;
+        }
+        $relatePostTags = PostsTag::whereIn('post_id', $p_id)->where('tag_id', '!=', $tag->id)->get()->unique('tag_id');
+        $articles = $tag->postsTags()->leftjoin('posts', 'posts_tags.post_id', '=', 'posts.id')
+                                     ->selectRaw('posts_tags.post_id, posts.*')
+                                     ->groupBy('posts.id')
+                                     ->leftJoin('goods', 'posts.id', '=', 'goods.post_id')
+                                     ->selectRaw('posts.*, count(goods.post_id) as count')
+                                     ->groupBy('posts.id')
+                                     ->orderBy('count', 'desc')
+                                     ->paginate(18);
+        return view('tag.index', compact('tag', 'relatePostTags', 'articles'));
     }
 }

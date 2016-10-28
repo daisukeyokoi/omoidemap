@@ -36,6 +36,9 @@ h1 {
     list-style: none;
     padding: 0;
 }
+a {
+	-webkit-tap-highlight-color: rgba(255,255,255,0.5);
+}
 
 /* ========================================
   ヘッダー
@@ -56,8 +59,8 @@ header a {
 }
 
 header h1 {
-  font-size: 26px;
-  margin: 20px 5%;
+  font-size: 22px;
+  margin: 15px 5%;
   font-weight: bold;
 }
 .header_left {
@@ -73,9 +76,9 @@ header h1 {
 .header_right li {
   float: right;
   list-style-type: none;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
-  padding: 20px 3%;
+  padding: 15px 3%;
   border-left: 1px solid white;
 }
 .header_right li:first-child {
@@ -84,6 +87,20 @@ header h1 {
 .header_right li:last-child {
   margin-right: 0;
   border: 0;
+}
+.header_search {
+    padding-top: 10px;
+    width: 30%;
+    float: right;
+}
+.header_right_list_sp {
+    display: none;
+}
+.header_right_list_pc {
+    display: block;
+}
+.navbar {
+    display: none;
 }
 
 /* ========================================
@@ -116,15 +133,17 @@ header h1 {
     padding-top: 68px;
     overflow: hidden;
     padding-bottom: 50px;
-    border-bottom: 1px solid #C1C6C4;
     float: right;
+}
+.map-embed {
+    height: 600px;
 }
 .top_map h2 {
     padding-bottom: 10px;
     font-size: 22px;
 }
 .top_map_search {
-    width: 40%;
+    width: 80%;
     margin-bottom: 20px;
 }
 .top_map_main {
@@ -137,7 +156,6 @@ header h1 {
     float: left;
 }
 .top_article_list h2 {
-    margin-bottom: 20px;
     font-size: 22px;
     padding-bottom: 5px;
     border-bottom: 1px solid black;
@@ -148,8 +166,8 @@ header h1 {
 .top_article_list ul li {
     overflow: hidden;
     border-bottom: 1px solid #C1C6C4;
-    margin-bottom: 20px;
-    padding-bottom: 5px;
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
 .article_list_img {
     width: 20%;
@@ -160,19 +178,30 @@ header h1 {
     display: inline-block;
     float: left;
     margin-right: 3%;
-
+}
+@media all and (max-width: 950px) {
+    .article_list_img {
+        height: 50px;
+    }
 }
 .article_list_data {
     width: 77%;
     float: left;
 }
+.article_list_data {
+
+}
 .article_list_data_title {
     margin-bottom: 5px;
-    word-break: break-all;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .article_list_data_address {
-    word-break: break-all;
     margin-bottom: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .marker_img {
@@ -441,7 +470,7 @@ header h1 {
     width: 30%;
     border: 1px solid #C1C6C4;
     border-radius: 10px;
-    float: left;
+    float: right;
 }
 
 .article_detail_tag_header {
@@ -464,6 +493,116 @@ header h1 {
     margin: 3px;
 }
 
+/* ========================================
+  タグページ
+======================================== */
+.tag_wrapper {
+    width: 80%;
+    max-width: 940px;
+    margin: 0 auto;
+}
+.tag_img {
+    width: 100%;
+    height: 300px;
+    padding-top: 68px;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+.tag_img h1 {
+    color: white;
+    margin-top: 70px;
+}
+
+.relation_tag {
+    width: 100%;
+    border: 1px solid #C1C6C4;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.relation_tag_header {
+    padding: 10px 0 10px 10px;
+    border-bottom: 1px solid #C1C6C4;
+}
+
+.relation_tag_content {
+    width: 90%;
+    margin: 10px;
+    overflow: hidden;
+}
+.relation_tag_content a {
+    color: black;
+}
+.relation_tag_content li {
+    border: 1px solid #C1C6C4;
+    border-radius: 5px;
+    display: inline;
+    padding: 5px;
+    background-color: #E9F8EF;
+    float: left;
+    margin: 3px;
+}
+.tag_article_list {
+    width: 100%;
+    margin-top: 20px;
+    overflow: hidden;
+}
+.tag_article_list li {
+    width: 32%;
+    margin-right: 2%;
+    margin-bottom: 10px;
+    float: left;
+    border: 1px solid #C1C6C4;
+    overflow: hidden;
+}
+.tag_article_list li:hover {
+    background-color: white;
+    opacity: 0.9;
+}
+.tag_article_list li:nth-child(3n) {
+    margin-right: 0;
+}
+.tag_article_img {
+    width: 100%;
+    height: 180px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.tag_article_data_left {
+    width: 70%;
+    float: left;
+}
+.tag_article_data {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.tag_article_good {
+    margin: 10px;
+    float: left;
+    margin-top: 0;
+}
+.tag_article_data_right {
+    float: right;
+    width: 30%;
+}
+.tag_article_user_img {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+}
+.tag_article_pagination {
+    text-align: center;
+}
 /* ========================================
   マイページ
 ======================================== */
@@ -515,4 +654,174 @@ footer {
 footer p {
   margin: 0;
   padding: 20px 0;
+}
+
+
+
+/*//////////////////////////////
+// タブレット用
+////////////////////////////////*/
+@media all and (max-width: 768px) {
+
+    /*ヘッダー*/
+    .header_left h1 {
+        display: none;
+    }
+    .header_left {
+        width: 15%;
+    }
+    .header_right {
+        width: 85%;
+    }
+    .header_right_list_pc {
+        display: none;
+    }
+    .header_right_list_sp {
+        display: block;
+        padding-left: 10%;
+        padding-top: 5px
+    }
+    .header_search {
+        width: 85%;
+        float: left;
+        padding-bottom: 10px;
+        padding-left: 2%;
+    }
+    .navbar {
+        display: block;
+    }
+    .navbar-toggle {
+        float: left;
+    }
+    .offcanvas-toggle .icon-bar {
+        background: white;
+        width: 25px;
+        height: 3px;
+    }
+    .navbar-offcanvas {
+        padding-top: 100px;
+        padding-left: 50px;
+        border: 1px solid #23282D;
+    }
+    .navbar-offcanvas li {
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+    }
+    .navbar-offcanvas li:hover {
+        color: #FF6600;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+
+    /*トップページ*/
+    .top_map {
+        float: none;
+        width: 100%;
+        padding-top: 20px;
+    }
+    .top_map_search {
+        width: 100%;
+    }
+    .top_article_list {
+        float: none;
+        width: 100%;
+        padding: 0;
+    }
+    .top_article_list ul li {
+        margin: 0;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .top_article_list ul li:last-child {
+        margin-bottom: 10px;
+    }
+    .article_list_img {
+        height: 80px;
+        width: 80px;
+    }
+    .map-embed {
+        height: 300px;
+    }
+
+    /*ログイン*/
+    .login_box {
+        width: 70%;
+        margin-top: 100px;
+    }
+
+    /*記事詳細ページ*/
+    .article_detail_box {
+        width: 90%;
+        padding-top: 50px;
+    }
+    .article_detail_comment {
+        float: none;
+        width: 100%;
+        overflow: hidden;
+    }
+    .article_detail_tag {
+        float: none;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /*タグページ*/
+    .tag_article_list li {
+        width: 47%;
+        margin-right: 6%;
+        margin-bottom: 10px;
+        float: left;
+        border: 1px solid #C1C6C4;
+    }
+    .tag_article_list li:nth-child(2n) {
+        margin-right: 0;
+    }
+}
+
+
+
+/*//////////////////////////////
+// スマホ用
+////////////////////////////////*/
+
+@media all and (max-width: 480px) {
+
+    /*トップページ*/
+    .article_list_img {
+        height: 50px;
+        width: 50px;
+    }
+    .top_img {
+        height: 300px;
+    }
+    .top_img h1 {
+        font-size: 24px;
+        margin-top: 30px;
+    }
+    .top_img input {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    /*ログイン*/
+    .login_box {
+        width: 80%;
+        margin-top: 80px;
+    }
+
+    /*タグページ*/
+    .tag_article_list li {
+        width: 100%;
+        margin-bottom: 20px;
+        border: 1px solid #C1C6C4;
+    }
+    .tag_img {
+        height: 200px;
+    }
+    .tag_img h1 {
+        margin-top: 40px;
+    }
 }

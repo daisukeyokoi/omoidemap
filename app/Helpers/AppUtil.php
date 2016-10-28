@@ -91,7 +91,7 @@ class AppUtil {
     //////////////////////////////////////////////////////////////
 	// 画像リサイズ
 	//////////////////////////////////////////////////////////////
-    public static function resizeImage($img , $size = 1000) {
+    public static function resizeImage($img , $size = 700) {
 		$width 	= $img->width();
 		$height = $img->height();
 		if ($width > $size && $height > $size) {

@@ -9,7 +9,6 @@
 .map-embed
 {
 	max-width: 100% ;
-	height: 600px;
 	margin: 0 ;
 	padding: 0 0 56.25% ;
 
@@ -56,7 +55,8 @@ a:hover {
 	overflow: hidden;
 }
 .top_article_list li:hover {
-	background-color: #E9F8EF;
+	background-color: white;
+	opacity: 0.7;
 }
 .marker {
 	position: absolute;
@@ -81,7 +81,7 @@ a:hover {
 @stop
 @section('body')
 <div class="top_wrapper">
-	<div class="top_img" style="background-image: url({{url('/top_img_4.jpg')}})">
+	<div class="top_img" style="background-image: url({{url('/top_img.jpg')}})">
 		<h1>思い出を旅する。誰かの特別を、みんなの特別に。</h1>
 		<a href="{{url('/register')}}">
 			<input type="button" value="思い出を投稿する" class="btn btn-warning">
@@ -258,10 +258,6 @@ function init() {
 		);
 	}
 
-    google.maps.event.addDomListener(window, 'resize', function(){
-      map.panTo(latlng);//地図のインスタンス([map])
-    });
-
 }
 
 
@@ -319,12 +315,17 @@ function dispLatLang(map) {
 		},
 		success: function(res) {
 			res_articles = res.articles;
+			if (res_articles.length > 6) {
+				var length = 6;
+			}else {
+				var length = res_articles.length;
+			}
 			$(".top_loading_img").css('display', 'none');
 			$(".top_article_list").children('ul').children('a').remove();
 			$(".top_article_list").children('ul').children('p').remove();
 			$(".top_article_list").children('ul').children('input').remove();
 			if (res_articles.length != 0) {
-				for (var i = 0; i < 6; i++) {
+				for (var i = 0; i < length; i++) {
 					current_num = articleListDesign(res_articles, i, current_num);
 				}
 				if (current_num == 6) {

@@ -12,7 +12,7 @@ class PostsTag extends Model
 	// util
 	////////////////////////////////////////////////////////////////////////////
     public function post() {
-        return $this->belogsTo('App\Post');
+        return $this->belongsTo('App\Post');
     }
     public function tag() {
         return $this->belongsTo('App\Tag');
