@@ -35,6 +35,9 @@
         .header_search {
             width: 80%;
         }
+        .header_right {
+            width: 50px;
+        }
     }
     </style>
   </head>

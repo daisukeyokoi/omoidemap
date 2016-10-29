@@ -705,12 +705,14 @@ footer a:hover {
         display: none;
     }
     .header_left {
-        width: 50px;
-        padding: 15px 0 10px 15px;
-        border: 0;
+        display: none;
     }
     .header_right {
-        display: none;
+        width: 50px;
+        padding: 15px 20px 10px 0;
+        border: 0;
+        float: right;
+        height: 46px;
     }
     .header_right_list_pc {
         display: none;
@@ -722,7 +724,7 @@ footer a:hover {
     }
     .header_search {
         float: left;
-        margin: 5px 0 5px 2%;
+        margin: 5px 0 5px 6%;
         height: 36px;
     }
     .header_search input {
@@ -741,7 +743,7 @@ footer a:hover {
         display: block;
     }
     .navbar-toggle {
-        float: left;
+        float: right;
     }
     .offcanvas-toggle .icon-bar {
         background: #FF6600;
@@ -840,6 +842,14 @@ footer a:hover {
 ////////////////////////////////*/
 
 @media all and (max-width: 480px) {
+
+    /*ヘッダー*/
+    .header_right {
+        padding-right: 15px;
+    }
+    .header_search {
+        margin-left: 3%;
+    }
 
     /*トップページ*/
     .article_list_img {
