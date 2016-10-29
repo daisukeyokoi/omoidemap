@@ -38,6 +38,10 @@ h1 {
 }
 a {
 	-webkit-tap-highlight-color: rgba(255,255,255,0.5);
+    text-decoration: none;
+}
+ul {
+    margin: 0;
 }
 
 /* ========================================
@@ -46,52 +50,56 @@ a {
 header {
   width: 100%;
   height: auto;
-  background-color: #FF6600;
-  color: white;
+  background-color: white;
+  color: black;
   overflow: hidden;
   position: fixed;
   top: 0;
   z-index: 999;
+  border-bottom: 1px solid #C1C6C4;
 }
 
-header a {
-  color: white;
-}
 
 header h1 {
   font-size: 22px;
-  margin: 15px 5%;
-  font-weight: bold;
+  font-weight: normal;
+  color: #FF6600;
 }
 .header_left {
   float: left;
-  width: 30%;
+  padding: 15px;
+  border-right: 1px solid #C1C6C4;
+  width: 169px;
 }
 .header_right {
-  float: right;
+  float: left;
   overflow: hidden;
-  width: 70%;
+  height: 55px;
+}
+.header_right div {
+    font-size: 18px;
+    padding: 15px;
+    color: #525252;
+    font-weight: normal;
+    border-left: 1px solid #C1C6C4;
 }
 
-.header_right li {
-  float: right;
-  list-style-type: none;
-  font-size: 18px;
-  font-weight: bold;
-  padding: 15px 3%;
-  border-left: 1px solid white;
-}
-.header_right li:first-child {
-  margin-right: 0;
-}
-.header_right li:last-child {
-  margin-right: 0;
-  border: 0;
-}
 .header_search {
-    padding-top: 10px;
-    width: 30%;
-    float: right;
+    float: left;
+    position: relative;
+}
+.header_search .glyphicon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    color: #D6BCAC;
+    font-size: 24px;
+}
+.header_search input {
+    height: 55px;
+    width: 100%;
+    color: black;
+    padding-left: 50px;
 }
 .header_right_list_sp {
     display: none;
@@ -647,13 +655,42 @@ footer {
   width: 100%;
   background-color: #FF6600;
   color: white;
-  text-align: center;
   margin-top: 50px;
 }
-
-footer p {
-  margin: 0;
-  padding: 20px 0;
+footer a {
+    color: white
+}
+footer a:hover {
+    color: white;
+}
+.footer_data {
+    color: white;
+    padding-top: 60px;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 60px;
+    overflow: hidden;
+}
+.footer_title {
+    font-size: 18px;
+    padding-bottom: 10px;
+    padding-right: 50px;
+    border-bottom: 1px solid white;
+    display: inline-block;
+}
+.footer_data_list li {
+    margin-top: 5px;
+}
+.footer_data_list {
+    float: left;
+    margin-right: 12%;
+}
+.footer_c {
+    text-align: center;
+    padding-bottom: 50px;
+}
+.footer_c p {
+    margin: 0;
 }
 
 
@@ -668,10 +705,12 @@ footer p {
         display: none;
     }
     .header_left {
-        width: 15%;
+        width: 50px;
+        padding: 15px 0 10px 15px;
+        border: 0;
     }
     .header_right {
-        width: 85%;
+        display: none;
     }
     .header_right_list_pc {
         display: none;
@@ -682,10 +721,21 @@ footer p {
         padding-top: 5px
     }
     .header_search {
-        width: 85%;
         float: left;
-        padding-bottom: 10px;
-        padding-left: 2%;
+        margin: 5px 0 5px 2%;
+        height: 36px;
+    }
+    .header_search input {
+        height: 36px;
+        border-radius: 10px;
+        border: 1px solid #C1C6C4;
+    }
+    .header_search .glyphicon {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: #D6BCAC;
+        font-size: 20px;
     }
     .navbar {
         display: block;
@@ -694,7 +744,7 @@ footer p {
         float: left;
     }
     .offcanvas-toggle .icon-bar {
-        background: white;
+        background: #FF6600;
         width: 25px;
         height: 3px;
     }
@@ -714,6 +764,8 @@ footer p {
     }
     .navbar-toggle {
         display: block;
+        padding: 0;
+        margin: 0;
     }
 
     /*トップページ*/
@@ -823,5 +875,13 @@ footer p {
     }
     .tag_img h1 {
         margin-top: 40px;
+    }
+
+    /*フッター*/
+    .footer_data {
+        margin-bottom: 30px;
+    }
+    .footer_data_list {
+        margin-bottom: 40px;
     }
 }

@@ -46,6 +46,7 @@ h2 {
 }
 a {
 	color: black;
+	text-decoration: none;
 }
 a:hover {
 	color: black;
@@ -80,13 +81,13 @@ a:hover {
 </style>
 @stop
 @section('body')
+<div class="top_img" style="background-image: url({{url('/top_img.jpg')}})">
+	<h1>思い出を旅する。誰かの特別を、みんなの特別に。</h1>
+	<a href="{{url('/register')}}">
+		<input type="button" value="思い出を投稿する" class="btn btn-warning">
+	</a>
+</div>
 <div class="top_wrapper">
-	<div class="top_img" style="background-image: url({{url('/top_img.jpg')}})">
-		<h1>思い出を旅する。誰かの特別を、みんなの特別に。</h1>
-		<a href="{{url('/register')}}">
-			<input type="button" value="思い出を投稿する" class="btn btn-warning">
-		</a>
-	</div>
 	<div class="top_map">
 		<div class="top_map_search">
 			<form action="{{url('/')}}" onsubmit="keywordSubmit(); return false;">
@@ -276,8 +277,13 @@ function setZoomLimit(map, mapTypeId){
   //レジストリから現在のマップタイプIDのMapTypeを取得する
   var mapType = mapTypeRegistry.get(mapTypeId);
   //ズームレベルを設定する
-  mapType.maxZoom = 15;  //SATELLITE・HYBRIDは機能しない
-  mapType.minZoom = 5;
+  if ($(window).width() <= 768) {
+	  mapType.maxZoom = 15;  //SATELLITE・HYBRIDは機能しない
+	  mapType.minZoom = 4;
+  }else {
+	  mapType.maxZoom = 15;  //SATELLITE・HYBRIDは機能しない
+	  mapType.minZoom = 5;
+  }
 }
 
 function postLatLangZoom(map) {

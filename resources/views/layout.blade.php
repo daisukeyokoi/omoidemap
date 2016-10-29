@@ -15,6 +15,28 @@
     <link rel="stylesheet" href="{{url('/css/style.css')}}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     @yield('css_partial')
+    <style>
+    @if (Auth::check())
+        .header_right {
+            width: 339px;
+        }
+        .header_search {
+            width: calc(100% - 508px);
+        }
+    @else
+        .header_right {
+            width: 357px;
+        }
+        .header_search {
+            width: calc(100% - 526px);
+        }
+    @endif
+    @media all and (max-width: 768px) {
+        .header_search {
+            width: 80%;
+        }
+    }
+    </style>
   </head>
   <body>
     <div class="wrapper">

@@ -32,10 +32,10 @@ class CreatePostsTable extends Migration
             $table->string('address');
 
             // 緯度
-            $table->string('lat');
+            $table->float('lat');
 
             // 経度
-            $table->string('lng');
+            $table->float('lng');
 
             // 撮影日
             $table->date('photo_date');
