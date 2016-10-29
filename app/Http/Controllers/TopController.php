@@ -181,4 +181,24 @@ class TopController extends Controller
                                      ->paginate(18);
         return view('tag.index', compact('tag', 'relatePostTags', 'articles'));
     }
+
+    ////////////////////////// 検索ページ///////////////////////
+    public function getSearch(Request $request) {
+        $keyword = $request->h_keyword;
+        if ($keyword != "") {
+            $relate_tags = Tag::where('name', 'like', '%'.$keyword.'%')->get();
+            $tag = Tag::where('name', $keyword)->value('id');
+            if ($tag) {
+                $query = Post::whereHas('postsTags', function($query) use($tag) {
+                    $query->where('tag_id', $tag);
+                })->orwhere('title', 'like', '%'.$keyword.'%')->orwhere('episode', 'like', '%'.$keyword.'%');
+            }else {
+                $query = Post::where('title', 'like', '%'.$keyword.'%')->orwhere('episode', 'like', '%'.$keyword.'%');
+            }
+            $posts = $query->paginate(18);
+        }else {
+            $posts = [];
+        }
+        return view('search.index', compact('posts', 'relate_tags'));
+    }
 }

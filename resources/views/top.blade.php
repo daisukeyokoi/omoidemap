@@ -5,6 +5,7 @@
 	width: 90%;
 	margin: 0 auto;
 	overflow: hidden;
+	margin-bottom: 50px;
 }
 .map-embed
 {
@@ -115,8 +116,6 @@ a:hover {
 			</div>
 		</ul>
 	</article>
-	<div class="top_pagination">
-	</div>
 </div>
 @stop
 @section('js_partial')

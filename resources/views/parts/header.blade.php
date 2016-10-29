@@ -7,7 +7,9 @@
     </a>
     <div class="header_search">
         <i class='glyphicon glyphicon-search'></i>
-        <input type="text" name="name" placeholder="思い出をさがそう">
+        <form action="{{url('/search')}}" method="get">
+            <input type="text" name="h_keyword" placeholder="思い出をさがそう" value="@if (Input::get('h_keyword')){{Input::get('h_keyword')}}@endif">
+        </form>
     </div>
     <div class="header_right">
         @if (!Auth::user())

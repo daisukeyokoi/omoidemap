@@ -69,6 +69,11 @@ Route::group(['prefix' => 'tag'], function() {
     Route::get('/{id}', 'TopController@getTagArticle');
 });
 
+// 検索ページ
+Route::group(['prefix' => 'search'], function() {
+    Route::get('/', 'TopController@getSearch');
+});
+
 /////////////ajax
 // 県取得
 Route::any('/get_prefectures', 'TopController@ajaxGetPrefectures');
