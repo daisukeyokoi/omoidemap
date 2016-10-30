@@ -41,20 +41,17 @@ class TopController extends Controller
     // 記事取得
     public function ajaxGetArticle(Request $request) {
         $posts = Post::mapRange($request->sw_lat, $request->sw_lng, $request->ne_lat, $request->ne_lng)
-                        ->orderBy('created_at', 'desc')
-                        ->get()
-                        ->sortByDesc(function($post) {
-                            return $post->goods->count();
-                        });
+                        ->goodsSort()
+                        ->get();
         $articles = [];
         foreach($posts as $post) {
             $articles[] = [
                 [
-                    'url' => url('/article/detail', $post->id),
-                    'image' => "'" .url($post->oneImage->image)."'",
-                    'title' => $post->title,
-                    'address' => AppUtil::postNumberRemove($post->address),
-                    'goods' => count($post->goods),
+                    'url'      => url('/article/detail', $post->id),
+                    'image'    => "'" .url($post->oneImage->image)."'",
+                    'title'    => $post->title,
+                    'address'  => AppUtil::postNumberRemove($post->address),
+                    'goods'    => count($post->goods),
                     'comments' => count($post->comments)
                 ]
             ];
@@ -131,7 +128,7 @@ class TopController extends Controller
         $good_count = Good::where('post_id', $request->post_id)->count();
         return response()->json([
             'message' => 'success',
-            'count' => $good_count
+            'count'   => $good_count
         ]);
     }
 
@@ -145,8 +142,8 @@ class TopController extends Controller
             'user_id.required' => 'エラーが発生しました,リロードして再度ご投稿お願いいたします。',
             'comment.required' => 'コメントを入力してください。',
             'comment.min'      => 'コメントは5文字以上入力してください。',
-            'comment.max' => 'コメントは500文字以内で入力してください。',
-            'comment.string' => 'コメントは文字列で入力してください。'
+            'comment.max'      => 'コメントは500文字以内で入力してください。',
+            'comment.string'   => 'コメントは文字列で入力してください。'
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
@@ -191,13 +188,18 @@ class TopController extends Controller
             if ($tag) {
                 $query = Post::whereHas('postsTags', function($query) use($tag) {
                     $query->where('tag_id', $tag);
-                })->orwhere('title', 'like', '%'.$keyword.'%')->orwhere('episode', 'like', '%'.$keyword.'%');
+                })->orwhere('title', 'like', '%'.$keyword.'%')
+                  ->orwhere('episode', 'like', '%'.$keyword.'%')
+                  ->goodsSort();
             }else {
-                $query = Post::where('title', 'like', '%'.$keyword.'%')->orwhere('episode', 'like', '%'.$keyword.'%');
+                $query = Post::where('title', 'like', '%'.$keyword.'%')
+                                ->orwhere('episode', 'like', '%'.$keyword.'%')
+                                ->goodsSort();
             }
             $posts = $query->paginate(18);
         }else {
-            $posts = [];
+            $relate_tags = [];
+            $posts = Post::where('title', '')->paginate(18);
         }
         return view('search.index', compact('posts', 'relate_tags'));
     }

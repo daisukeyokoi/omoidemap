@@ -44,4 +44,10 @@ class Post extends Model
                      ->where('lng', '>', $sw_lng)
                      ->where('lng', '<', $ne_lng);
     }
+    public function scopeGoodsSort($query) {
+        return $query->leftJoin('goods', 'posts.id', '=', 'goods.post_id')
+                     ->selectRaw('posts.*, count(goods.post_id) as count')
+                     ->groupBy('posts.id')
+                     ->orderBy('count', 'desc');
+    }
 }
