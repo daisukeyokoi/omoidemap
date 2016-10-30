@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function (){
   Route::group(['prefix' => 'mypage'], function() {
     // top
     Route::get('/', 'MypageController@getIndex');
+    Route::get('/updateprofile', 'MypageController@getUpdateProfile');
 
     // 記事投稿ページ
     Route::group(['prefix' => 'a_post'], function() {

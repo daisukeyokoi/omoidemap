@@ -37,10 +37,10 @@ class AppUtil {
     //////////////////////////////////////////////////////////////
 	// 画像保存
 	//////////////////////////////////////////////////////////////
-    public static function saveImage($file) {
+    public static function saveImage($file, $size = 1000) {
         $img = Image::make($file);
         $img = self::rotateImage($img);
-        $img = self::resizeImage($img, 1000);
+        $img = self::resizeImage($img, $size);
         $path = str_random(10). '.jpg';
         if (!Storage::exists('images')) {
 			Storage::makeDirectory('images');

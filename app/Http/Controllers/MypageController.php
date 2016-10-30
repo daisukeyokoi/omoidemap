@@ -25,9 +25,15 @@ class MypageController extends Controller
 {
     // マイページTopを表示
     public function getIndex() {
-      $user = Auth::user();
-      $posts = Post::paginate(20);
-      return view('mypage.index', compact('user', 'posts'));
+        $user = Auth::user();
+        $posts = Post::paginate(20);
+        return view('mypage.index', compact('user', 'posts'));
+    }
+
+    // プロフィール編集ページ表示
+    public function getUpdateProfile() {
+        $user = Auth::user();
+        return view('mypage.updateprofile', compact('user'));
     }
 
     // 投稿ページ表示
@@ -51,7 +57,6 @@ class MypageController extends Controller
             $post->address = $request->address;
             $post->lat     = $request->lat;
             $post->lng     = $request->lng;
-            Log::info('a');
             $post->photo_date    = $request->photo_year. '-'. $request->photo_month. '-01';
             $post->save();
 
@@ -99,4 +104,5 @@ class MypageController extends Controller
         ]);
 
     }
+
 }
