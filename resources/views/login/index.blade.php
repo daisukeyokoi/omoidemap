@@ -1,4 +1,12 @@
 @extends('layout')
+@section('css_partial')
+<style>
+    ul {
+        padding: 0;
+        list-style: none;
+    }
+</style>
+@stop
 @section('body')
   <div class="login_box">
     <div class="login_box_title">
@@ -12,7 +20,7 @@
           <input type="text" name="email" placeholder="(必須)メールアドレスを入力してください" class="form-control">
         </div>
         <div class="login_text">
-          <input type="text" name="password" placeholder="(必須)パスワードを入力してください。" class="form-control">
+          <input type="password" name="password" placeholder="(必須)パスワードを入力してください。" class="form-control">
         </div>
         <div class="login_text">
           <label>

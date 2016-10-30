@@ -126,7 +126,7 @@ ul {
     </div>
     <p>(必須)</p>
     <p>思い出のタイトルを入力してください</p>
-    <input type="text" id="photo_title" placeholder="思い出のタイトルを30文字以内で入力してください。" maxlength="30" class="form-control">
+    <input type="text" id="photo_title" placeholder="思い出のタイトルを20文字以内で入力してください。" maxlength="20" class="form-control">
     <p id="photo_title_error" class="none error_message">日本以外を選択しないでください。</p>
     <p>
         この写真にまつわるエピソードを入力してください。

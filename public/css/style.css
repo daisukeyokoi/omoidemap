@@ -36,6 +36,13 @@ h1 {
     list-style: none;
     padding: 0;
 }
+a {
+	-webkit-tap-highlight-color: rgba(255,255,255,0.5);
+    text-decoration: none;
+}
+ul {
+    margin: 0;
+}
 
 /* ========================================
   ヘッダー
@@ -43,164 +50,174 @@ h1 {
 header {
   width: 100%;
   height: auto;
-  background-color: #FF6600;
-  color: white;
+  background-color: white;
+  color: black;
   overflow: hidden;
   position: fixed;
   top: 0;
   z-index: 999;
+  border-bottom: 1px solid #C1C6C4;
 }
 
-header a {
-  color: white;
-}
 
 header h1 {
-  font-size: 26px;
-  margin: 20px 5%;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: normal;
+  color: #FF6600;
 }
 .header_left {
   float: left;
-  width: 30%;
+  padding: 15px;
+  border-right: 1px solid #C1C6C4;
+  width: 169px;
 }
 .header_right {
-  float: right;
+  float: left;
   overflow: hidden;
-  width: 70%;
+  height: 55px;
+}
+.header_right div {
+    font-size: 18px;
+    padding: 15px;
+    color: #525252;
+    font-weight: normal;
+    border-left: 1px solid #C1C6C4;
 }
 
-.header_right li {
-  float: right;
-  list-style-type: none;
-  font-size: 20px;
-  font-weight: bold;
-  padding: 20px 3%;
-  border-left: 1px solid white;
+.header_search {
+    float: left;
+    position: relative;
 }
-.header_right li:first-child {
-  margin-right: 0;
+.header_search .glyphicon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    color: #D6BCAC;
+    font-size: 24px;
 }
-.header_right li:last-child {
-  margin-right: 0;
-  border: 0;
+.header_search input {
+    height: 55px;
+    width: 100%;
+    color: black;
+    padding-left: 50px;
+}
+.header_right_list_sp {
+    display: none;
+}
+.header_right_list_pc {
+    display: block;
+}
+.navbar {
+    display: none;
 }
 
 /* ========================================
   TOPページ
 ======================================== */
+.top_img {
+    width: 100%;
+    height: 450px;
+    padding-top: 68px;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+.top_img h1 {
+    color: white;
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    font-family: HiraKakuPro-W6;
+}
+.top_img input {
+    font-weight: bold;
+    font-size: 18px;
+}
 .top_map {
-  width: 100%;
-  height: auto;
-  padding-top: 68px;
-  overflow: hidden;
-  border-bottom: 1px solid gray;
-}
-.top_map_left {
-    width: 70%;
+    width: 65%;
     height: auto;
-    float: left;
-}
-.top_map_right {
-    width: 30%;
-    height: auto;
+    padding-top: 68px;
+    overflow: hidden;
+    padding-bottom: 50px;
     float: right;
 }
-.keyword_search_text {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 10px 2%;
-    text-align: center;
+.map-embed {
+    height: 600px;
 }
-.keyword_search {
-    width: 90%;
-    margin: 0 auto;
+.top_map h2 {
+    padding-bottom: 10px;
+    font-size: 22px;
+}
+.top_map_search {
+    width: 80%;
     margin-bottom: 20px;
 }
-.place_search_text {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 10px 2%;
-    text-align: center;
+.top_map_main {
+    width: 100%;
+    height: auto;
 }
-.place_search {
-    width: 90%;
-    margin: 0 auto;
-    margin-bottom: 20px;
-}
-
-.search_submit {
+.top_article_list {
     width: 30%;
-    margin: 30px auto;
-    display: block;
+    padding-top: 68px;
+    float: left;
 }
-
-.top_description {
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  margin: 20px 0;
+.top_article_list h2 {
+    font-size: 22px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid black;
 }
-
-.top_photo_list {
-  list-style: none;
-  display: table;
-  margin-top: 50px;
-  padding: 0;
-  width: 100%;
-}
-
-.top_photo_list_li {
-  display: table-cell;
-}
-
-.top_photo_list_li img{
-  width: 100%;
-}
-
-
 .top_article_list ul{
     overflow: hidden;
 }
 .top_article_list ul li {
     overflow: hidden;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #C1C6C4;
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
-.top_article_list ul li:last-child {
-    border: 0;
+.article_list_img {
+    width: 20%;
+    height: 60px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    float: left;
+    margin-right: 3%;
 }
-.top_article_list_img {
-    width: 30%;
-    height: 200px;
-    margin: 20px 2%;
-    float: right;
+@media all and (max-width: 950px) {
+    .article_list_img {
+        height: 50px;
+    }
 }
-.top_article_list_left {
-    width: 66%;
-    height: 200px;
-    margin: 20px 0;
+.article_list_data {
+    width: 77%;
     float: left;
 }
-.top_article_list_left_left {
-    float: left;
-    font-size: 18px;
-    padding-left: 2%;
+.article_list_data {
+
 }
-.top_article_list_left_right {
-    float: left;
-    margin-left: 5%;
-    font-size: 16px;
-    position: relative;
+.article_list_data_title {
+    margin-bottom: 5px;
+    text-overflow: ellipsis;
     overflow: hidden;
-    height: 100%;
+    white-space: nowrap;
 }
-.top_article_title {
-    margin-bottom: 10px;
+.article_list_data_address {
+    margin-bottom: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .marker_img {
 	width: 250px;
 	height: 170px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .marker_title {
     margin: 10px 0;
@@ -313,27 +330,56 @@ header h1 {
 ======================================== */
 .article_detail_box {
     overflow: hidden;
-    width: 90%;
+    width: 80%;
     padding-top: 70px;
     margin: 0 auto;
+    margin-bottom: 50px;
 }
 
 .article_img {
-    background-color: red;
     height: auto;
-    margin-top: 50px;
+    padding-top: 50px;
+    overflow: hidden;
 }
-.article_detail_nickname {
+.article_detail_nickname_title {
     background-color: #BBBBBB;
     padding: 10px 0;
-    padding-left: 5%;
+    padding-left: 3%;
     font-size: 18px;
     font-weight: bold;
+    overflow: hidden;
 }
-
+.article_detail_nickname_title_left {
+    float: left;
+    width: 70%;
+    padding-top: 10px;
+}
+.article_detail_nickname_title_right {
+    float: right;
+    padding-right: 3%;
+    overflow: hidden;
+    width: 30%;
+}
+.article_detail_nickname_title_right img {
+    width: 40px;
+    height: 40px;
+}
+.article_detail_nickname_title_right_img {
+    float: right;
+    margin-right: 2%;
+}
+.article_detail_nickname_title_right_name {
+    float: right;
+    margin-left: 2%;
+    margin-top: 5px;
+}
 .article_img_content {
     background-color: black;
     text-align: center;
+    height: auto;
+}
+.article_img_content img {
+    max-width: 85%;
     height: auto;
 }
 .article_img_footer {
@@ -369,6 +415,291 @@ header h1 {
     padding: 10px 3%;
     border-radius: 0 0 10px 10px;
 }
+
+/*//////////////コメント・タグ///////////*/
+.article_detail_comment_tag_field {
+    width: 100%;
+    margin-top: 20px;
+    height: auto;
+    overflow: hidden;
+}
+
+/*コメント*/
+.article_detail_comment {
+    width: 67%;
+    height: auto;
+    margin-right: 3%;
+    border: 1px solid #C1C6C4;
+    border-radius: 10px;
+    float: left;
+}
+.article_detail_comment_header {
+    padding: 10px 0 10px 2%;
+    border-bottom: 1px solid #C1C6C4;
+}
+
+.article_detail_comment_body {
+    padding: 10px 2%;
+    border-bottom: 1px dotted #C1C6C4;
+    overflow: hidden;
+}
+
+.article_detail_comment_body img{
+    float: left;
+}
+
+.article_detail_comment_body p {
+    color: #BBBBBB;
+}
+
+.article_detail_comment_body_content {
+    float: left;
+    margin-left: 2%;
+}
+
+
+.article_detail_comment_body img {
+    width: 50px;
+    height: 50px;
+}
+.article_detail_comment_footer {
+    margin: 10px 2%;
+}
+.article_detail_comment_footer input {
+    margin: 10px 0;
+}
+
+.article_detail_comment_body_date {
+    margin: 0;
+    margin-top: 5px;
+}
+
+/*タグ*/
+.article_detail_tag {
+    width: 30%;
+    border: 1px solid #C1C6C4;
+    border-radius: 10px;
+    float: right;
+}
+
+.article_detail_tag_header {
+    padding: 10px 0 10px 5%;
+    border-bottom: 1px solid #C1C6C4;
+}
+
+.article_detail_tag_content {
+    width: 90%;
+    margin: 10px auto;
+    overflow: hidden;
+}
+.article_detail_tag_content li {
+    border: 1px solid #C1C6C4;
+    border-radius: 5px;
+    display: inline;
+    padding: 5px;
+    background-color: #E9F8EF;
+    float: left;
+    margin: 3px;
+}
+
+/* ========================================
+  タグページ
+======================================== */
+.tag_wrapper {
+    width: 80%;
+    max-width: 940px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+.tag_img {
+    width: 100%;
+    height: 300px;
+    padding-top: 68px;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+.tag_img h1 {
+    color: white;
+    margin-top: 70px;
+}
+
+.relation_tag {
+    width: 100%;
+    border: 1px solid #C1C6C4;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.relation_tag_header {
+    padding: 10px 0 10px 10px;
+    border-bottom: 1px solid #C1C6C4;
+}
+
+.relation_tag_content {
+    width: 90%;
+    margin: 10px;
+    overflow: hidden;
+}
+.relation_tag_content a {
+    color: black;
+}
+.relation_tag_content li {
+    border: 1px solid #C1C6C4;
+    border-radius: 5px;
+    display: inline;
+    padding: 5px;
+    background-color: #E9F8EF;
+    float: left;
+    margin: 3px;
+}
+.tag_article_list {
+    width: 100%;
+    margin-top: 20px;
+    overflow: hidden;
+}
+.tag_article_list li {
+    width: 32%;
+    margin-right: 2%;
+    margin-bottom: 20px;
+    float: left;
+    border: 1px solid #C1C6C4;
+    overflow: hidden;
+}
+.tag_article_list li:hover {
+    background-color: white;
+    opacity: 0.9;
+}
+.tag_article_list li:nth-child(3n) {
+    margin-right: 0;
+}
+.tag_article_img {
+    width: 100%;
+    height: 180px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.tag_article_data_left {
+    width: 70%;
+    float: left;
+}
+.tag_article_data {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.tag_article_good {
+    margin: 10px;
+    float: left;
+    margin-top: 0;
+}
+.tag_article_data_right {
+    float: right;
+    width: 30%;
+}
+.tag_article_user_img {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+}
+.tag_article_pagination {
+    text-align: center;
+}
+
+/* ========================================
+  検索ページ
+======================================== */
+.search_wrapper {
+    padding-top: 80px;
+}
+.search_wrapper h1 {
+    width: 80%;
+    font-size: 26px;
+    margin: 0 auto;
+}
+.search_wrapper .relation_tag {
+    width: 80%;
+    margin: 20px auto;
+}
+.search_result {
+    background-color: #D6BCAC;
+    min-height: 200px;
+}
+.search_result_list {
+    width: 80%;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin: 0 auto;
+    overflow: hidden;
+    max-width: 940px;
+}
+.search_result_list li {
+    width: 32%;
+    margin-right: 2%;
+    margin-bottom: 20px;
+    float: left;
+    border: 1px solid #C1C6C4;
+    overflow: hidden;
+}
+.search_result_list li:hover {
+    background-color: white;
+    opacity: 0.9;
+}
+.search_result_list li:nth-child(3n) {
+    margin-right: 0;
+}
+.search_result_img {
+    width: 100%;
+    height: 180px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.search_result_data_all {
+    background-color: white;
+    overflow: hidden;
+}
+.search_result_data_left {
+    width: 70%;
+    float: left;
+}
+.search_result_data {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.search_result_good {
+    margin: 10px;
+    float: left;
+    margin-top: 0;
+}
+.search_result_data_right {
+    float: right;
+    width: 30%;
+}
+.search_result_user_img {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+}
+.tag_article_pagination {
+    text-align: center;
+}
+
 
 
 /* ========================================
@@ -415,11 +746,264 @@ footer {
   width: 100%;
   background-color: #FF6600;
   color: white;
-  text-align: center;
-  margin-top: 50px;
+}
+footer a {
+    color: white
+}
+footer a:hover {
+    color: white;
+}
+.footer_data {
+    color: white;
+    padding-top: 60px;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 60px;
+    overflow: hidden;
+}
+.footer_title {
+    font-size: 18px;
+    padding-bottom: 10px;
+    padding-right: 50px;
+    border-bottom: 1px solid white;
+    display: inline-block;
+}
+.footer_data_list li {
+    margin-top: 5px;
+}
+.footer_data_list {
+    float: left;
+    margin-right: 12%;
+}
+.footer_c {
+    text-align: center;
+    padding-bottom: 50px;
+}
+.footer_c p {
+    margin: 0;
 }
 
-footer p {
-  margin: 0;
-  padding: 20px 0;
+
+
+/*//////////////////////////////
+// タブレット用
+////////////////////////////////*/
+@media all and (max-width: 768px) {
+
+    /*ヘッダー*/
+    .header_left h1 {
+        display: none;
+    }
+    .header_left {
+        display: none;
+    }
+    .header_right {
+        width: 50px;
+        padding: 15px 20px 10px 0;
+        border: 0;
+        float: right;
+        height: 46px;
+    }
+    .header_right_list_pc {
+        display: none;
+    }
+    .header_right_list_sp {
+        display: block;
+        padding-left: 10%;
+        padding-top: 5px
+    }
+    .header_search {
+        float: left;
+        margin: 5px 0 5px 6%;
+        height: 36px;
+    }
+    .header_search input {
+        height: 36px;
+        border-radius: 10px;
+        border: 1px solid #C1C6C4;
+    }
+    .header_search .glyphicon {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: #D6BCAC;
+        font-size: 20px;
+    }
+    .navbar {
+        display: block;
+    }
+    .navbar-toggle {
+        float: right;
+    }
+    .offcanvas-toggle .icon-bar {
+        background: #FF6600;
+        width: 25px;
+        height: 3px;
+    }
+    .navbar-offcanvas {
+        padding-top: 100px;
+        padding-left: 50px;
+        border: 1px solid #23282D;
+    }
+    .navbar-offcanvas li {
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+    }
+    .navbar-offcanvas li:hover {
+        color: #FF6600;
+    }
+    .navbar-toggle {
+        display: block;
+        padding: 0;
+        margin: 0;
+    }
+
+    /*トップページ*/
+    .top_map {
+        float: none;
+        width: 100%;
+        padding-top: 20px;
+    }
+    .top_map_search {
+        width: 100%;
+    }
+    .top_article_list {
+        float: none;
+        width: 100%;
+        padding: 0;
+    }
+    .top_article_list ul li {
+        margin: 0;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .top_article_list ul li:last-child {
+        margin-bottom: 10px;
+    }
+    .article_list_img {
+        height: 80px;
+        width: 80px;
+    }
+    .map-embed {
+        height: 300px;
+    }
+
+    /*ログイン*/
+    .login_box {
+        width: 70%;
+        margin-top: 100px;
+    }
+
+    /*記事詳細ページ*/
+    .article_detail_box {
+        width: 90%;
+        padding-top: 50px;
+    }
+    .article_detail_comment {
+        float: none;
+        width: 100%;
+        overflow: hidden;
+    }
+    .article_detail_tag {
+        float: none;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /*タグページ*/
+    .tag_article_list li {
+        width: 47%;
+        margin-right: 6%;
+    }
+    .tag_article_list li:nth-child(3n) {
+        margin-right: 6%;
+    }
+    .tag_article_list li:nth-child(2n) {
+        margin-right: 0;
+    }
+
+    /*検索ページ*/
+    .search_result_list li {
+        width: 47%;
+        margin-right: 6%;
+    }
+    .search_result_list li:nth-child(3n) {
+        margin-right: 6%;
+    }
+    .search_result_list li:nth-child(2n) {
+        margin-right: 0;
+    }
+}
+
+
+
+/*//////////////////////////////
+// スマホ用
+////////////////////////////////*/
+
+@media all and (max-width: 480px) {
+
+    /*ヘッダー*/
+    .header_right {
+        padding-right: 15px;
+    }
+    .header_search {
+        margin-left: 3%;
+    }
+
+    /*トップページ*/
+    .article_list_img {
+        height: 50px;
+        width: 50px;
+    }
+    .top_img {
+        height: 300px;
+    }
+    .top_img h1 {
+        font-size: 24px;
+        margin-top: 30px;
+    }
+    .top_img input {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    /*ログイン*/
+    .login_box {
+        width: 80%;
+        margin-top: 80px;
+    }
+
+    /*タグページ*/
+    .tag_article_list li {
+        width: 100%;
+        margin-bottom: 20px;
+        border: 1px solid #C1C6C4;
+    }
+    .tag_img {
+        height: 200px;
+    }
+    .tag_img h1 {
+        margin-top: 40px;
+    }
+
+    /*検索ページ*/
+    .search_result_list li {
+        width: 100%;
+        margin-bottom: 20px;
+        border: 1px solid #C1C6C4;
+    }
+    .search_wrapper h1 {
+        font-size: 18px;
+    }
+
+    /*フッター*/
+    .footer_data {
+        margin-bottom: 30px;
+    }
+    .footer_data_list {
+        margin-bottom: 40px;
+    }
 }

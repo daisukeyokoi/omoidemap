@@ -31,14 +31,11 @@ class CreatePostsTable extends Migration
             // 写真をとった場所の住所
             $table->string('address');
 
-            // いいね数
-            $table->integer('good_count');
-
             // 緯度
-            $table->string('lat');
+            $table->float('lat');
 
             // 経度
-            $table->string('lng');
+            $table->float('lng');
 
             // 撮影日
             $table->date('photo_date');

@@ -49,20 +49,38 @@ Route::group(['prefix' => 'new_post'], function() {
     Route::get('/', 'TopController@getNewPost');
 });
 
-// ajax県取得
-Route::any('/get_prefectures', 'TopController@ajaxGetPrefectures');
-
-
 // ログアウト (認証済みが前提だが未認証でもokなのでフィルタ外)
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
 // 画像表示
-Route::get('/show/{image}', 'TopController@showImage');
+Route::group(['prefix' => 'show'], function() {
+    Route::get('/{image}', 'TopController@showImage');
+    Route::get('/user/{id}', 'TopController@showUserImage');
+});
+
 
 // 記事詳細ページ
 Route::group(['prefix' => 'article'], function() {
     Route::get('/detail/{id}', 'TopController@getArticleDetail');
 });
+
+// タグページ
+Route::group(['prefix' => 'tag'], function() {
+    Route::get('/{id}', 'TopController@getTagArticle');
+});
+
+// 検索ページ
+Route::group(['prefix' => 'search'], function() {
+    Route::get('/', 'TopController@getSearch');
+});
+
+/////////////ajax
+// 県取得
+Route::any('/get_prefectures', 'TopController@ajaxGetPrefectures');
+// いいね
+Route::any('/plus_good', 'TopController@ajaxPlusGood');
+// 記事取得
+Route::any('/ajax/article_list', 'TopController@ajaxGetArticle');
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -83,3 +101,6 @@ Route::group(['middleware' => 'auth'], function (){
     });
   });
 });
+
+// コメント投稿
+Route::post('/post/comment', 'TopController@postComment');
