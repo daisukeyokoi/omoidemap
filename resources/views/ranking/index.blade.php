@@ -1,14 +1,4 @@
 @extends('layout')
-@section('css_partial')
-<style>
-#prefecture {
-    width: 20%;
-}
-#feeling {
-    width: 20%;
-}
-</style>
-@stop
 @section('body')
 <div class="ranking_wrapper">
     <h1>RANKING</h1>

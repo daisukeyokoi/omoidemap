@@ -813,6 +813,12 @@ header h1 {
     background-color: #FF6600 !important;
     color: white;
 }
+#prefecture {
+    width: 20%;
+}
+#feeling {
+    width: 20%;
+}
 
 
 /* ========================================
@@ -1109,6 +1115,22 @@ footer a:hover {
     }
     .search_wrapper h1 {
         font-size: 18px;
+    }
+
+    /*ランキングページ*/
+    .ranking_list {
+        width: 750px;
+        position: relative;
+    }
+    .ranking_list li {
+        width: 240px;
+        margin-right: 10px;
+    }
+    #prefecture {
+        width: 50%;
+    }
+    #feeling {
+        width: 50%;
     }
 
     /*フッター*/
