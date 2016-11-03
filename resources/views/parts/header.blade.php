@@ -22,7 +22,7 @@
         @else
             <a href="{{url('/mypage')}}"><div class="header_right_list_pc pull-right header_mypage">マイページ</div></a>
         @endif
-        <a href="#"><div class="header_right_list_pc pull-right header_ranking">Ranking</div></a>
+        <a href="{{url('/ranking')}}"><div class="header_right_list_pc pull-right header_ranking">Ranking</div></a>
         <button type="button" class="navbar-toggle offcanvas-toggle" data-toggle="offcanvas" data-target="#js-bootstrap-offcanvas">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>

@@ -203,4 +203,110 @@ class TopController extends Controller
         }
         return view('search.index', compact('posts', 'relate_tags'));
     }
+
+    ////////////////////////// ランキングページ///////////////////////
+    public function getRanking() {
+        $posts = Post::goodsSort()->take(3)->get();
+        $rank = 0;
+        $prefectures = Prefecture::all();
+        $tags = Tag::postsSort()->take(30)->get();
+        return view('ranking.index', compact('posts', 'rank', 'prefectures', 'tags'));
+    }
+
+    public function ajaxGetRankingPrefectures(Request $request) {
+        $prefecture = Prefecture::find($request->prefecture_id);
+        if (empty($prefecture)) {
+            return response()->json([
+                'message' => 'error'
+            ]);
+        }
+        $posts = Post::where('address', 'like', '%'.$prefecture->name.'%')->goodsSort()->take(3)->get();
+        if (count($posts) == 0) {
+            return response()->json([
+                'message' => 'error'
+            ]);
+        }else {
+            $articles = self::createRankingArticles($posts);
+            return response()->json([
+                'message' => 'success',
+                'posts'   => $articles
+            ]);
+        }
+    }
+
+    public function ajaxGetRankingFeeling(Request $request) {
+        $posts = Post::where('feeling', $request->feeling_id)->goodsSort()->take(3)->get();
+        if (count($posts) == 0) {
+            return response()->json([
+                'message' => 'error'
+            ]);
+        }else {
+            $articles = self::createRankingArticles($posts);
+            return response()->json([
+                'message' => 'success',
+                'posts'   => $articles
+            ]);
+        }
+    }
+
+    public function ajaxGetRankingTags(Request $request) {
+        $tag = Tag::find($request->tag_id);
+        if (count($tag) == 0) {
+            return response()->json([
+                'message' => 'error'
+            ]);
+        }
+        $posts = $tag->postsTags()->leftjoin('posts', 'posts_tags.post_id', '=', 'posts.id')
+                                  ->selectRaw('posts_tags.post_id, posts.*')
+                                  ->groupBy('posts.id')
+                                  ->leftJoin('goods', 'posts.id', '=', 'goods.post_id')
+                                  ->selectRaw('posts.*, count(goods.post_id) as count')
+                                  ->groupBy('posts.id')
+                                  ->orderBy('count', 'desc')
+                                  ->take(3)
+                                  ->get();
+        if (count($posts) == 0) {
+          return response()->json([
+              'message' => 'error'
+          ]);
+        }else {
+            $articles = [];
+            foreach($posts as $post) {
+                $articles[] = [
+                    [
+                        'url'      => url('/article/detail', $post->post->id),
+                        'image'    => "'" .url($post->post->oneImage->image)."'",
+                        'title'    => $post->post->title,
+                        'address'  => AppUtil::postNumberRemove($post->post->address),
+                        'user_image' => url('/show/user', $post->post->user_id),
+                        'goods'    => count($post->post->goods),
+                        'comments' => count($post->post->comments)
+                    ]
+                ];
+            }
+          return response()->json([
+              'message' => 'success',
+              'posts'   => $articles
+          ]);
+        }
+    }
+
+    private function createRankingArticles($posts) {
+        $articles = [];
+        foreach($posts as $post) {
+            $articles[] = [
+                [
+                    'url'      => url('/article/detail', $post->id),
+                    'image'    => "'" .url($post->oneImage->image)."'",
+                    'title'    => $post->title,
+                    'address'  => AppUtil::postNumberRemove($post->address),
+                    'user_image' => url('/show/user', $post->user_id),
+                    'goods'    => count($post->goods),
+                    'comments' => count($post->comments)
+                ]
+            ];
+        }
+        return $articles;
+    }
+
 }
