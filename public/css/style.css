@@ -864,6 +864,7 @@ header h1 {
 footer {
   width: 100%;
   color: white;
+  background-position: center;
 }
 footer a {
     color: white
