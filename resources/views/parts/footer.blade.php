@@ -1,4 +1,4 @@
-<footer style="background-image: url({{url('/background_3.jpg')}})">
+<footer style="background-image: url({{url('/background_4.jpg')}})">
 <div class="footer_data">
     <div class="footer_data_list">
         <p class="footer_title">管理者情報</p>
