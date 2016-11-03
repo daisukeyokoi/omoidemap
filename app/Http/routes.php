@@ -74,6 +74,11 @@ Route::group(['prefix' => 'search'], function() {
     Route::get('/', 'TopController@getSearch');
 });
 
+// ランキングページ
+Route::group(['prefix' => 'ranking'], function() {
+    Route::get('/', 'TopController@getRanking');
+});
+
 /////////////ajax
 // 県取得
 Route::any('/get_prefectures', 'TopController@ajaxGetPrefectures');
@@ -81,6 +86,16 @@ Route::any('/get_prefectures', 'TopController@ajaxGetPrefectures');
 Route::any('/plus_good', 'TopController@ajaxPlusGood');
 // 記事取得
 Route::any('/ajax/article_list', 'TopController@ajaxGetArticle');
+
+Route::group(['prefix' => 'ajax/ranking'], function() {
+    // 都道府県ランキング取得
+    Route::any('/prefectures', 'TopController@ajaxGetRankingPrefectures');
+    // 感情ランキング取得
+    Route::any('/feeling', 'TopController@ajaxGetRankingFeeling');
+    // タグランキング取得
+    Route::any('/tags', 'TopController@ajaxGetRankingTags');
+});
+
 
 
 /////////////////////////////////////////////////////////////////////////////
