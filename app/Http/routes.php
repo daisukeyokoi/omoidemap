@@ -130,6 +130,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['middleware' => 'auth_admin'], function() {
         Route::group(['prefix' => 'admin'], function() {
             Route::get('/', 'AdminController@getIndex');
+
+            // ユーザー関連
+            Route::group(['prefix' => 'user'], function() {
+                Route::get('/', 'AdminController@getUser');
+                Route::get('/detail/{id}', 'AdminController@getUserDetail');
+                Route::get('/edit/{id}', 'AdminController@getUserEdit');
+                Route::post('/edit', 'AdminController@postUserEdit');
+                Route::post('/delete', 'AdminController@deleteUser');
+            });
         });
     });
 });

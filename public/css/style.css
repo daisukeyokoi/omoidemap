@@ -147,7 +147,7 @@ header h1 {
     font-weight: bold;
     font-size: 18px;
     position: absolute;
-    top: 73%;
+    top: 56%;
     left: 43%;
 }
 @media all and (max-width: 920px) {
@@ -1006,6 +1006,13 @@ footer a:hover {
     @media all and (max-width: 640px) {
         .top_img input {
             left: 40%;
+            font-size: 12px;
+        }
+    }
+    @media all and (max-width: 580px) {
+        .top_img input {
+            left: 40%;
+            font-size: 10px;
         }
     }
     .top_map {
@@ -1111,13 +1118,11 @@ footer a:hover {
     }
     .top_img input {
         font-weight: bold;
-        font-size: 12px;
-        left: 36%;
-    }
-    @media all and (max-width: 480px) {
-        .top_img input {
-            left: 33%;
-        }
+        font-size: 10px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        top: 54%;
+        left: 35%;
     }
 
     /*ログイン*/

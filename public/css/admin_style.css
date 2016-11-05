@@ -9,14 +9,29 @@ ul {
 .admin_wrapper {
     overflow: hidden;
 }
-
+.admin_pagination {
+    text-align: center;
+    margin-top: 50px;
+}
+.btn_field {
+    overflow: hidden;
+}
+.btn_field input {
+    float: left;
+    margin-right: 2%;
+}
+.parts_errormessage {
+    color: red;
+    font-weight: bold;
+}
 /* ========================================
   ヘッダー
 ======================================== */
 .admin_header {
     overflow: hidden;
-    background-color: black;
-    position: relative;
+    background-color: #FF6600;
+    position: fixed;
+    width: 100%;
 }
 .admin_header a {
     color: white;
@@ -42,11 +57,47 @@ ul {
     height: 100%;
     position: fixed;
     width: 20%;
-    background-color: red;
+    background-color: #1D1F21;
+    top: 68px;
 }
 .admin_sidebar a {
     color: white;
     text-decoration: none;
+}
+.admin_sidebar_title {
+    color: white;
+    padding: 20px 0 20px 10%;
+    font-size: 16px;
+    cursor: pointer;
+}
+.collapse {
+    background-color: #2C3B41;
+    color: white;
+}
+.collapsing {
+    background-color: #2C3B41;
+    color: white;
+}
+.collapsing li {
+    padding: 10px 0 0 15%;
+}
+.collapsing li i {
+    margin-right: 4%;
+}
+.collapsing li:last-child {
+    padding-bottom: 10px;
+}
+.collapse li {
+    padding: 10px 0 0 15%;
+}
+.collapse li:hover {
+    background-color: #BBBBBB;
+}
+.collapse li i {
+    margin-right: 4%;
+}
+.collapse li:last-child {
+    padding-bottom: 10px;
 }
 
 
@@ -55,20 +106,38 @@ ul {
   Top
 ======================================== */
 .admin_main {
-    width: 80%;
-    margin-top: 60px;
-    margin-left: 23%;
-    margin-right: 5%;
+    width: 70%;
+    margin-top: 80px;
+    margin-left: 25%;
     overflow: hidden;
 }
-.admin_main ul {
-
-}
-.admin_main ul li {
+.top_ul li {
     float: left;
     padding: 30px 50px;
     border-radius: 25px;
     font-size: 16px;
     color: white;
     background-color: green;
+}
+
+/* ========================================
+  ユーザー情報
+======================================== */
+.search_box {
+    width: 100%;
+    border: 1px solid #C1C6C4;
+}
+.search_box_header {
+    padding: 10px 20px;
+    border-bottom: 1px solid black;
+}
+.search_box_main {
+    margin: 10px 3%;
+}
+
+.user_list {
+    margin-top: 40px;
+}
+.user_detail_box {
+    margin-top: 40px;
 }

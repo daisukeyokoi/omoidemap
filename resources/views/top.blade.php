@@ -83,7 +83,7 @@ a:hover {
 @stop
 @section('body')
 <div class="top_img">
-	<img src="{{url('/top_img_1.jpg')}}" alt="" >
+	<img src="{{url('/top_img_3.jpg')}}" alt="" >
 	<a href="{{url('/register')}}">
 		<input type="button" value="思い出を投稿する" class="btn btn-warning">
 	</a>

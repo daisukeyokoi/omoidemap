@@ -25,7 +25,10 @@
             </ul>
         </div>
     </div>
-    @yield('body')
+    @include('admin.parts.sidebar')
+    <div class="admin_main">
+        @yield('body')
+    </div>
 </div>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="{{url('/js/vex.combined.min.js')}}"></script>

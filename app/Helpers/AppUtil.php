@@ -188,4 +188,15 @@ class AppUtil {
         $new_address = preg_replace("/(〒|ZIP：)\d{3}-\d{4}/", '', $address);
         return $new_address;
     }
+
+    //////////////////////////////////////////////////////////////
+	// ユーザーの存在確認
+	//////////////////////////////////////////////////////////////
+    public static function userCheck($user_id) {
+        $user = User::find($user_id);
+        if (empty($user)) {
+            abort(404);
+        }
+        return $user;
+    }
 }
