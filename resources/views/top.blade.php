@@ -82,8 +82,8 @@ a:hover {
 </style>
 @stop
 @section('body')
-<div class="top_img" style="background-image: url({{url('/top_img.jpg')}})">
-	<h1>思い出を旅する。誰かの特別を、みんなの特別に。</h1>
+<div class="top_img">
+	<img src="{{url('/top_img_1.jpg')}}" alt="" >
 	<a href="{{url('/register')}}">
 		<input type="button" value="思い出を投稿する" class="btn btn-warning">
 	</a>

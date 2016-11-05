@@ -1,0 +1,74 @@
+/* ========================================
+  全体
+======================================== */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.admin_wrapper {
+    overflow: hidden;
+}
+
+/* ========================================
+  ヘッダー
+======================================== */
+.admin_header {
+    overflow: hidden;
+    background-color: black;
+    position: relative;
+}
+.admin_header a {
+    color: white;
+}
+.admin_header ul {
+    float: right;
+    overflow: hidden;
+}
+.admin_header li {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px 30px 20px 30px;
+    border-left: 1px solid white;
+}
+
+
+/* ========================================
+  サイドバー
+======================================== */
+.admin_sidebar {
+    float: left;
+    height: 100%;
+    position: fixed;
+    width: 20%;
+    background-color: red;
+}
+.admin_sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+
+
+/* ========================================
+  Top
+======================================== */
+.admin_main {
+    width: 80%;
+    margin-top: 60px;
+    margin-left: 23%;
+    margin-right: 5%;
+    overflow: hidden;
+}
+.admin_main ul {
+
+}
+.admin_main ul li {
+    float: left;
+    padding: 30px 50px;
+    border-radius: 25px;
+    font-size: 16px;
+    color: white;
+    background-color: green;
+}

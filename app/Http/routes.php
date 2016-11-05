@@ -104,17 +104,32 @@ Route::group(['prefix' => 'ajax/ranking'], function() {
 
 // マイページ
 Route::group(['middleware' => 'auth'], function (){
-  Route::group(['prefix' => 'mypage'], function() {
-    // top
-    Route::get('/', 'MypageController@getIndex');
+    Route::group(['middleware' => 'auth_general'], function () {
+        Route::group(['prefix' => 'mypage'], function() {
+            // top
+            Route::get('/', 'MypageController@getIndex');
 
-    // 記事投稿ページ
-    Route::group(['prefix' => 'a_post'], function() {
-      Route::get('/', 'MypageController@getArticlePost');
-      Route::post('/', 'MypageController@postArticlePost');
+            // 記事投稿ページ
+            Route::group(['prefix' => 'a_post'], function() {
+                Route::get('/', 'MypageController@getArticlePost');
+                Route::post('/', 'MypageController@postArticlePost');
+            });
+        });
     });
-  });
 });
 
 // コメント投稿
 Route::post('/post/comment', 'TopController@postComment');
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 管理画面
+/////////////////////////////////////////////////////////////////////////////
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::group(['middleware' => 'auth_admin'], function() {
+        Route::group(['prefix' => 'admin'], function() {
+            Route::get('/', 'AdminController@getIndex');
+        });
+    });
+});

@@ -110,11 +110,15 @@ class AuthController extends Controller
 	}
 
   /**
-	 * ログイン
-	 */
+    * ログイン
+    */
   public function getLogin(Request $request) {
     if (Auth::check()){
-		  return redirect(url('/mypage'));
+        if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
+            return redirect(url('/mypage'));
+        }else {
+            return redirect(url('/admin'));
+        }
     }
     if (isset($request->a_d)) {
         session()->put('a_d', $request->a_d);
@@ -152,7 +156,11 @@ class AuthController extends Controller
 			if (session()->has('a_d')) {
 				return redirect(url('/article/detail', session()->pull('a_d')));
 			} else {
-				return redirect(url('/mypage'));
+                if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
+                    return redirect(url('/mypage'));
+                }else {
+                    return redirect(url('/admin'));
+                }
 			}
 		} else {
 			session()->flash('flash_message', 'メールアドレスもしくはパスワードが間違っています。');
