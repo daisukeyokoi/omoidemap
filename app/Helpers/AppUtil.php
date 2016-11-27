@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Input;
 use App\PostsImage;
+use App\Tag;
+use App\Post;
 
 class AppUtil {
     /** 汎用フラグ：OFF(0) */
@@ -37,15 +39,15 @@ class AppUtil {
     //////////////////////////////////////////////////////////////
 	// 画像保存
 	//////////////////////////////////////////////////////////////
-    public static function saveImage($file) {
+    public static function saveImage($file, $type) {
         $img = Image::make($file);
         $img = self::rotateImage($img);
         $img = self::resizeImage($img, 1000);
         $path = str_random(10). '.jpg';
-        if (!Storage::exists('images')) {
-			Storage::makeDirectory('images');
+        if (!Storage::exists($type)) {
+			Storage::makeDirectory($type);
 		}
-        $img->save(storage_path('app/images/' . $path));
+        $img->save(storage_path('app/'. $type. '/' . $path));
         $img->destroy();
         return $path;
     }
@@ -198,5 +200,49 @@ class AppUtil {
             abort(404);
         }
         return $user;
+    }
+
+    //////////////////////////////////////////////////////////////
+	// 人気のタグ
+	//////////////////////////////////////////////////////////////
+    public static function popularTags() {
+        $tags = Tag::postsSort()->take(20)->get();
+        return $tags;
+    }
+
+    //////////////////////////////////////////////////////////////
+	// 人気の記事
+	//////////////////////////////////////////////////////////////
+    public static function popularPosts() {
+        $posts = Post::goodsSort()->take(5)->get();
+        return $posts;
+    }
+
+    //////////////////////////////////////////////////////////////
+	// 文字を丸める
+	//////////////////////////////////////////////////////////////
+    public static function wordRound($string, $word_num) {
+        $length = mb_strlen($string, 'utf-8');
+		if ($length > $word_num) {
+			$string = mb_substr($string, 0, $word_num, 'utf-8'). '...';
+		}
+		return $string;
+    }
+
+    //////////////////////////////////////////////////////////////
+	// Topページの記事リストのタグ表示
+	//////////////////////////////////////////////////////////////
+    public static function topTag($post) {
+        $tag_count = 0;
+        $postTags = $post->postsTags;
+        $tags_name = 'タグ:';
+        foreach($postTags as $postTag) {
+            if ($tag_count > 5) {
+                break;
+            }
+            $tags_name = $tags_name . '<span class="article_list_data_tag">'. $postTag->tag->name. '</span>';
+            $tag_count += 1;
+        }
+        return $tags_name;
     }
 }

@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Helpers\AppUtil;
 use App\Tag;
 use App\PostsTag;
+use App\Event;
+use Carbon\Carbon;
 
 class TopController extends Controller
 {
@@ -27,7 +29,8 @@ class TopController extends Controller
     public function index(Request $request) {
         $regions = Region::all();
         $posts = Post::all();
-        return view('top', compact('regions', 'posts'));
+        $events = Event::take(7)->get();
+        return view('top', compact('regions', 'posts', 'tags', 'events'));
     }
 
     //　県取得
@@ -49,7 +52,10 @@ class TopController extends Controller
                 [
                     'url'      => url('/article/detail', $post->id),
                     'image'    => "'" .url($post->oneImage->image)."'",
-                    'title'    => $post->title,
+                    'episode'  => $post->episode,
+                    'feeling'  => AppUtil::photoFeelingLabel()[$post->feeling],
+                    'age'      => AppUtil::photoAgeLabel()[$post->age],
+                    'tag'      => AppUtil::topTag($post),
                     'address'  => AppUtil::postNumberRemove($post->address),
                     'goods'    => count($post->goods),
                     'comments' => count($post->comments)
@@ -71,9 +77,18 @@ class TopController extends Controller
 
 
     ////////////////////////画像表示関連//////////////
-    // 画像表示
-    public function showImage($image) {
-        $path = 'images/'. $image;
+    // 記事画像表示
+    public function showPostImage($image) {
+        $path = 'posts/'. $image;
+        if (Storage::exists($path)) {
+            $photo = Storage::get($path);
+            return (new Response($photo, 200))->header('Content-Type', 'image/jpeg');
+        }
+    }
+
+    // イベント画像表示
+    public function showEventImage($image) {
+        $path = 'events/'. $image;
         if (Storage::exists($path)) {
             $photo = Storage::get($path);
             return (new Response($photo, 200))->header('Content-Type', 'image/jpeg');
@@ -164,6 +179,7 @@ class TopController extends Controller
         if (empty($tag)) {
             abort(404);
         }
+        $p_id = [];
         foreach($tag->postsTags as $postTag) {
             $p_id[] = $postTag->post_id;
         }
@@ -307,6 +323,18 @@ class TopController extends Controller
             ];
         }
         return $articles;
+    }
+
+    ////////////////////////// イベントページ///////////////////////
+    public function getEvent($id) {
+        $event = Event::find($id);
+        if (empty($event)) {
+            abort(404);
+        }
+        $today = Carbon::today();
+        $posts = Post::where('event_id', $id)->get();
+        $other_events = Event::where('id', '!=', $id)->where('end', '>=', $today)->get();
+        return view('event.index', compact('event', 'posts', 'other_events'));
     }
 
 }

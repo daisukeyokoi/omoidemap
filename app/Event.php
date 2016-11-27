@@ -1,0 +1,18 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Event extends Model
+{
+    protected $table = 'events';
+
+    ////////////////////////////////////////////////////////////////////////////
+	// 定数
+	////////////////////////////////////////////////////////////////////////////
+    const YET   = 0;
+    const OPEN  = 1;
+    const CLOSE = 2;
+
+}

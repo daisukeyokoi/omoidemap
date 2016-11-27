@@ -24,6 +24,10 @@ ul {
     color: red;
     font-weight: bold;
 }
+.btn_center {
+    text-align: center;
+    margin-bottom: 50px;
+}
 /* ========================================
   ヘッダー
 ======================================== */
@@ -32,6 +36,7 @@ ul {
     background-color: #FF6600;
     position: fixed;
     width: 100%;
+    z-index: 999;
 }
 .admin_header a {
     color: white;
@@ -140,4 +145,19 @@ ul {
 }
 .user_detail_box {
     margin-top: 40px;
+}
+
+/* ========================================
+  記事情報
+======================================== */
+.posts_list {
+    margin-top: 40px;
+}
+
+/* ========================================
+  イベント情報
+======================================== */
+.event_day_form {
+    width: 60px;
+    display: inline;
 }

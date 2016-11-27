@@ -2,7 +2,7 @@
 <div class="clearfix">
     <a href="{{url('/')}}">
         <div class="header_left">
-            <h1><i class="fa fa-picture-o" aria-hidden="true"></i>思い出MAP</h1>
+            <img src="{{url('/header_icon.jpg')}}">
         </div>
     </a>
     <div class="header_search">

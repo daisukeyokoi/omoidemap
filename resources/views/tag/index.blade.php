@@ -14,7 +14,7 @@ a:hover {
 </style>
 @stop
 @section('body')
-<div class="tag_img" style="background-image: url({{url('/top_img.jpg')}})">
+<div class="tag_img" style="background-image: url({{url('/background.jpg')}})">
 	<h1>{{$tag->name}}</h1>
 </div>
 <div class="tag_wrapper">

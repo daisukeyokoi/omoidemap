@@ -40,6 +40,9 @@ class CreatePostsTable extends Migration
             // 撮影日
             $table->date('photo_date');
 
+            // イベントID
+            $table->integer('event_id');
+
             $table->timestamps();
 
             // userが消えた時に一緒に削除

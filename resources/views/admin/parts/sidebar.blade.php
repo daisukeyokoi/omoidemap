@@ -12,7 +12,7 @@
     <div class="collapse" id="collapseTable">
         <ul class="card-block">
             <a href="{{url('/admin/user')}}"><li><i class="fa fa-circle-o" aria-hidden="true"></i>ユーザー</li></a>
-            <a href="#"><li><i class="fa fa-circle-o" aria-hidden="true"></i>記事</li></a>
+            <a href="{{url('/admin/posts')}}"><li><i class="fa fa-circle-o" aria-hidden="true"></i>記事</li></a>
         </ul>
     </div>
     <div class="admin_sidebar_title" data-target="#collapseEvent" data-toggle="collapse">
@@ -21,8 +21,8 @@
     </div>
     <div class="collapse" id="collapseEvent">
         <ul class="card-block">
-            <a href="#"><li><i class="fa fa-circle-o" aria-hidden="true"></i>ユーザー</li></a>
-            <a href="#"><li><i class="fa fa-circle-o" aria-hidden="true"></i>記事</li></a>
+            <a href="{{url('/admin/event')}}"><li><i class="fa fa-circle-o" aria-hidden="true"></i>イベント一覧</li></a>
+            <a href="{{url('/admin/event/create')}}"><li><i class="fa fa-circle-o" aria-hidden="true"></i>イベント作成</li></a>
         </ul>
     </div>
     <div class="admin_sidebar_title" data-target="#collapseInquiry" data-toggle="collapse">

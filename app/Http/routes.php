@@ -54,8 +54,9 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 
 // 画像表示
 Route::group(['prefix' => 'show'], function() {
-    Route::get('/{image}', 'TopController@showImage');
+    Route::get('/{image}', 'TopController@showPostImage');
     Route::get('/user/{id}', 'TopController@showUserImage');
+    Route::get('/event/{image}', 'TopController@showEventImage');
 });
 
 
@@ -77,6 +78,11 @@ Route::group(['prefix' => 'search'], function() {
 // ランキングページ
 Route::group(['prefix' => 'ranking'], function() {
     Route::get('/', 'TopController@getRanking');
+});
+
+// イベントページ
+Route::group(['prefix' => 'event'], function() {
+    Route::get('/{id}', 'TopController@getEvent');
 });
 
 /////////////ajax
@@ -138,6 +144,18 @@ Route::group(['middleware' => 'auth'], function() {
                 Route::get('/edit/{id}', 'AdminController@getUserEdit');
                 Route::post('/edit', 'AdminController@postUserEdit');
                 Route::post('/delete', 'AdminController@deleteUser');
+            });
+
+            // 記事関連
+            Route::group(['prefix' => 'posts'], function() {
+                Route::get('/', 'AdminController@getPosts');
+            });
+
+            // イベント関連
+            Route::group(['prefix' => 'event'], function() {
+                Route::get('/', 'AdminController@getEvents');
+                Route::get('/create', 'AdminController@getEventCreate');
+                Route::post('/create', 'AdminController@postEventCreate');
             });
         });
     });
