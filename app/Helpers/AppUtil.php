@@ -245,4 +245,13 @@ class AppUtil {
         }
         return $tags_name;
     }
+
+    //////////////////////////////////////////////////////////////
+    // URLの最後
+    //////////////////////////////////////////////////////////////
+    public static function urlSlash($url) {
+        $array = explode('/', $url);
+        $type  = end($array);
+        return $type;
+    }
 }
