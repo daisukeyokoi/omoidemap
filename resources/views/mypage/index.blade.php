@@ -88,6 +88,8 @@
 			<div class="side-content">
 				<p>サイドコンテンツ2</p>
 			</div>
+			<div class="empty-content">
+			</div>
 		</div>
 	</div>
 </div>
