@@ -26,8 +26,20 @@ class MypageController extends Controller
     // マイページTopを表示
     public function getIndex() {
         $user = Auth::user();
-        $posts = Post::paginate(20);
+        $posts = Post::where('user_id', $user->id)->get();
         return view('mypage.index', compact('user', 'posts'));
+    }
+
+    // いいねページ表示
+    public function getGood() {
+        $user = Auth::user();
+        return view('mypage.good', compact('user'));
+    }
+
+    // フォロー中のタグページ表示
+    public function getFollowtag() {
+        $user = Auth::user();
+        return view('mypage.followtag', compact('user'));
     }
 
     // プロフィール編集ページ表示

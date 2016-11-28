@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->string('nickname');
             $table->string('email')->unique();
             $table->string('password', 60);
+            $table->string('image');
             $table->string('confirmation_token')->nullable();
             $table->timestamp('confirmed_at')->nullable();
             $table->rememberToken();

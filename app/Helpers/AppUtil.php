@@ -188,4 +188,10 @@ class AppUtil {
         $new_address = preg_replace("/(〒|ZIP：)\d{3}-\d{4}/", '', $address);
         return $new_address;
     }
+
+    public static function urlSlash($url) {
+    	$array = explode('/', $url);
+    	$type  = end($array);
+    	return $type;
+    }
 }

@@ -114,6 +114,16 @@ Route::group(['middleware' => 'auth'], function (){
       Route::get('/', 'MypageController@getArticlePost');
       Route::post('/', 'MypageController@postArticlePost');
     });
+
+    // いいねページ
+    Route::get('/good', 'MypageController@getGood');
+
+    // フォロー中のタグページ
+    Route::get('/followtag', 'MypageController@getFollowtag');
+
+    // プロフィールページ
+    Route::get('/updateprofile', 'MypageController@getUpdateProfile');    
+
   });
 });
 
