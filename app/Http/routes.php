@@ -54,8 +54,9 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 
 // 画像表示
 Route::group(['prefix' => 'show'], function() {
-    Route::get('/{image}', 'TopController@showImage');
+    Route::get('/{image}', 'TopController@showPostImage');
     Route::get('/user/{id}', 'TopController@showUserImage');
+    Route::get('/event/{image}', 'TopController@showEventImage');
 });
 
 
@@ -77,6 +78,11 @@ Route::group(['prefix' => 'search'], function() {
 // ランキングページ
 Route::group(['prefix' => 'ranking'], function() {
     Route::get('/', 'TopController@getRanking');
+});
+
+// イベントページ
+Route::group(['prefix' => 'event'], function() {
+    Route::get('/{id}', 'TopController@getEvent');
 });
 
 /////////////ajax
@@ -103,29 +109,62 @@ Route::group(['prefix' => 'ajax/ranking'], function() {
 /////////////////////////////////////////////////////////////////////////////
 
 // マイページ
-Route::group(['middleware' => 'auth'], function (){
-  Route::group(['prefix' => 'mypage'], function() {
-    // top
-    Route::get('/', 'MypageController@getIndex');
-    Route::get('/updateprofile', 'MypageController@getUpdateProfile');
+Route::group(['middleware' => 'auth_general'], function (){
+    Route::group(['prefix' => 'mypage'], function() {
+        // top
+        Route::get('/', 'MypageController@getIndex');
 
-    // 記事投稿ページ
-    Route::group(['prefix' => 'a_post'], function() {
-      Route::get('/', 'MypageController@getArticlePost');
-      Route::post('/', 'MypageController@postArticlePost');
+        // 記事投稿ページ
+        Route::group(['prefix' => 'a_post'], function() {
+          Route::get('/', 'MypageController@getArticlePost');
+          Route::post('/', 'MypageController@postArticlePost');
+        });
+
+        // いいねページ
+        Route::get('/good', 'MypageController@getGood');
+
+        // フォロー中のタグページ
+        Route::get('/followtag', 'MypageController@getFollowtag');
+
+        // プロフィールページ
+        Route::get('/updateprofile', 'MypageController@getUpdateProfile');
+
     });
-
-    // いいねページ
-    Route::get('/good', 'MypageController@getGood');
-
-    // フォロー中のタグページ
-    Route::get('/followtag', 'MypageController@getFollowtag');
-
-    // プロフィールページ
-    Route::get('/updateprofile', 'MypageController@getUpdateProfile');    
-
-  });
 });
 
 // コメント投稿
 Route::post('/post/comment', 'TopController@postComment');
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 管理画面
+/////////////////////////////////////////////////////////////////////////////
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::group(['middleware' => 'auth_admin'], function() {
+        Route::group(['prefix' => 'admin'], function() {
+            Route::get('/', 'AdminController@getIndex');
+
+            // ユーザー関連
+            Route::group(['prefix' => 'user'], function() {
+                Route::get('/', 'AdminController@getUser');
+                Route::get('/detail/{id}', 'AdminController@getUserDetail');
+                Route::get('/edit/{id}', 'AdminController@getUserEdit');
+                Route::post('/edit', 'AdminController@postUserEdit');
+                Route::post('/delete', 'AdminController@deleteUser');
+            });
+
+            // 記事関連
+            Route::group(['prefix' => 'posts'], function() {
+                Route::get('/', 'AdminController@getPosts');
+            });
+
+            // イベント関連
+            Route::group(['prefix' => 'event'], function() {
+                Route::get('/', 'AdminController@getEvents');
+                Route::get('/create', 'AdminController@getEventCreate');
+                Route::post('/create', 'AdminController@postEventCreate');
+            });
+        });
+    });
+});

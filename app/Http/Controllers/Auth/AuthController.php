@@ -109,20 +109,24 @@ class AuthController extends Controller
 		return redirect('/mypage');
 	}
 
-  /**
-	 * ログイン
-	 */
-  public function getLogin(Request $request) {
-    if (Auth::check()){
-		  return redirect(url('/mypage'));
+    /**
+    * ログイン
+    */
+    public function getLogin(Request $request) {
+        if (Auth::check()){
+            if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
+                return redirect(url('/mypage'));
+            }else {
+                return redirect(url('/admin'));
+            }
+        }
+        if (isset($request->a_d)) {
+            session()->put('a_d', $request->a_d);
+        }else {
+            session()->forget('a_d');
+        }
+        return view('login.index');
     }
-    if (isset($request->a_d)) {
-        session()->put('a_d', $request->a_d);
-    }else {
-        session()->forget('a_d');
-    }
-    return view('login.index');
-   }
 
    /**
 	 * ログイン処理
@@ -152,7 +156,14 @@ class AuthController extends Controller
 			if (session()->has('a_d')) {
 				return redirect(url('/article/detail', session()->pull('a_d')));
 			} else {
-				return redirect(url('/mypage'));
+                if (isset($request->event_id)) {
+                    return redirect(url('/mypage/a_post?e_id='.$request->event_id));
+                }
+                if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
+                    return redirect(url('/mypage'));
+                }else {
+                    return redirect(url('/admin'));
+                }
 			}
 		} else {
 			session()->flash('flash_message', 'メールアドレスもしくはパスワードが間違っています。');

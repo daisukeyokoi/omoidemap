@@ -80,6 +80,9 @@ ul {
         <input type="hidden" name="img_flg" id="img_flg" value="">
         <input type="hidden" name="lat" id="lat">
         <input type="hidden" name="lng" id="lng">
+        @if (Input::get('e_id'))
+            <input type="hidden" name="event_id" value="{{Input::get('e_id')}}">
+        @endif
         <input type="hidden" name="address" id="address_true">
         <input type="hidden" id="jp_flg" value="{{AppUtil::FLG_ON}}">
         <div class="dz-default dz-message">

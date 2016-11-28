@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('image');
             $table->string('confirmation_token')->nullable();
             $table->timestamp('confirmed_at')->nullable();
+            $table->integer('identification');
             $table->rememberToken();
             $table->timestamps();
         });

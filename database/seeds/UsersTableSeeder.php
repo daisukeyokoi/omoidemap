@@ -18,6 +18,7 @@ class UsersTableSeeder extends Seeder
           'email' => 'a@gmail.com',
           'password' => bcrypt('aaaaaa'),
           "confirmation_token" => "",
+          'identification' => 0,
           "confirmed_at" => Carbon::now(),
       ]);
 
@@ -26,6 +27,7 @@ class UsersTableSeeder extends Seeder
           'email' => 'b@gmail.com',
           'password' => bcrypt('aaaaaa'),
           "confirmation_token" => "",
+          'identification' => 0,
           "confirmed_at" => Carbon::now(),
       ]);
 
@@ -34,6 +36,7 @@ class UsersTableSeeder extends Seeder
           'email' => 'c@gmail.com',
           'password' => bcrypt('aaaaaa'),
           "confirmation_token" => "",
+          'identification' => 0,
           "confirmed_at" => Carbon::now(),
       ]);
 
@@ -42,6 +45,16 @@ class UsersTableSeeder extends Seeder
           'email' => 'd@gmail.com',
           'password' => bcrypt('aaaaaa'),
           "confirmation_token" => "",
+          'identification' => 0,
+          "confirmed_at" => Carbon::now(),
+      ]);
+
+      DB::table('users')->insert([
+          'nickname' => 'ddd',
+          'email' => 'kanri@gmail.com',
+          'password' => bcrypt('aaaaaa'),
+          "confirmation_token" => "",
+          'identification' => 1,
           "confirmed_at" => Carbon::now(),
       ]);
     }

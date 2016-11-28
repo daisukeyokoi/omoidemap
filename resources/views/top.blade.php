@@ -1,12 +1,6 @@
 @extends('layout')
 @section('css_partial')
 <style>
-.top_wrapper {
-	width: 90%;
-	margin: 0 auto;
-	overflow: hidden;
-	margin-bottom: 50px;
-}
 .map-embed
 {
 	max-width: 100% ;
@@ -69,6 +63,7 @@ a:hover {
 	border: 2px solid white;
 	background-size: cover;
 	background-repeat: no-repeat;
+	background-position: center;
 }
 #next {
 	float: right;
@@ -82,13 +77,31 @@ a:hover {
 </style>
 @stop
 @section('body')
-<div class="top_img" style="background-image: url({{url('/top_img.jpg')}})">
-	<h1>思い出を旅する。誰かの特別を、みんなの特別に。</h1>
+<div class="top_img">
+	<img src="{{url('/top_img_4.jpg')}}" alt="" >
 	<a href="{{url('/register')}}">
 		<input type="button" value="思い出を投稿する" class="btn btn-warning">
 	</a>
 </div>
+<div class="top_register_field">
+	<input type="button" value="思い出を投稿する" class="btn btn-warning">
+</div>
 <div class="top_wrapper">
+	<div class="top_prefectures">
+		<div class="top_region">
+			@foreach($regions as $region)
+				<div class="region_title">
+					{{$region->name}}
+				</div>
+				<ul>
+					@foreach($region->prefectures as $prefecture)
+						<li class="prefecture_name" data-name="{{$prefecture->name}}">{{$prefecture->name}}</li>
+					@endforeach
+				</ul>
+			@endforeach
+		</div>
+	</div>
+	<div class="top_main">
 	<div class="top_map">
 		<div class="top_map_search">
 			<form action="{{url('/')}}" onsubmit="keywordSubmit(); return false;">
@@ -116,6 +129,34 @@ a:hover {
 			</div>
 		</ul>
 	</article>
+	<div class="event_field">
+		<div class="event_title">
+			<div class="event_title_left">
+				イベント
+			</div>
+			<div class="event_title_right"></div>
+		</div>
+		<ul class="event_content">
+			@foreach ($events as $event)
+				<li>
+					<a href="{{url('/event', $event->id)}}">
+						<div class="event_content_list_top">
+							<div class="event_content_list_top_title">
+								{{$event->title}}
+							</div>
+							<div class="event_content_list_top_img" style="background-image: url({{url($event->image)}})"></div>
+						</div>
+						<div class="event_content_list_bottom">
+							<p>{{$event->title}}</p>
+							<p>{{str_replace('-', '/', $event->start)}}~{{str_replace('-', '/', $event->end)}}</p>
+						</div>
+					</a>
+				</li>
+			@endforeach
+		</ul>
+	</div>
+	</div>
+	@include('parts.sidebar')
 </div>
 @stop
 @section('js_partial')
@@ -144,6 +185,7 @@ var map;
 var current_num = 0;
 var res_articles = [];
 var page_num = 1;
+var list_num = 4;
 ////////////////// カスタムマーカー
 function CustomMarker(latlng, map, args, markerData) {
 	this.latlng = latlng;
@@ -320,8 +362,8 @@ function dispLatLang(map) {
 		},
 		success: function(res) {
 			res_articles = res.articles;
-			if (res_articles.length > 6) {
-				var length = 6;
+			if (res_articles.length > list_num) {
+				var length = list_num;
 			}else {
 				var length = res_articles.length;
 			}
@@ -333,11 +375,13 @@ function dispLatLang(map) {
 				for (var i = 0; i < length; i++) {
 					current_num = articleListDesign(res_articles, i, current_num);
 				}
-				if (current_num == 6) {
-					$(".top_article_list")
-					.children('ul')
-					.append('<input type="button" class="btn btn-primary" id="next" value="Next&nbsp;>">')
-					.hide().fadeIn('normal');
+				if (res_articles.length > list_num) {
+					if (current_num == list_num) {
+						$(".top_article_list")
+						.children('ul')
+						.append('<input type="button" class="btn btn-primary" id="next" value="Next&nbsp;>">')
+						.hide().fadeIn('normal');
+					}
 				}
 			}else {
 				$(".top_article_list").children('ul').append('<p>該当するものはありません</p>');
@@ -347,7 +391,7 @@ function dispLatLang(map) {
 	});
 }
 // 場所を検索
-function addressFocus(address, map) {
+function addressFocus(address, map, type) {
 	// キャンパスの要素を取得する
     var canvas = document.getElementById( 'map-canvas' );
 	var geocoder = new google.maps.Geocoder();
@@ -355,11 +399,21 @@ function addressFocus(address, map) {
 	geocoder.geocode( { 'address': address}, function(results, status) {
 		// ジオコーディングが成功した場合
 		if (status == google.maps.GeocoderStatus.OK) {
-			// 地図表示に関するオプション
-			var mapOptions = {
-				zoom: 15,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
+			if (type == 'keyword') {
+				// 地図表示に関するオプション
+				var mapOptions = {
+					zoom: 15,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					scrollwheel: false
+				};
+			}else {
+				// 地図表示に関するオプション
+				var mapOptions = {
+					zoom: 10,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					scrollwheel: false
+				};
+			}
 
 			// 地図を表示させるインスタンスを生成
 			var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -395,7 +449,7 @@ function addressFocus(address, map) {
 }
 function keywordSubmit() {
 	var address = $("#keyword").val();
-	addressFocus(address, map);
+	addressFocus(address, map, 'keyword');
 }
 
 $(document).on('click', '#next', function() {
@@ -405,7 +459,7 @@ $(document).on('click', '#next', function() {
 
 $(document).on('click', '#prev', function() {
 	page_num -= 1;
-	current_num = 6 * (page_num - 1);
+	current_num = list_num * (page_num - 1);
 	NextPrev();
 });
 
@@ -414,8 +468,8 @@ function NextPrev() {
 	$(".top_article_list").children('ul').children('a').remove();
 	$(".top_article_list").children('ul').children('p').remove();
 	$(".top_article_list").children('ul').children('input').remove();
-	if (res_articles.length - current_num > 6) {
-		var length = current_num + 6;
+	if (res_articles.length - current_num > list_num) {
+		var length = current_num + list_num;
 	}else {
 		var length = current_num + (res_articles.length - current_num);
 	}
@@ -423,12 +477,13 @@ function NextPrev() {
 		current_num = articleListDesign(res_articles, i, current_num);
 	}
 	if (current_num < res_articles.length) {
+		console.log('heloo');
 		$(".top_article_list")
 		.children('ul')
 		.append('<input type="button" class="btn btn-primary" id="next" value="Next&nbsp;>">')
 		.hide().fadeIn('normal');
 	}
-	if (current_num > 6) {
+	if (current_num > list_num) {
 		$(".top_article_list")
 		.children('ul')
 		.append('<input type="button" class="btn btn-primary" id="prev" value="<&nbsp;Prev">')
@@ -443,22 +498,39 @@ function articleListDesign(res_articles, i, current_num) {
 	.append(
 		'<a href="' + res_articles[i][0].url + '">'
 		+	'<li>'
-		+		'<div class="article_list_img" style="background-image: url(' + res_articles[i][0].image +')"></div>'
-		+		'<div class="article_list_data">'
-		+			'<p class="article_list_data_title">' + res_articles[i][0].title + '</p>'
-		+			'<p class="article_list_data_address">' + res_articles[i][0].address + '</p>'
-		+			'<span>いいね！</span>'
-		+           '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>'
-		+           '<span>' + res_articles[i][0].goods + '</span>'
-		+			'<span>コメント</span>'
-		+           '<i class="fa fa-commenting-o" aria-hidden="true"></i>'
-		+			'<span>' + res_articles[i][0].comments + '</span>'
+		+		'<div class="article_list_main">'
+		+			'<div class="article_list_img" style="background-image: url(' + res_articles[i][0].image +')"></div>'
+		+			'<div class="article_list_data">'
+		+				'<p class="article_list_data_title">' + res_articles[i][0].episode + '</p>'
+		+				'<span class="btn btn-danger article_list_data_label">' + res_articles[i][0].feeling + '</span>'
+		+				'<span class="btn btn-success article_list_data_label">' + res_articles[i][0].age + '</span>'
+		+				'<div>' + res_articles[i][0].tag + '</div>'
+		+			'</div>'
+		+		'</div>'
+		+		'<div class="article_list_footer">'
+		+			'<span class="article_list_footer_good">いいね！</span>'
+		+        	'<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>'
+		+       	'<span class="article_list_footer_good_count">' + res_articles[i][0].goods + '</span>'
+		+			'<span class="article_list_footer_comment">コメント</span>'
+		+       	'<i class="fa fa-commenting-o" aria-hidden="true"></i>'
+		+			'<span class="article_list_footer_comment_count">' + res_articles[i][0].comments + '</span>'
+		+			'<i class="fa fa-map-marker" aria-hidden="true"></i>'
+		+			'<span class="article_list_footer_address">' + res_articles[i][0].address + '</span>'
+		+			'<i class="fa fa-user" aria-hidden="true"></i>'
+		+			'<span class="article_list_footer_user_name">tanaka</span>'
 		+		'</div>'
 		+	'</li>'
 		+'</a>'
 	).hide().fadeIn('normal');
 	return current_num += 1;
 }
+
+// 都道府県クリックでそこにズーム
+$(".prefecture_name").on('click', function() {
+	var prefecture_name = $(this).data('name');
+	addressFocus(prefecture_name, map, 'prefecture');
+	$("html,body").animate({scrollTop:$('.top_map_search').offset().top});
+});
 
 
 ////////////// googlemap 終わり
@@ -478,22 +550,6 @@ $(function(){
             },
         });
     });
-
-	// $("#regions").on('change', function() {
-	// 	var region_id = $(this).val();
-	// 	$.ajax({
-	// 		type: "POST",
-	// 		url: "{{url('/get_prefectures')}}",
-	// 		data: {
-	// 			"region_id": region_id
-	// 		},
-	// 		success: function(res) {
-	// 			for(var i = 0; i < res.prefectures.length; i ++) {
-	// 				$("#prefectures").append("<option value='" + res.prefectures[i].id + "'>" + res.prefectures[i].name + "</option>");
-	// 			}
-	// 		}
-	// 	});
-	// });
 });
 </script>
 @stop

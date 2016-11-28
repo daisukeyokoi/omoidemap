@@ -20,6 +20,7 @@ use App\Post;
 use App\PostsTag;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Event;
 
 class MypageController extends Controller
 {
@@ -70,6 +71,12 @@ class MypageController extends Controller
             $post->lat     = $request->lat;
             $post->lng     = $request->lng;
             $post->photo_date    = $request->photo_year. '-'. $request->photo_month. '-01';
+            // イベントID
+            if (isset($request->event_id)) {
+                if (count(Event::find($request->event_id)) != 0) {
+                    $post->event_id = $request->event_id;
+                }
+            }
             $post->save();
 
             // タグの生成
@@ -92,11 +99,12 @@ class MypageController extends Controller
                 }
             }
 
+
             // 画像の生成
             if ($request->hasFile('file')) {
                 $file = $request->file;
                 for ($i = 0; $i < count($file); $i ++) {
-                    $path = AppUtil::saveImage($file[$i]);
+                    $path = AppUtil::saveImage($file[$i], 'posts');
                     $image = new PostsImage();
                     $image->post_id = $post->id;
                     $image->image = '/show/'. $path;
