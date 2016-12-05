@@ -1161,8 +1161,253 @@ header h1 {
 /* ========================================
   マイページ
 ======================================== */
+
 .mypage_list {
-  margin-top: 100px;
+  margin-top: 50px;
+  background-color: rgb(243,242,237);
+}
+
+.mypage_list .status {
+    width: 100%;
+    padding: 20px 10%;
+    overflow: hidden;
+    border-bottom: 1px solid #444;
+    background-color: white;
+}
+
+.mypage_list .status #image {
+    float: left;
+}
+
+.mypage_list .status #image img {
+    width: 100px;
+    height: 100px;
+}
+
+.mypage_list .status #name {
+    height: 42px;
+    margin: 28px 0 0 120px;
+}
+
+.mypage_list .status #name p {
+    font-size: 30px;
+    margin: 0;
+}
+
+.mypage_list .status .menu {
+    margin: 10px 0 0 120px;
+    overflow: hidden;
+}
+
+.mypage_list .status .menu .selected{
+    background-color: #dbd8c8;
+}
+
+.mypage_list .status .menu ul li {
+    border-left: 1px solid #444;
+    padding: 0 5px;
+    float: left;
+}
+
+.mypage_list .status .menu ul li a {
+    padding: 5px;
+}
+
+.mypage_list .status .menu ul li a:hover {
+    text-decoration: none;
+    background-color: #dbd8c8;
+    transition: .2s;
+}
+
+.mypage_list .main-content {
+    width: 80%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.mypage_list .timeline{
+    width: 60%;
+    height: 1500px;
+    float: left;
+}
+
+.mypage_list .timeline .tweet{
+    width: 95%;
+    margin: 20px auto;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.mypage_list .timeline .no-tweets{
+    width: 95%;
+    height: 200px;
+    margin: 20px auto;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.mypage_list .timeline .no-tweets p {
+    text-align: center;
+    font-size: 20px;
+    padding-top: 80px;
+}
+
+.mypage_list .timeline .tweet .tweet-header{
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid rgb(243,242,237);
+    overflow: hidden;
+}
+
+.mypage_list .tweet-header #tweet-header-image {
+    float: left;
+}
+
+.mypage_list .tweet-header #tweet-header-image img {
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.mypage_list .tweet-header #tweet-header-status {
+    float: left;
+}
+
+.mypage_list .tweet-header #tweet-header-name {
+    height: 15px;
+    margin: 3px 0 0 15px;
+}
+
+.mypage_list .tweet-header #tweet-header-name p {
+    font-size: 18px;
+    margin: 0;
+}
+
+.mypage_list .tweet-header #tweet-header-date {
+    margin: 8px 0 0 15px;
+}
+
+.mypage_list .tweet-header #tweet-header-date p {
+    font-size: 12px;
+    color: gray;
+    margin: 0;
+}
+
+.mypage_list .tweet-header #tweet-header-icon {
+    float: right;
+}
+
+.mypage_list .timeline .tweet .tweet-header a{
+    float: right;
+    padding: 5px 10px;
+    margin-top: 13px;
+}
+
+.mypage_list .timeline .tweet .tweet-main{
+    width: 100%;
+    overflow: hidden;
+    background-color: black;
+}
+
+.mypage_list .timeline .tweet .tweet-main .tweet-tags{
+    height: 40px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.mypage_list .timeline .tweet .tweet-main .tweet-tags li{
+    float: left;
+    font-size: 10px;
+    margin-left: 10px;
+    margin-top: 7px;
+    padding: 5px;
+    border: 1px solid #dbd8c8;
+    border-radius: 3px;
+}
+
+.mypage_list .timeline .tweet .tweet-main .tweet-image{
+    width: 400px;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+}
+
+.mypage_list .timeline .tweet .tweet-main .tweet-footer {
+    background-color: #BBBBBB;
+    font-size: 14px;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.mypage_list .timeline .tweet .tweet-main .tweet-episode {
+    background-color: white;
+}
+
+.mypage_list .timeline .tweet .tweet-main .tweet-episode p {
+    margin: 0;
+    padding: 5px 10px;
+}
+
+.mypage_list .timeline .tweet .tweet-comment{
+    width: 100%;
+    height: 30px;
+    border-top: 2px solid rgb(243,242,237);
+    overflow: hidden;
+}
+
+.mypage_list .side {
+    width: 35%;
+    float: right;
+    position: relative;
+}
+
+.mypage_list .side .sidebar {
+    width: 100%;
+    background-color: white;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.mypage_list .side .sidebar .empty-content {
+    width: 90%;
+    height: 20px;
+}
+
+.mypage_list .side .sidebar .side-content {
+    width: 90%;
+    height: 300px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    background-color: rgb(243,242,237);
+}
+
+.mypage_list .good-timeline {
+    width: 80%;
+    height: 100px;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+.mypage_list .good-timeline p {
+    text-align: center;
+    font-size: 20px;
+}
+
+.mypage_list .tag-timeline {
+    width: 80%;
+    height: 100px;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+.mypage_list .tag-timeline p {
+    text-align: center;
+    font-size: 20px;
 }
 
 /* ========================================
