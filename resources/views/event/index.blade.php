@@ -31,30 +31,33 @@
 </div>
 <div class="e_requirements">
     <div class="e_requirements_title">募集要項</div>
-    <div class="e_requirements_content">
-        <div class="e_requirements_content_left">応募について</div>
-        <div class="e_requirements_content_right">
-            {{date('Y年m月d日', strtotime($event->start))}}~{{date('Y年m月d日', strtotime($event->end))}}に、このページのイベントに参加するから投稿した作品だけが対象になります。
-        </div>
-    </div>
-    <div class="e_requirements_content">
-        <div class="e_requirements_content_left">審査について</div>
-        <div class="e_requirements_content_right">
-            {{date('Y年m月d日', strtotime("$event->end + 1day"))}}~{{date('Y年m月d日', strtotime("$event->end + 3days"))}}の間を審査期間とします。
-        </div>
-    </div>
-    <div class="e_requirements_content">
-        <div class="e_requirements_content_left">発表について</div>
-        <div class="e_requirements_content_right">
-            {{date('Y年m月d日', strtotime("$event->end + 4days"))}}に結果を発表致します。
-        </div>
-    </div>
+    <ul>
+        <li class="e_requirements_content">
+            <div class="e_requirements_content_left">応募について</div>
+            <div class="e_requirements_content_right">
+                {{date('Y年m月d日', strtotime($event->start))}}~{{date('Y年m月d日', strtotime($event->end))}}に、このページのイベントに参加するから投稿した作品だけが対象になります。<br/>
+                本キャンペーンの趣旨に外れている場合や、利用規約を破っている場合、 RoomClip運営チームが不適切と判断した場合などに応募資格を失うことがあります。
+            </div>
+        </li>
+        <li class="e_requirements_content">
+            <div class="e_requirements_content_left">審査について</div>
+            <div class="e_requirements_content_right">
+                {{date('Y年m月d日', strtotime("$event->end + 1day"))}}~{{date('Y年m月d日', strtotime("$event->end + 3days"))}}の間を審査期間とします。
+            </div>
+        </li>
+        <li class="e_requirements_content">
+            <div class="e_requirements_content_left">発表について</div>
+            <div class="e_requirements_content_right">
+                {{date('Y年m月d日', strtotime("$event->end + 4days"))}}に結果を発表致します。
+            </div>
+        </li>
+    </ul>
 </div>
-<div class="other_event_field">
-    <div class="other_event_title">
-        開催中の他のイベント
-    </div>
-    @if (count($other_events) != 0)
+@if (count($other_events) != 0)
+    <div class="other_event_field">
+        <div class="other_event_title">
+            開催中の他のイベント
+        </div>
         <ul class="e_content">
             @foreach ($other_events as $event)
                 <li>
@@ -73,8 +76,6 @@
                 </li>
             @endforeach
         </ul>
-    @else
-        <p>ただいま開催中のイベントはありません</p>
-    @endif
-</div>
+    </div>
+@endif
 @stop
