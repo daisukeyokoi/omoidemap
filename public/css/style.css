@@ -1657,6 +1657,39 @@ header h1 {
     margin-bottom: 2px;
 }
 
+.e_requirements {
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+.e_requirements_title {
+    font-size: 32px;
+    margin: 30px 0;
+}
+.e_requirements_content_left {
+    float: left;
+    width: 30%;
+    font-size: 22px;
+    text-align: left;
+}
+.e_requirements_content_right {
+    float: right;
+    width: 70%;
+    text-align: left;
+}
+.e_requirements_content {
+    overflow: hidden;
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px 2%;
+    border-top: 1px solid black;
+}
+.e_requirements ul li:last-child {
+    border-bottom: 1px solid black;
+}
+
 
 /* ========================================
   フッター
