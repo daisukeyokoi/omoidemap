@@ -11,6 +11,9 @@ margin-bottom: 0;
 	<div class="status">
 		<div id="image">
 			<img src="{{url('/show/user', $user->id)}}">
+			<div id="setting-image">
+				<a href="#"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a>
+			</div>
 		</div>
 		<div id="name">
 			<p>{{$user->nickname}}</p>

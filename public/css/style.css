@@ -1176,12 +1176,30 @@ header h1 {
 }
 
 .mypage_list .status #image {
+    height: 100px;
     float: left;
 }
 
 .mypage_list .status #image img {
+    position: absolute;
     width: 100px;
     height: 100px;
+}
+
+.mypage_list .status #image #setting-image {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border-radius: 5px;
+    margin: 70px 0 0 70px;
+    display: none;
+}
+
+.mypage_list .status #image #setting-image a {
+    position: absolute;
+    margin-top: 2px;
+    margin-left: 4px;
 }
 
 .mypage_list .status #name {
@@ -1227,7 +1245,6 @@ header h1 {
 
 .mypage_list .timeline{
     width: 60%;
-    height: 1500px;
     float: left;
 }
 
@@ -1408,6 +1425,83 @@ header h1 {
 .mypage_list .tag-timeline p {
     text-align: center;
     font-size: 20px;
+}
+
+.mypage_list .profile-content {
+    width: 80%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.mypage_list .profile-content .side {
+    width: 25%;
+    float: left;
+    position: relative;
+    margin-top: 20px;
+    background-color: rgb(243,242,237);
+}
+
+.mypage_list .profile-content .side .setting li {
+    height: 30px;
+    width: 100%;
+    margin-bottom: 2px;
+    background-color: white;
+    padding: 5px 15px;
+}
+
+.mypage_list .profile-content .side .setting li i {
+    width: 20px;
+    height: 20px;
+}
+
+.mypage_list .profile-content .side .setting .selected {
+    background-color: #dbd8c8;
+}
+
+.mypage_list .profile-content .side .setting .mouseovered {
+    background-color: rgb(249,248,246);
+}
+
+.mypage_list .profile-content .profile {
+    width: 65%;
+    float: right;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.mypage_list .profile-content .profile .content {
+    width: 100%;
+}
+
+.mypage_list .profile-content .profile .content tr {
+    display: table-row;
+    background-color: white;
+    width: 100%;
+    border-bottom: 2px solid rgb(249,248,246);
+}
+
+.mypage_list .profile-content .profile .content th {
+    width: 25%;
+    text-align: left !important;
+    padding: 12px 20px;
+}
+
+.mypage_list .profile-content .profile .content td {
+    width: 75%;
+    text-align: left !important;
+    padding: 12px;
+}
+
+.mypage_list .profile-content .profile .content th img {
+    width: 70px;
+    height: 70px;
+}
+
+.mypage_list .profile-content .profile .button-box {
+    width: 100%;
+    padding: 15px 0;
+    background-color: white;
+    text-align: center;
 }
 
 /* ========================================
