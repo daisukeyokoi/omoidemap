@@ -92,9 +92,6 @@ class AdminController extends Controller
         if ($request->feeling != "") {
             $query = $query->where('feeling', $request->feeling);
         }
-        if ($request->title != "") {
-            $query = $query->where('title', 'like', '%'.$request->title.'%');
-        }
         if ($request->episode != "") {
             $query = $query->where('episode', 'like', '%'.$request->episode.'%');
         }
@@ -103,6 +100,11 @@ class AdminController extends Controller
         }
         $posts = $query->paginate(30);
         return view('admin.posts.index', compact('prefectures', 'posts'));
+    }
+
+    public function getPostsDetail($id) {
+        $post = Post::find($id);
+        if (count($post) )
     }
 
     // イベント関連

@@ -16,7 +16,7 @@
                                     Rank{{$rank}}
                                 </div>
                             </div>
-                            <div class="search_result_img" style="background-image: url({{url($post->oneImage->image)}})"></div>
+                            <div class="search_result_img" style="background-image: url({{url(AppUtil::showPostImage($post))}})"></div>
                             <div class="search_result_data_left">
                                 <div class="search_result_data">
                                     {{$post->title}}

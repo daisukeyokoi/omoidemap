@@ -9,8 +9,8 @@
 }
 
 .dropzone .dz-preview .dz-image {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: auto;
 }
 .dz-image img {
 }
@@ -24,9 +24,12 @@
   width: 32px;
   height: 32px;
 }
+.dropzone .dz-message {
+    margin-top: 50px;
+}
 
 .dropzone .dz-preview {
-  margin: 10px 25%;
+  margin: 10px 20%;
 }
 .map-embed
 {
@@ -40,6 +43,7 @@
 	position: relative ;
 	top: 0 ;
 	left: 0 ;
+    margin-bottom: 40px;
 }
 
 .map-embed > div
@@ -63,6 +67,7 @@ ul {
     list-style: none;
     padding: 0;
 }
+
 </style>
 @stop
 @section('body')
@@ -71,93 +76,100 @@ ul {
     <ul id="article_error_message">
         <li></li>
     </ul>
-    <div class="a_p_box_title">
-        記事を投稿しよう！
-    </div>
-    <p>(必須)</p>
-    <form class="dropzone" id="addImages" action="{{url('/mypage/a_post')}}" enctype="multipart/form-data">
-        {{ csrf_field() }}
-        <input type="hidden" name="img_flg" id="img_flg" value="">
-        <input type="hidden" name="lat" id="lat">
-        <input type="hidden" name="lng" id="lng">
-        @if (Input::get('e_id'))
-            <input type="hidden" name="event_id" value="{{Input::get('e_id')}}">
-        @endif
-        <input type="hidden" name="address" id="address_true">
-        <input type="hidden" id="jp_flg" value="{{AppUtil::FLG_ON}}">
-        <div class="dz-default dz-message">
-            <p class="photo_zone_text">思い出の場所の写真を追加してください(1枚まで)</p>
-            <span class="photo_zone_text">枠内に写真をドロップorクリックして選択！</span>
-        </div>
-    </form>
 
-    <p id="photo_error" class="none error_message">写真を選択してください</p>
-    <div class="photo_age">
-        <p>
-            この写真を撮ったときのあなたの年代を入力してください。
-        </p>
-        <select id="photo_age" class="form-control">
-            @foreach (AppUtil::photoAgeList() as $key => $value)
-                <option value="{{$value}}">{{$key}}</option>
+    <!-- ///////////左サイド///////////////////// -->
+    <div class="a_p_box_left">
+        <!-- map -->
+        <div class="a_p_description">
+            <span class="a_p_description_title">1.思い出の場所を選択してください。(地図をクリックして選択)</span>
+            <span class="need_mark btn btn-danger">必須</span>
+        </div>
+        <div class="a_p_map_input">
+            <form action="{{url('/')}}" onsubmit="keywordSubmit(); return false;">
+                <input type="text" id="address" placeholder="住所または地名・建物名を入力してください" class="form-control" value="東京スカイツリー">
+                <input type="button" value="検索" id="map_button" class="btn btn-primary">
+            </form>
+        </div>
+        <div class="map-embed">
+        	<div id="map-canvas">ここに地図が表示されます</div>
+        </div>
+        <!-- map end -->
+
+        <div class="a_p_description">
+            <span class="a_p_description_title">2.思い出の種類と当時の年齢を選んでください。</span>
+            <span class="need_mark btn btn-danger">必須</span>
+        </div>
+
+        <!-- photo feeling -->
+        <div class="photo_feeling">
+            @foreach(AppUtil::photoFeelingList() as $key => $value)
+                <input type="radio" name="photo_feeling" id="feeling_select_{{$value}}" value="{{$value}}" @if (old('photo_feeling', AppUtil::HAPPY) == $value) checked @endif>
+                <label for="feeling_select_{{$value}}">{{$key}}</label>
             @endforeach
-        </select>
-    </div>
-    <div class="photo_date">
-        <p>
-            この写真の撮影日を入力してください。
-        </p>
-        <select id="photo_year">
-            @for ($i = 0; $i < 70; $i ++)
-                <option value="{{$today->year - $i}}">{{$today->year - $i}}</option>
-            @endfor
-        </select>年
-        <select id="photo_month">
-            @for ($i = 1; $i < 13; $i ++)
-                <option value="{{str_pad($i, 2, 0, STR_PAD_LEFT)}}" @if ($today->month == str_pad($i, 2, 0, STR_PAD_LEFT)) selected @endif>{{$i}}</option>
-            @endfor
-        </select>月
-    </div>
-    <div class="photo_feeling" class="form-control">
-        <p>
-            この写真を撮ったときのあなたの気持ちを入力してください。
-        </p>
-        <select id="photo_feeling" class="form-control">
-            @foreach (AppUtil::photoFeelingList() as $key => $value)
-                <option value="{{$value}}">{{$key}}</option>
+        </div>
+        <!-- photo feeling end -->
+
+        <!-- photo age -->
+        <div class="photo_age">
+            @foreach(AppUtil::photoAgeList() as $key => $value)
+                <input type="radio" name="photo_age" id="age_select_{{$value}}" value="{{$value}}" @if (old('photo_age', AppUtil::CHILD_AGE) == $value) checked @endif>
+                <label for="age_select_{{$value}}">{{$key}}</label>
             @endforeach
-        </select>
+        </div>
+        <!-- photo age end -->
+
+        <!-- tag -->
+        <p>タグ</p>
+        <div class="a_post_tag_field">
+            <form action="{{url('/')}}" onsubmit="tagSubmit(); return false;">
+                <input type="text" class="form-control" id="tag_text" placeholder="タグ名を入力してください。" maxlength="20">
+                <input type="button" class="btn" id="add_tag" value="追加">
+            </form>
+            <div id="new_tag_field" class="">
+                <p id="new_tag_placeholder">選択されたタグはここに表示されます。</p>
+            </div>
+        </div>
+        <p>プロフィールタグ</p>
+        <div class="profile_tag_field">
+            @foreach($tags as $tag)
+                <div class="profile_tag">{{$tag->name}}&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></div>
+            @endforeach
+        </div>
+        <!-- tag end -->
     </div>
-    <p>(必須)</p>
-    <p>思い出のタイトルを入力してください</p>
-    <input type="text" id="photo_title" placeholder="思い出のタイトルを20文字以内で入力してください。" maxlength="20" class="form-control">
-    <p id="photo_title_error" class="none error_message">日本以外を選択しないでください。</p>
-    <p>
-        この写真にまつわるエピソードを入力してください。
-    </p>
-    <p>(必須)</p>
-    <textarea name="episode" rows="8" cols="40" id="episode" class="form-control" maxlength="200" placeholder="エピソードを入力してください。"></textarea>
-    <p>
-        タグを入力または選択してください。
-    </p>
-    <input type="text" class="form-control" id="tag_text" placeholder="タグ名を入力してください。" maxlength="20">
-    <input type="button" class="btn btn-primary" id="add_tag" value="追加">
-    <div id="new_tag_field" class=""></div>
-    <div>
-        人気のタグ
+    <!-- ///////////左サイド終わり///////////////////// -->
+
+    <!-- ///////////右サイド///////////////////// -->
+    <div class="a_p_box_right">
+        <div class="a_p_description">
+            <span class="a_p_description_title">3.思い出のエピソードを記入してください。(地図をクリックして選択)</span>
+            <span class="need_mark btn btn-danger">必須</span>
+        </div>
+        <textarea name="episode" rows="17" cols="40" id="episode" class="form-control a_post_episode" maxlength="2000" placeholder="エピソードを入力してください。"></textarea>
+        <div class="a_p_description">
+            <span class="a_p_description_title">4.思い出の写真を選んでください。</span>
+            <span class="need_mark btn btn-danger">必須</span>
+        </div>
+        <form class="dropzone" id="addImages" action="{{url('/mypage/a_post')}}" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            <input type="hidden" name="img_flg" id="img_flg" value="">
+            <input type="hidden" name="lat" id="lat">
+            <input type="hidden" name="lng" id="lng">
+            @if (Input::get('e_id'))
+                <input type="hidden" name="event_id" value="{{Input::get('e_id')}}">
+            @endif
+            <input type="hidden" name="address" id="address_true">
+            <input type="hidden" id="jp_flg" value="{{AppUtil::FLG_ON}}">
+            <div class="dz-default dz-message">
+                <p class="photo_zone_text"><i class="fa fa-camera fa-5x" aria-hidden="true"></i></p>
+                <span class="photo_zone_text">枠内に写真をドロップorクリックして選択！</span>
+            </div>
+        </form>
     </div>
-    @foreach($tags as $tag)
-        <label>
-            <input type="checkbox" name="tags[]" value="{{$tag->name}}">{{$tag->name}}
-        </label>
-    @endforeach
-    <input type="text" id="address" placeholder="住所または地名・建物名を入力してください" class="form-control" value="東京スカイツリー">
-    <input type="button" value="検索" id="map_button" class="btn btn-primary">
-    <div class="map-embed">
-    	<div id="map-canvas">ここに地図が表示されます</div>
-    </div>
-    <p id="map_error" class="none error_message">日本以外を選択しないでください。</p>
-    <input type="button" class="btn btn-success" id="upload_btn" value="投稿する" >
+    <!-- ///////////右サイド終わり///////////////////// -->
 </div>
+<input type="button" class="btn btn-success" id="upload_btn" value="投稿する" >
+
 <!-- ロードのモーダル -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -172,6 +184,7 @@ ul {
     </div>
 </div>
 <!-- ロードのモーダル終わり -->
+
 <!-- アラートモーダル -->
 <div class="modal fade" id="myAlertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -205,8 +218,8 @@ ul {
     }
     // dropzoneの設定
     var dropzone = new Dropzone ("#addImages", {
-        thumbnailHeight: thumbnailHeight,
-        thumbnailWidth: thumbnailWidth,
+        thumbnailHeight: null,
+        thumbnailWidth: null,
         uploadMultiple: true,
         parallelUploads:100,
         addRemoveLinks: true,
@@ -218,6 +231,11 @@ ul {
         dictMaxFilesExceeded: "一度にアップロード出来るのは1ファイルまでです。",
         dictRemoveFile: "",
         autoProcessQueue: false,
+        init: function() {
+            this.on("thumbnail", function(file, dataUrl) {
+                $('.dz-image').last().find('img').attr({width: '100%', height: '100%'});
+            })
+        },
         success: function(file, response) {
             if (response.message == 'success') {
                 window.location.href = "{{url('/mypage/a_post')}}";
@@ -240,12 +258,9 @@ ul {
         $(".ds_input").remove();
         $(".error_message").remove();
         var flg = articleValidation();
-        createInput('photo_age', $("#photo_age").val());
-        createInput('photo_feeling', $("#photo_feeling").val());
+        createInput('photo_age', $("input[name=photo_age]:checked").val());
+        createInput('photo_feeling', $("input[name=photo_feeling]:checked").val());
         createInput('episode', $("#episode").val());
-        createInput('photo_year', $("#photo_year").val());
-        createInput('photo_month', $("#photo_month").val());
-        createInput('photo_title', $("#photo_title").val());
         $(":checkbox[name='tags[]']:checked").each(function (index, checkbox) {
             createInput('tags[]', $(checkbox).val());
         });
@@ -292,9 +307,6 @@ ul {
         if ($("#img_flg").val() != {{AppUtil::FLG_ON}}) {
             success_flg = validationMessageScroll('img_flg', error_list);
         }
-        if ($("#photo_title").val() == "") {
-            success_flg = validationMessageScroll('photo_title', error_list);
-        }
         if ($("#episode").val() == "") {
             success_flg = validationMessageScroll('episode', error_list);
         }else {
@@ -316,9 +328,6 @@ ul {
             case 'img_flg':
                 error_list.append("<li class='error_message'>写真を選択してください。</p>");
                 break;
-            case 'photo_title':
-                error_list.append("<li class='error_message'>思い出のタイトルを入力してください。</p>");
-                break;
             case 'episode':
                 error_list.append("<li class='error_message'>エピソードを入力してください。</p>");
                 break;
@@ -334,13 +343,32 @@ ul {
 
     // タグの追加
     $("#add_tag").on('click', function() {
-        var tag = $("#tag_text");
-        if (tag.val() != "") {
-            $("#new_tag_field").after("<label><input type='checkbox' name='tags[]' value='" + tag.val() + "' checked>" + tag.val() + "</label>");
-            tag.val("");
-            tag.focus();
-        }
+        $("#new_tag_placeholder").hide();
+        var tag = $("#tag_text").val().replace(/^[\s　]+|[　\s]+$/g, '');
+        addTag('text', tag);
     });
+
+    // プロフィールタグをクリックした時
+    $(".profile_tag").on('click', function(){
+        $("#new_tag_placeholder").hide();
+        var tag = $(this).text().replace(/^[\s　]+|[　\s]+$/g, '');
+        addTag('profile', tag);
+    });
+
+    // タグの作成
+    function addTag(type, tag) {
+        if (type == "profile") {
+            if (tag != "") {
+                $("#new_tag_field").append("<div class='selected_tag'><input type='checkbox' class='selected_tag' name='tags[]' value='" + tag + "' id='" + tag + "' checked><label>" + tag + "&nbsp;&nbsp;</label><span class='tag_delete'><i class='fa fa-times' aria-hidden='true'></i></span></div>");
+            }
+        }else {
+            if (tag != "") {
+                $("#new_tag_field").append("<div class='selected_tag'><input type='checkbox' class='selected_tag' name='tags[]' value='" + tag + "' id='" + tag + "' checked><label>" + tag + "&nbsp;&nbsp;</label><span class='tag_delete'><i class='fa fa-times' aria-hidden='true'></i></span></div>");
+                $("#tag_text").val("");
+                $("#tag_text").focus();
+            }
+        }
+    }
 
     // inputタグの生成
     function createInput(name, value) {
@@ -348,6 +376,10 @@ ul {
         $("#addImages").append($input);
     }
 
+    // タグの消去
+    $(document).on('click', '.tag_delete', function() {
+        $(this).closest('div').remove();
+    });
     // エピソードのエラーメッセージ
     function episodeErrorMessage (success_flg) {
         var episode = $("#episode");
@@ -371,6 +403,15 @@ ul {
         codeAddress($("#address").val());
     });
 
+    function keywordSubmit() {
+        codeAddress($("#address").val());
+    }
+
+    function tagSubmit() {
+        $("#new_tag_placeholder").hide();
+        var tag = $("#tag_text").val().replace(/^[\s　]+|[　\s]+$/g, '');
+        addTag('text', tag);
+    }
 
 ////////////////////////////////////  googlemap api
 

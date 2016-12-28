@@ -129,32 +129,34 @@ a:hover {
 			</div>
 		</ul>
 	</article>
-	<div class="event_field">
-		<div class="event_title">
-			<div class="event_title_left">
-				イベント
+	@if (count($events) != 0)
+		<div class="event_field">
+			<div class="event_title">
+				<div class="event_title_left">
+					イベント
+				</div>
+				<div class="event_title_right"></div>
 			</div>
-			<div class="event_title_right"></div>
-		</div>
-		<ul class="event_content">
-			@foreach ($events as $event)
-				<li>
-					<a href="{{url('/event', $event->id)}}">
-						<div class="event_content_list_top">
-							<div class="event_content_list_top_title">
-								{{$event->title}}
+			<ul class="event_content">
+				@foreach ($events as $event)
+					<li>
+						<a href="{{url('/event', $event->id)}}">
+							<div class="event_content_list_top">
+								<div class="event_content_list_top_title">
+									{{$event->title}}
+								</div>
+								<div class="event_content_list_top_img" style="background-image: url({{url($event->image)}})"></div>
 							</div>
-							<div class="event_content_list_top_img" style="background-image: url({{url($event->image)}})"></div>
-						</div>
-						<div class="event_content_list_bottom">
-							<p>{{$event->title}}</p>
-							<p>{{str_replace('-', '/', $event->start)}}~{{str_replace('-', '/', $event->end)}}</p>
-						</div>
-					</a>
-				</li>
-			@endforeach
-		</ul>
-	</div>
+							<div class="event_content_list_bottom">
+								<p>{{$event->title}}</p>
+								<p>{{str_replace('-', '/', $event->start)}}~{{str_replace('-', '/', $event->end)}}</p>
+							</div>
+						</a>
+					</li>
+				@endforeach
+			</ul>
+		</div>
+	@endif
 	</div>
 	@include('parts.sidebar')
 </div>
@@ -167,6 +169,7 @@ $.ajaxSetup({headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('conte
 // マーカーのデータ
 var markerData = [
 	@foreach ($posts as $post)
+		@if (isset($post->oneImage->image))
 		{
 			lat: {{$post->lat}},
 			lng: {{$post->lng}},
@@ -176,6 +179,7 @@ var markerData = [
 			comment: "{{$post->comments->count()}}",
 			url: "{{url('/article/detail', $post->id)}}",
 		},
+		@endif
 	@endforeach
 ];
 

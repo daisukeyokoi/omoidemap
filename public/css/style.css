@@ -1414,9 +1414,10 @@ header h1 {
   記事投稿
 ======================================== */
 .a_p_box {
-  width: 70%;
+  width: 90%;
   height: auto;
-  margin: 100px auto;
+  margin: 100px auto 30px auto;
+  overflow: hidden;
 }
 
 .photo_zone_text {
@@ -1429,9 +1430,116 @@ header h1 {
   padding: 10px 5%;
   background-color: #EDEFED;
 }
-
+.a_p_box_left {
+    width: 47%;
+    overflow: hidden;
+    float: left;
+}
+.a_p_box_right {
+    width: 47%;
+    overflow: hidden;
+    float: right;
+}
+.a_post_episode {
+    margin-bottom: 50px;
+}
+.a_p_description {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.a_p_description_title {
+    margin-right: 1%;
+}
+.need_mark {
+    padding: 2px 15px;
+    font-size: 12px;
+}
+.photo_feeling {
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+.photo_feeling input{
+    display: none;
+}
+.photo_feeling label{
+    display: block;
+    float: left;
+    cursor: pointer;
+    width: 30%;
+    margin: 0;
+    padding: 12px 5px;
+    border-right: 1px solid #abb2b7;
+    background: #bdc3c7;
+    color: #555e64;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1;
+    transition: .2s;
+}
+.photo_feeling label:first-of-type{
+    border-radius: 3px 0 0 3px;
+}
+.photo_feeling label:last-of-type{
+    border-right: 0px;
+    border-radius: 0 3px 3px 0;
+}
+.photo_feeling input[type="radio"]:checked + label {
+    background-color: #FA4000;
+    color: #fff;
+}
+.photo_age {
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+.photo_age input{
+    display: none;
+}
+.photo_age label{
+    display: block;
+    float: left;
+    cursor: pointer;
+    width: 30%;
+    margin: 0;
+    padding: 12px 5px;
+    border-right: 1px solid #abb2b7;
+    background: #bdc3c7;
+    color: #555e64;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1;
+    transition: .2s;
+}
+.photo_age label:first-of-type{
+    border-radius: 3px 0 0 3px;
+}
+.photo_age label:last-of-type{
+    border-right: 0px;
+    border-radius: 0 3px 3px 0;
+}
+.photo_age input[type="radio"]:checked + label {
+    background-color: #0063BA;
+    color: #fff;
+}
+.a_post_tag_field {
+    overflow: hidden;
+}
+.a_p_map_input {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+#address {
+    float: left;
+    width: 83%;
+    border-radius: 4px 0 0 4px;
+}
+#map_button {
+    width: 17%;
+    float: left;
+    border-radius: 0 4px 4px 0;
+}
 #addImages {
-  margin-top: 30px;
+  min-height: 300px;
 }
 
 #upload_btn {
@@ -1439,7 +1547,73 @@ header h1 {
   display: block;
   margin: 20px auto;
 }
-
+#tag_text {
+    float: left;
+    width: 83%;
+    border-radius: 4px 0 0 4px;
+}
+#add_tag {
+    width: 17%;
+    float: left;
+    background-color: gray;
+    color: white;
+    border-radius: 0 4px 4px 0;
+}
+#new_tag_field {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid black;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+#new_tag_placeholder {
+    color: #999999;
+    padding-left: 1%;
+}
+#upload_btn {
+    background-color: #FA4000;
+    border: 0;
+    font-size: 18px;
+    margin-bottom: 50px;
+}
+.selected_tag input {
+    display: none;
+}
+.selected_tag {
+    border-radius: 2px;
+    background-color: gray;
+    display: inline-block;
+    padding: 2px 10px;
+    margin-left: 1%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: white;
+}
+.selected_tag label {
+    margin-bottom: 0;
+}
+.tag_delete {
+    cursor: pointer;
+}
+.profile_tag_field {
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+.profile_tag {
+    border-radius: 2px;
+    background-color: gray;
+    padding: 4px 10px;
+    margin-left: 1%;
+    margin-top: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    float: left;
+}
+.profile_tag i {
+    font-size: 18px;
+    font-weight: bold;
+}
 /* ========================================
   イベントページ
 ======================================== */
@@ -1910,6 +2084,16 @@ footer a:hover {
     .search_result_list li:nth-child(2n) {
         margin-right: 0;
     }
+
+    /*記事投稿ページ*/
+    .a_p_box_left {
+        width: 100%;
+        float: none;
+    }
+    .a_p_box_right {
+        width: 100%;
+        float: none;
+    }
 }
 
 
@@ -2060,5 +2244,12 @@ footer a:hover {
     }
     .footer_data_list {
         margin-bottom: 40px;
+    }
+
+    /*記事投稿ページ*/
+    #upload_btn {
+        font-size: 16px;
+        font-weight: bold;
+        width: 30%;
     }
 }

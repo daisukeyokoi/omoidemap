@@ -42,7 +42,7 @@ class AppUtil {
     public static function saveImage($file, $type) {
         $img = Image::make($file);
         $img = self::rotateImage($img);
-        $img = self::resizeImage($img, $size);
+        $img = self::resizeImage($img, 700);
         $path = str_random(10). '.jpg';
         if (!Storage::exists($type)) {
 			Storage::makeDirectory($type);
@@ -93,7 +93,7 @@ class AppUtil {
     //////////////////////////////////////////////////////////////
 	// 画像リサイズ
 	//////////////////////////////////////////////////////////////
-    public static function resizeImage($img , $size = 700) {
+    public static function resizeImage($img, $size = 700) {
 		$width 	= $img->width();
 		$height = $img->height();
 		if ($width > $size && $height > $size) {
@@ -128,31 +128,28 @@ class AppUtil {
     const THIRTIES     = 4;
     const FORTIES      = 5;
     const FIFTIES      = 6;
-    const SIXTIES      = 7;
-    const OVER_SIXTIES = 8;
+    const OVER_SIXTIES = 7;
 
     public static function photoAgeList() {
         $list = [];
-        $list['子供時代']  = self::CHILD_AGE;
-        $list['10代']     = self::TEEN_AGE;
-        $list['20代']     = self::TWENTIES;
-        $list['30代']     = self::THIRTIES;
-        $list['40代']     = self::FORTIES;
-        $list['50代']     = self::FIFTIES;
-        $list['60代']     = self::SIXTIES;
-        $list['60代以上']  = self::OVER_SIXTIES;
+        $list['0~10歳']      = self::CHILD_AGE;
+        $list['10~20歳']     = self::TEEN_AGE;
+        $list['20~30歳']     = self::TWENTIES;
+        $list['30~40歳']     = self::THIRTIES;
+        $list['40~50歳']     = self::FORTIES;
+        $list['50~60歳']     = self::FIFTIES;
+        $list['60代以上']     = self::OVER_SIXTIES;
         return $list;
     }
 
     public static function photoAgeLabel() {
         $label = [];
-        $label[self::CHILD_AGE]    = '子供時代';
-        $label[self::TEEN_AGE]     = '10代';
-        $label[self::TWENTIES]     = '20代';
-        $label[self::THIRTIES]     = '30代';
-        $label[self::FORTIES]      = '40代';
-        $label[self::FIFTIES]      = '50代';
-        $label[self::SIXTIES]      = '60代';
+        $label[self::CHILD_AGE]    = '0~10歳';
+        $label[self::TEEN_AGE]     = '10~20歳';
+        $label[self::TWENTIES]     = '20~30歳';
+        $label[self::THIRTIES]     = '30~40歳';
+        $label[self::FORTIES]      = '40~50歳';
+        $label[self::FIFTIES]      = '50~60歳';
         $label[self::OVER_SIXTIES] = '60代以上';
         return $label;
     }
@@ -160,26 +157,32 @@ class AppUtil {
     //////////////////////////////////////////////////////////////
 	// 投稿の感情のリスト
 	//////////////////////////////////////////////////////////////
-    const HAPPY     = 1;
-    const SAD       = 2;
-    const FUN       = 3;
-    const NOSTALGIC = 4;
+    const HAPPY      = 1;
+    const SAD        = 2;
+    const FUN        = 3;
+    const NOSTALGIC  = 4;
+    const EXCITEMENT = 5;
+    const LOVE       = 6;
 
     public static function photoFeelingList() {
         $list = [];
-        $list['嬉しい'] = self::HAPPY;
-        $list['悲しい'] = self::SAD;
-        $list['楽しい'] = self::FUN;
+        $list['嬉しい']   = self::HAPPY;
+        $list['切ない']   = self::SAD;
+        $list['楽しい']   = self::FUN;
         $list['懐かしい'] = self::NOSTALGIC;
+        $list['感動']    = self::EXCITEMENT;
+        $list['恋愛']    = self::LOVE;
         return $list;
     }
 
     public static function photoFeelingLabel() {
         $label = [];
-        $label[self::HAPPY]     = '嬉しい';
-        $label[self::SAD]       = '悲しい';
-        $label[self::FUN]       = '楽しい';
-        $label[self::NOSTALGIC] = '懐かしい';
+        $label[self::HAPPY]      = '嬉しい';
+        $label[self::SAD]        = '悲しい';
+        $label[self::FUN]        = '楽しい';
+        $label[self::NOSTALGIC]  = '懐かしい';
+        $label[self::EXCITEMENT] = '感動';
+        $label[self::LOVE]       = '恋愛';
         return $label;
     }
 
@@ -254,4 +257,16 @@ class AppUtil {
         $type  = end($array);
         return $type;
     }
+
+    //////////////////////////////////////////////////////////////
+    // 画像表示
+    //////////////////////////////////////////////////////////////
+    public static function showPostImage($post) {
+        if (isset($post->oneImage->image)) {
+            return $post->oneImage->image;
+        }else {
+            return '/background_4.jpg';
+        }
+    }
+
 }

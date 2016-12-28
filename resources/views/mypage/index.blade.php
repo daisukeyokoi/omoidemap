@@ -31,7 +31,7 @@
 								@endforeach
 							</ul>
 						</div>
-						<div class="tweet-image" style="background-image: url({{url($post->oneImage->image)}});">
+						<div class="tweet-image" style="background-image: url({{url(AppUtil::showPostImage($post))}});">
 						</div>
 						<div class="tweet-footer">
 							@if (Auth::check())

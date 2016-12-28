@@ -108,30 +108,33 @@ Route::group(['prefix' => 'ajax/ranking'], function() {
 // 会員ページ
 /////////////////////////////////////////////////////////////////////////////
 
+
+
 // マイページ
-Route::group(['middleware' => 'auth_general'], function (){
-    Route::group(['prefix' => 'mypage'], function() {
-        // top
-        Route::get('/', 'MypageController@getIndex');
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => 'auth_general'], function (){
+        Route::group(['prefix' => 'mypage'], function() {
+            // top
+            Route::get('/', 'MypageController@getIndex');
 
-        // 記事投稿ページ
-        Route::group(['prefix' => 'a_post'], function() {
-          Route::get('/', 'MypageController@getArticlePost');
-          Route::post('/', 'MypageController@postArticlePost');
+            // 記事投稿ページ
+            Route::group(['prefix' => 'a_post'], function() {
+              Route::get('/', 'MypageController@getArticlePost');
+              Route::post('/', 'MypageController@postArticlePost');
+            });
+
+            // いいねページ
+            Route::get('/good', 'MypageController@getGood');
+
+            // フォロー中のタグページ
+            Route::get('/followtag', 'MypageController@getFollowtag');
+
+            // プロフィールページ
+            Route::get('/updateprofile', 'MypageController@getUpdateProfile');
+
         });
-
-        // いいねページ
-        Route::get('/good', 'MypageController@getGood');
-
-        // フォロー中のタグページ
-        Route::get('/followtag', 'MypageController@getFollowtag');
-
-        // プロフィールページ
-        Route::get('/updateprofile', 'MypageController@getUpdateProfile');
-
     });
 });
-
 // コメント投稿
 Route::post('/post/comment', 'TopController@postComment');
 
@@ -157,6 +160,7 @@ Route::group(['middleware' => 'auth'], function() {
             // 記事関連
             Route::group(['prefix' => 'posts'], function() {
                 Route::get('/', 'AdminController@getPosts');
+                Route::get('/{id}', 'AdminController@getPostsDetail');
             });
 
             // イベント関連

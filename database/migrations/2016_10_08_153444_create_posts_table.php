@@ -22,9 +22,6 @@ class CreatePostsTable extends Migration
             // 写真をとった時の感情
             $table->integer('feeling');
 
-            // 思い出のタイトル
-            $table->text('title');
-
             // 写真を撮った時のエピソード
             $table->text('episode');
 
@@ -36,9 +33,6 @@ class CreatePostsTable extends Migration
 
             // 経度
             $table->float('lng');
-
-            // 撮影日
-            $table->date('photo_date');
 
             // イベントID
             $table->integer('event_id');

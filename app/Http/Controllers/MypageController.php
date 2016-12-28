@@ -65,12 +65,10 @@ class MypageController extends Controller
             $post->user_id = Auth::user()->id;
             $post->age     = $request->photo_age;
             $post->feeling = $request->photo_feeling;
-            $post->title   = $request->photo_title;
             $post->episode = $request->episode;
             $post->address = $request->address;
             $post->lat     = $request->lat;
             $post->lng     = $request->lng;
-            $post->photo_date    = $request->photo_year. '-'. $request->photo_month. '-01';
             // イベントID
             if (isset($request->event_id)) {
                 if (count(Event::find($request->event_id)) != 0) {
@@ -81,7 +79,8 @@ class MypageController extends Controller
 
             // タグの生成
             if (!empty($request->tags)) {
-                $tags = $request->tags;
+                $tags = array_unique($request->tags);
+                Log::info($tags);
                 for ($i = 0; $i < count($tags); $i ++) {
                     if (!Tag::where('name', $tags[$i])->exists()) {
                         $tag = new Tag();

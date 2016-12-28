@@ -51,7 +51,7 @@ class TopController extends Controller
             $articles[] = [
                 [
                     'url'      => url('/article/detail', $post->id),
-                    'image'    => "'" .url($post->oneImage->image)."'",
+                    'image'    => "'" .url(AppUtil::showPostImage($post))."'",
                     'episode'  => $post->episode,
                     'feeling'  => AppUtil::photoFeelingLabel()[$post->feeling],
                     'age'      => AppUtil::photoAgeLabel()[$post->age],
@@ -313,7 +313,7 @@ class TopController extends Controller
             $articles[] = [
                 [
                     'url'      => url('/article/detail', $post->id),
-                    'image'    => "'" .url($post->oneImage->image)."'",
+                    'image'    => "'" .url(AppUtil::showPostImage($post))."'",
                     'title'    => $post->title,
                     'address'  => AppUtil::postNumberRemove($post->address),
                     'user_image' => url('/show/user', $post->user_id),

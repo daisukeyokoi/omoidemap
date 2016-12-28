@@ -35,12 +35,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>タイトル</td>
-                        <td>
-                            <input type="text" class="form-control" name="title" placeholder="タイトルを入力してください">
-                        </td>
-                    </tr>
-                    <tr>
                         <td>キーワード(エピソード中)</td>
                         <td>
                             <input type="text" class="form-control" name="episode" placeholder="キーワードを入力してください">
@@ -68,7 +62,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>タイトル</th>
+                <th>エピソード</th>
                 <th>撮影地</th>
             </tr>
         </thead>
@@ -80,7 +74,7 @@
                             <a href="{{url('/admin/posts/detail', $post->id)}}">{{$post->id}}</a>
                         </td>
                         <td>
-                            {{$post->title}}
+                            {{AppUtil::wordRound($post->episode, 20)}}
                         </td>
                         <td>
                             {{AppUtil::postNumberRemove($post->address)}}

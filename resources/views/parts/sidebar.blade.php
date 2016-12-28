@@ -37,29 +37,31 @@
         <a href="#"><p>人気おすすめタグの一覧&nbsp;&nbsp;></p></a>
     </div>
     <div class="sidebar_advertising">広告</div>
-    <div class="sidebar_article">
-        <div class="sidebar_ranking_title">
-            共感されたエピソード
-        </div>
-        <ul>
-            @for($i = 0; $i < count(AppUtil::popularPosts()); $i++)
-                <a href="#">
-                    <li>
-                        <div class="sidebar_article_img" style="background-image: url({{url(AppUtil::popularPosts()[$i]->oneImage->image)}})">
-                            <div class="sidebar_rankmark_{{$i + 1}}">
-                                <div class="sidebar_rankmark_string">
-                                    {{$i + 1}}
+    @if (count(AppUtil::popularPosts()) != 0)
+        <div class="sidebar_article">
+            <div class="sidebar_ranking_title">
+                共感されたエピソード
+            </div>
+            <ul>
+                @for($i = 0; $i < count(AppUtil::popularPosts()); $i++)
+                    <a href="#">
+                        <li>
+                            <div class="sidebar_article_img" style="background-image: url({{url(AppUtil::showPostImage(AppUtil::popularPosts()[$i]))}})">
+                                <div class="sidebar_rankmark_{{$i + 1}}">
+                                    <div class="sidebar_rankmark_string">
+                                        {{$i + 1}}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="sidebar_article_content">
-                            <div class="sidebar_article_content_string">
-                                {{AppUtil::popularPosts()[$i]->episode}}
+                            <div class="sidebar_article_content">
+                                <div class="sidebar_article_content_string">
+                                    {{AppUtil::popularPosts()[$i]->episode}}
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </a>
-            @endfor
-        </ul>
-    </div>
+                        </li>
+                    </a>
+                @endfor
+            </ul>
+        </div>
+    @endif
 </div>

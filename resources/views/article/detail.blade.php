@@ -31,9 +31,15 @@ a:hover {
                 </div>
             </div>
         </div>
-        <div class="article_img_content">
-            <img src="{{url($article->oneImage->image)}}" alt="" />
-        </div>
+        @if (isset($article->oneImage->image))
+            <div class="article_img_content">
+                <img src="{{url($article->oneImage->image)}}" alt="" />
+            </div>
+        @else
+            <div class="article_img_content" style="color: white;">
+                画像はありません
+            </div>
+        @endif
         <div class="article_img_footer">
             @if (Auth::check())
                 <div class="article_img_footer_good_field" id="good">
