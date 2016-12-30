@@ -110,6 +110,7 @@ return [
 		'description' => '説明',
         'start'       => '開催期間',
         'end'         => '開催期間',
+        'state'       => '状態',
 	],
 
 ];

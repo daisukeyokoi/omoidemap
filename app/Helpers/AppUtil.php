@@ -268,5 +268,4 @@ class AppUtil {
             return '/background_4.jpg';
         }
     }
-
 }

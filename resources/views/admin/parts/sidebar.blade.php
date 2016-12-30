@@ -13,6 +13,7 @@
         <ul class="card-block">
             <a href="{{url('/admin/user')}}"><li><i class="fa fa-circle-o" aria-hidden="true"></i>ユーザー</li></a>
             <a href="{{url('/admin/posts')}}"><li><i class="fa fa-circle-o" aria-hidden="true"></i>記事</li></a>
+            <a href="{{url('/admin/tags')}}"><li><i class="fa fa-circle-o" aria-hidden="true"></i>タグ</li></a>
         </ul>
     </div>
     <div class="admin_sidebar_title" data-target="#collapseEvent" data-toggle="collapse">

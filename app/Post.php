@@ -35,6 +35,23 @@ class Post extends Model
         return $this->hasMany('App\Good');
     }
 
+    public function delete() {
+        if (count($this->comments()->get()) != 0){
+			$this->comments()->delete();
+		}
+        if (count($this->goods()->get()) != 0) {
+            $this->goods()->delete();
+        }
+        if (count($this->postsTags()->get()) != 0) {
+            $this->postsTags()->delete();
+        }
+        if (count($this->oneImage()->first()) != 0) {
+            $this->oneImage()->delete();
+        }
+		return parent::delete();
+    }
+
+
     ////////////////////////////////////////////////////////////////////////////
 	// scope
 	////////////////////////////////////////////////////////////////////////////

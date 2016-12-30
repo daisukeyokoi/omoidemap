@@ -29,7 +29,7 @@ class TopController extends Controller
     public function index(Request $request) {
         $regions = Region::all();
         $posts = Post::all();
-        $events = Event::take(7)->get();
+        $events = Event::where('state', Event::OPEN)->take(6)->get();
         return view('top', compact('regions', 'posts', 'tags', 'events'));
     }
 
