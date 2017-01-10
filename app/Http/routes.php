@@ -173,14 +173,31 @@ Route::group(['middleware' => 'auth'], function() {
             // 記事関連
             Route::group(['prefix' => 'posts'], function() {
                 Route::get('/', 'AdminController@getPosts');
-                Route::get('/{id}', 'AdminController@getPostsDetail');
+                Route::get('/detail/{id}', 'AdminController@getPostsDetail');
+                Route::post('/delete', 'AdminController@deletePosts');
+            });
+
+            //　タグ関連
+            Route::group(['prefix' => 'tags'], function() {
+                Route::get('/', 'AdminController@getTags');
+                Route::get('/detail/{id}', 'AdminController@getTagsDetail');
+                Route::post('/delete', 'AdminController@deleteTags');
+                Route::post('/ajax/create_tag', 'AdminController@ajaxCreateTag');
+                Route::post('/ajax/delete_tag', 'AdminController@ajaxDeleteTag');
             });
 
             // イベント関連
             Route::group(['prefix' => 'event'], function() {
                 Route::get('/', 'AdminController@getEvents');
+                Route::get('/detail/{id}', 'AdminController@getEventDetail');
                 Route::get('/create', 'AdminController@getEventCreate');
+                Route::get('/create/ranking/{id}', 'AdminController@getEventCreateRanking');
                 Route::post('/create', 'AdminController@postEventCreate');
+                Route::get('/edit/{id}', 'AdminController@getEventEdit');
+                Route::post('/edit', 'AdminController@postEventEdit');
+                Route::post('/delete', 'AdminController@deleteEvent');
+                Route::post('/ajax/create/ranking', 'AdminController@ajaxEventCreateRanking');
+                Route::post('/ajax/delete/ranking', 'AdminController@ajaxEventDeleteRanking');
             });
         });
     });

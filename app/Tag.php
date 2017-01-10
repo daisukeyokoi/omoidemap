@@ -15,6 +15,13 @@ class Tag extends Model
         return $this->hasMany('App\PostsTag');
     }
 
+    public function delete() {
+        if (count($this->postsTags()->get()) != 0){
+			$this->postsTags()->delete();
+		}
+		return parent::delete();
+    }
+
     ////////////////////////////////////////////////////////////////////////////
 	// scope
 	////////////////////////////////////////////////////////////////////////////

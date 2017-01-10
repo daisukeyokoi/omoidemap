@@ -28,6 +28,7 @@ ul {
     text-align: center;
     margin-bottom: 50px;
 }
+
 /* ========================================
   ヘッダー
 ======================================== */
@@ -176,4 +177,203 @@ ul {
 .event_day_form {
     width: 60px;
     display: inline;
+}
+.event_detail_post_title {
+    margin-top: 40px;
+}
+.event_detail_post {
+    margin-bottom: 60px;
+}
+.event_detail_post li {
+    border-top: 1px solid gray;
+    overflow: hidden;
+}
+.event_detail_post_image {
+    width: 17%;
+    height: 150px;
+    margin: 10px 1%;
+    float: left;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.event_detail_post_description {
+    width: 79%;
+    float: left;
+    margin: 10px 1%;
+    color: black;
+    word-break: break-all;
+}
+
+/*ランキング*/
+.event_create_ranking_main {
+    width: 70%;
+    float: left;
+    overflow: hidden;
+}
+.event_create_ranking_post_image {
+    width: 20%;
+    height: 100px;
+    margin: 10px 1%;
+    float: left;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.event_create_ranking_post_description {
+    width: 65%;
+    float: left;
+    margin: 10px 1%;
+    color: black;
+    word-break: break-all;
+}
+.event_create_ranking_side {
+    width: 14%;
+    float: right;
+    margin-right: 5%;
+    height: 1200px;
+}
+.event_create_ranking_side h3 {
+    border-bottom: 1px solid gray;
+}
+#event_ranking_side li img{
+    width: 100px;
+    height: 100px;
+}
+
+.event_create_ranking_post_image_side {
+    width: 100%;
+    height: 100px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 10px;
+    position: relative;
+}
+.detail_btn {
+    width: 9%;
+    float: left;
+    margin: 10px 1%;
+}
+.sidebar_rankmark_1 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid gold;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid gold;
+}
+.sidebar_rankmark_2 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid #F64F47;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid #F64F47;
+}
+.sidebar_rankmark_3 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid #1788B7;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid #1788B7;
+}
+.sidebar_rankmark_4 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid #5A4080;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid #5A4080;
+}
+.sidebar_rankmark_5 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid #5A4080;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid #5A4080;
+}
+.sidebar_rankmark_6 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid #5A4080;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid #5A4080;
+}
+.sidebar_rankmark_7 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid #5A4080;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid #5A4080;
+}
+.sidebar_rankmark_8 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid #5A4080;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid #5A4080;
+}
+.sidebar_rankmark_9 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid #5A4080;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid #5A4080;
+}
+.sidebar_rankmark_10 {
+	color: black;
+	position: absolute;
+    left: 0px;
+	width: 0;
+	height: 0;
+	border-top: 20px solid #5A4080;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid #5A4080;
+}
+.sidebar_rankmark_string {
+	color: white;
+    position: absolute;
+    left: -13px;
+    top: -20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.event_detail_post li {
+    cursor: pointer;
+    z-index: 9999;
 }
