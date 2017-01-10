@@ -3,7 +3,7 @@
 @section('mypage_content')
 <div class="main-content">
 	<div class="timeline">
-		@if (count($posts) > 1)
+		@if (count($posts) > 0)
 			@foreach ($posts as $post)
 				<div class="tweet">
 					<div class="tweet-header">
@@ -19,8 +19,12 @@
 							</div>
 						</div>
 						<div id="tweet-header-icon">
-							<a href="#"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
-							<a href="#"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a>
+							<form method="POST" class="delete_post" id="delete_post_{{$post->id}}" action="/mypage/deletePost/{{$post->id}}">
+								<input type="hidden" name="_token" value="{{csrf_token()}}">
+								<input type="hidden" name="post_id" value="{{$post->id}}">
+								<i class="fa fa-trash fa-lg post_delete_btn" aria-hidden="true"></i>
+							</form>
+							<a href="{{url('/mypage/post', $post->id)}}"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a>
 						</div>
 					</div>
 					<div class="tweet-main">

@@ -39,17 +39,17 @@ class AppUtil {
     //////////////////////////////////////////////////////////////
 	// 画像保存
 	//////////////////////////////////////////////////////////////
-    public static function saveImage($file, $type) {
+    public static function saveImage($file, $type, $size=700) {
         $img = Image::make($file);
         $img = self::rotateImage($img);
-        $img = self::resizeImage($img, 700);
-        $path = str_random(10). '.jpg';
+        $img = self::resizeImage($img, $size);
+        $img_name = str_random(10). '.jpg';
         if (!Storage::exists($type)) {
 			Storage::makeDirectory($type);
 		}
-        $img->save(storage_path('app/'. $type. '/' . $path));
+        $img->save(storage_path('app/'. $type. '/' . $img_name));
         $img->destroy();
-        return $path;
+        return $img_name;
     }
 
     //////////////////////////////////////////////////////////////

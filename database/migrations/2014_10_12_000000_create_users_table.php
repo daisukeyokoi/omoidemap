@@ -18,9 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password', 60);
             $table->string('image');
-            $table->string('birthday');
+            $table->integer('birth_year');
+            $table->integer('birth_month');
+            $table->integer('birth_day');
             $table->string('sex');
-            $table->string('birthplace');
+            $table->integer('birthplace');
             $table->string('confirmation_token')->nullable();
             $table->timestamp('confirmed_at')->nullable();
             $table->integer('identification');

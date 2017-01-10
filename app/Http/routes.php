@@ -114,9 +114,14 @@ Route::group(['prefix' => 'ajax/ranking'], function() {
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'auth_general'], function (){
         Route::group(['prefix' => 'mypage'], function() {
-            // top
+            // タイムライン
             Route::get('/', 'MypageController@getIndex');
+            Route::post('/deletePost/{id}', 'MypageController@deletePost');
 
+            // 記事編集ページ
+            Route::get('/post/{id}', 'MypageController@getPost');
+            Route::post('/post/updatepost', 'MypageController@updatePost');
+            
             // 記事投稿ページ
             Route::group(['prefix' => 'a_post'], function() {
               Route::get('/', 'MypageController@getArticlePost');
@@ -131,6 +136,14 @@ Route::group(['middleware' => 'auth'], function () {
 
             // プロフィールページ
             Route::get('/updateprofile', 'MypageController@getUpdateProfile');
+            Route::get('/updateprivacy', 'MypageController@getUpdatePrivacy');
+            Route::post('/updateprofile/update', 'MypageController@updateProfile');
+            Route::post('/updateprofile/updateEmail', 'MypageController@updateEmail');
+            Route::post('/updateprofile/updatePassword', 'MypageController@updatePassword');
+            Route::post('/updateprofile/updateImage', 'MypageController@updateImage');
+
+            // プロフィール画像投稿
+            // Route::post('/ajax/updateprofile', 'MypageController@ajaxImagePost');
 
         });
     });

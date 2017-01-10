@@ -1,41 +1,50 @@
 @extends('mypageLayout')
 
 @section('mypage_content')
+@include('parts.errormessage')
 <div class="profile-content">
+	
 	<div class="side">
 		<ul class="setting">
 			<a href="#">
-				<li class="selected">
+				<li class="profile selected">
 					<i class="fa fa-user fa-lg" aria-hidden="true"></i>プロフィール
 				</li>
 			</a>
-			<a href="#">
-				<li>
+			<a href="{{url('/mypage/updateprivacy')}}">
+				<li class="privacy">
 					<i class="fa fa-lock fa-lg" aria-hidden="true"></i>プライバシー
 				</li>
 			</a>
 		</ul>
 	</div>
-	<div class="profile">
+	
+	<div class="profile-main selected" id="profile">
 		<div class="title">
+			<i class="fa fa-user fa-lg" aria-hidden="true"></i>プロフィール設定
 		</div>
-		<form method="POST">
-			<table class="content">
-				<tbody>
-					<tr>
-						<th>
-							<img src="{{url('/show/user', $user->id)}}">
-						</th>
-						<td>
-							<input type="button" class="btn btn-success" id="submitBtn" value="画像を変更">
-						</td>
-					</tr>
+		<table class="content">
+			<tbody>
+				<tr>
+					<th>
+						<img src="{{url('/show/user', $user->id)}}">
+					</th>
+					<td>
+						<form method="POST" action="{{url('/mypage/updateprofile/updateImage')}}" enctype="multipart/form-data" class="img_form">
+							<input type="hidden" name="_token" value="{{csrf_token()}}">
+							<input type="file" id="file" name="file">
+							<input type="submit" class="btn btn-success" id="submitBtn" value="画像を変更">
+						</form>
+					</td>
+				</tr>
+				<form method="POST" action="{{url('/mypage/updateprofile/update')}}">
+					<input type="hidden" name="_token" value="{{csrf_token()}}">
 					<tr>
 						<th>
 							<label for="name">ニックネーム</label>
 						</th>
 						<td>
-							<input type="text" id="name">
+							<input type="text" name="nickname" value="@if (old('nickname')){{old('nickname')}}@else{{$user->nickname}}@endif">
 						</td>
 					</tr>
 					<tr>
@@ -43,11 +52,22 @@
 							<label for="">生年月日</label>
 						</th>
 						<td>
-							<div class="birthday">
-					            <select id="year"></select>&nbsp;年&nbsp;
-					            <select id="month"></select>&nbsp;月&nbsp;
-					            <select id="day"></select>&nbsp;日&nbsp;
-					            <input type="hidden" id="birthday" value="1990-01-01" />
+							<div>
+					            <select name="year">
+					            	@for($i = 1900; $i < 2017; $i++)
+					            		<option value={{$i}} @if (old('year', $user->birth_year) == $i) selected @endif>{{$i}}</option>
+					            	@endfor
+					            </select>&nbsp;年&nbsp;
+					            <select name="month">
+					            	@for($i = 1; $i < 13; $i++)
+					            		<option value={{$i}} @if (old('month', $user->birth_month) == $i) selected @endif>{{$i}}</option>
+					            	@endfor
+					            </select>&nbsp;月&nbsp;
+					            <select name="day">
+					            	@for($i = 1; $i < 32; $i++)
+					            		<option value={{$i}} @if (old('day', $user->birth_day) == $i) selected @endif>{{$i}}</option>
+					            	@endfor
+					            </select>&nbsp;日&nbsp;
 					        </div>
 						</td>
 					</tr>
@@ -56,10 +76,9 @@
 							<label for="sex">性別</label>
 						</th>
 						<td>
-							<select id="sex">
-								<option></option>
-								<option value="1">男性</option>
-								<option value="2">女性</option>
+							<select name="sex">
+								<option value="1" @if (old('sex', $user->sex) == 1) selected @endif>男性</option>
+								<option value="2" @if (old('sex', $user->sex) == 2) selected @endif>女性</option>
 							</select>
 						</td>
 					</tr>
@@ -68,80 +87,24 @@
 							<label for="birthplace">出身地</label>
 						</th>
 						<td>
-							<select name="birthplace">  
-								<option></option>  
-								<optgroup label="北海道・東北">  
-								    <option value="北海道">北海道</option>  
-								    <option value="青森県">青森県</option>  
-								    <option value="秋田県">秋田県</option>  
-								    <option value="岩手県">岩手県</option>  
-								    <option value="山形県">山形県</option>  
-								    <option value="宮城県">宮城県</option>  
-								    <option value="福島県">福島県</option>  
-								</optgroup>  
-								<optgroup label="甲信越・北陸">  
-								    <option value="山梨県">山梨県</option>  
-								    <option value="長野県">長野県</option>  
-								    <option value="新潟県">新潟県</option>  
-								    <option value="富山県">富山県</option>  
-								    <option value="石川県">石川県</option>  
-								    <option value="福井県">福井県</option>  
-								</optgroup>  
-								<optgroup label="関東">  
-								    <option value="茨城県">茨城県</option>  
-								    <option value="栃木県">栃木県</option>  
-								    <option value="群馬県">群馬県</option>  
-								    <option value="埼玉県">埼玉県</option>  
-								    <option value="千葉県">千葉県</option>  
-								    <option value="東京都">東京都</option>  
-								    <option value="神奈川県">神奈川県</option>  
-								</optgroup>  
-								<optgroup label="東海">  
-								    <option value="愛知県">愛知県</option>  
-								    <option value="静岡県">静岡県</option>  
-								    <option value="岐阜県">岐阜県</option>  
-								    <option value="三重県">三重県</option>  
-								</optgroup>  
-								<optgroup label="関西">  
-								    <option value="大阪府">大阪府</option>  
-								    <option value="兵庫県">兵庫県</option>  
-								    <option value="京都府">京都府</option>  
-								    <option value="滋賀県">滋賀県</option>  
-								    <option value="奈良県">奈良県</option>  
-								    <option value="和歌山県">和歌山県</option>  
-								</optgroup>  
-								<optgroup label="中国">  
-								    <option value="岡山県">岡山県</option>  
-								    <option value="広島県">広島県</option>  
-								    <option value="鳥取県">鳥取県</option>  
-								    <option value="島根県">島根県</option>  
-								    <option value="山口県">山口県</option>  
-								</optgroup>  
-								<optgroup label="四国">  
-								    <option value="徳島県">徳島県</option>  
-								    <option value="香川県">香川県</option>  
-								    <option value="愛媛県">愛媛県</option>  
-								    <option value="高知県">高知県</option>  
-								</optgroup>  
-								<optgroup label="九州・沖縄">  
-								    <option value="福岡県">福岡県</option>  
-								    <option value="佐賀県">佐賀県</option>  
-								    <option value="長崎県">長崎県</option>  
-								    <option value="熊本県">熊本県</option>  
-								    <option value="大分県">大分県</option>  
-								    <option value="宮崎県">宮崎県</option>  
-								    <option value="鹿児島県">鹿児島県</option>  
-								    <option value="沖縄県">沖縄県</option>  
-								</optgroup>  
+							<select name="birthplace">
+								@foreach($prefectures as $prefecture)
+									<option value="{{$prefecture->id}}" @if (old('birthplace', $user->birthplace) == $prefecture->id) selected @endif>{{$prefecture->name}}</option>
+								@endforeach
 							</select>
 						</td>
 					</tr>
-				</tbody>
-			</table>
-			<div class="button-box">
-				<input type="button" class="btn btn-success" id="submitBtn" value="変更を保存">
-			</div>
-		</form>
+					<tr class="button-box">
+						<th>
+						</th>
+						<td>
+							<input type="submit" class="btn btn-success" id="submitBtn" value="変更を保存">
+						</td>
+					</tr>
+				</form>
+			</tbody>
+		</table>
 	</div>
+
 </div>
 @endsection

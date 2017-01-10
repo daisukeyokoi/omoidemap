@@ -20,6 +20,7 @@ use App\Helpers\AppUtil;
 use App\Tag;
 use App\PostsTag;
 use App\Event;
+use App\User;
 use Carbon\Carbon;
 
 class TopController extends Controller
@@ -97,12 +98,14 @@ class TopController extends Controller
 
     // ユーザープロフィール画像表示
     public function showUserImage($id) {
-        $path = 'user_profile/user_'. $id . '.jpg';
-        if (Storage::exists($path)) {
+        $user = User::find($id);
+        $image = $user->image;
+        $path = 'user_profile/'. $image;
+        if ($user->image) {
             $photo = Storage::get($path);
             return (new Response($photo, 200))->header('Content-Type', 'image/jpeg');
-        }else {
-            $photo = Storage::get('user_profile/man.jpg');
+        } else {
+            $photo = Storage::get('user_profile/noimage.jpg');
             return (new Response($photo, 200))->header('Content-Type', 'image/jpeg');
         }
     }
