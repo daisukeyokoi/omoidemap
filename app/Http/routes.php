@@ -121,7 +121,7 @@ Route::group(['middleware' => 'auth'], function () {
             // 記事編集ページ
             Route::get('/post/{id}', 'MypageController@getPost');
             Route::post('/post/updatepost', 'MypageController@updatePost');
-            
+
             // 記事投稿ページ
             Route::group(['prefix' => 'a_post'], function() {
               Route::get('/', 'MypageController@getArticlePost');
@@ -132,7 +132,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/good', 'MypageController@getGood');
 
             // フォロー中のタグページ
-            Route::get('/followtag', 'MypageController@getFollowtag');
+            Route::group(['prefix' => 'followtag'], function() {
+              Route::get('/', 'MypageController@getFollowtag');
+              Route::post('/', 'MypageController@searchTag');
+              Route::post('/follow', 'MypageController@followTag');
+              Route::post('/unfollow', 'MypageController@unFollowTag');
+            });
 
             // プロフィールページ
             Route::get('/updateprofile', 'MypageController@getUpdateProfile');

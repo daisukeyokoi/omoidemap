@@ -3,7 +3,7 @@
 @section('mypage_content')
 @include('parts.errormessage')
 <div class="profile-content">
-	
+
 	<div class="side">
 		<ul class="setting">
 			<a href="#">
@@ -18,7 +18,7 @@
 			</a>
 		</ul>
 	</div>
-	
+
 	<div class="profile-main selected" id="profile">
 		<div class="title">
 			<i class="fa fa-user fa-lg" aria-hidden="true"></i>プロフィール設定
@@ -53,23 +53,23 @@
 						</th>
 						<td>
 							<div>
-					            <select name="year">
-					            	@for($i = 1900; $i < 2017; $i++)
-					            		<option value={{$i}} @if (old('year', $user->birth_year) == $i) selected @endif>{{$i}}</option>
-					            	@endfor
-					            </select>&nbsp;年&nbsp;
-					            <select name="month">
-					            	@for($i = 1; $i < 13; $i++)
-					            		<option value={{$i}} @if (old('month', $user->birth_month) == $i) selected @endif>{{$i}}</option>
-					            	@endfor
-					            </select>&nbsp;月&nbsp;
-					            <select name="day">
-					            	@for($i = 1; $i < 32; $i++)
-					            		<option value={{$i}} @if (old('day', $user->birth_day) == $i) selected @endif>{{$i}}</option>
-					            	@endfor
-					            </select>&nbsp;日&nbsp;
-					        </div>
-						</td>
+								<select name="year">
+									@for($i = 1900; $i < 2017; $i++)
+										<option value={{$i}} @if (old('year', $user->birth_year) == $i) selected @endif>{{$i}}</option>
+									@endfor
+								</select>&nbsp;年&nbsp;
+								<select name="month">
+									@for($i = 1; $i < 13; $i++)
+										<option value={{$i}} @if (old('month', $user->birth_month) == $i) selected @endif>{{$i}}</option>
+									@endfor
+								</select>&nbsp;月&nbsp;
+								<select name="day">
+									@for($i = 1; $i < 32; $i++)
+										<option value={{$i}} @if (old('day', $user->birth_day) == $i) selected @endif>{{$i}}</option>
+									@endfor
+								</select>&nbsp;日&nbsp;
+								</div>
+							</td>
 					</tr>
 					<tr>
 						<th>

@@ -1421,17 +1421,108 @@ header h1 {
     font-size: 20px;
 }
 
+.mypage_list .tag_search {
+    width: 50%;
+    margin: 20px auto;
+}
+
+.mypage_list .tag_search #tag_name{
+    width: 80%;
+    float: left;
+}
+
+.mypage_list .tag_search #submit_btn{
+    width: 15%;
+    float: right;
+}
+
+.mypage_list .follow-block {
+    width: 80%;
+    height: 30px;
+    margin: 30px auto 20px;
+    padding: 5px 15px;
+    background-color: white;
+}
+
+.mypage_list .follow-block i {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.mypage_list .search_tags {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.mypage_list .follow_tags {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.mypage_list .clearfix {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+.mypage_list .tag{
+    width: 28%;
+    height: 30px;
+    float: left;
+    margin: 0 0 10px 4%;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.mypage_list .tag i{
+    margin: 10px 10px 0;
+    float: left;
+}
+
+.mypage_list .tag p{
+    margin-top: 6px;
+    float: left;
+}
+
+.mypage_list .tag a p{
+    margin: 0 0 0 9px;
+    font-size: 20px;
+    color: white;
+}
+
+.mypage_list .search_tags .tag a{
+    width: 30px;
+    height: 30px;
+    float: right;
+    background-color: #337ab7;
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+}
+
+.mypage_list .follow_tags .tag a{
+    width: 30px;
+    height: 30px;
+    float: right;
+    background-color: green;
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+}
+
+.mypage_list .search_tags .tag .mouseovered {
+    background-color: rgb(219,216,200);
+}
+
+.mypage_list .follow_tags .tag .mouseovered {
+    background-color: rgb(219,216,200);
+}
+
 .mypage_list .tag-timeline {
     width: 80%;
     height: 100px;
     overflow: hidden;
     margin: 0 auto;
     margin-top: 40px;
-}
-
-.mypage_list .tag-timeline p {
-    text-align: center;
-    font-size: 20px;
 }
 
 .mypage_list .profile-content {

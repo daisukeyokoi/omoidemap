@@ -18,6 +18,7 @@ use App\PostsImage;
 use App\Tag;
 use App\Post;
 use App\PostsTag;
+use App\Followtag;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Event;
@@ -51,7 +52,48 @@ class MypageController extends Controller
     // フォロー中のタグページ表示
     public function getFollowtag() {
         $user = Auth::user();
-        return view('mypage.followtag', compact('user'));
+        $follow_tags = Followtag::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        return view('mypage.followtag', compact('user', 'follow_tags'));
+    }
+
+    // ajaxでタグを検索
+    public function searchTag(Request $request) {
+        // すでにフォローしているタグは表示しない
+        $user = Auth::user();
+        $followtags = Followtag::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        $followtag_ids = [];
+        foreach ($followtags as $followtag) {
+            array_push($followtag_ids, $followtag->tag_id);
+        }
+        if ( $request->tag_name==null ) {
+            $search_tags = [];
+        } else {
+            $search_tags = Tag::where('name', 'like', "%$request->tag_name%")->whereNotIn('id', $followtag_ids)->take(10)->get();
+        }
+        return response()->json([
+            'message' => 'success',
+            'search_tags' => $search_tags
+        ]);
+    }
+
+    // ajaxでタグをフォロー
+    public function followTag(Request $request) {
+        $user_id = Auth::user()->id;
+        $followtag = new Followtag();
+        $followtag->user_id = $user_id;
+        $followtag->tag_id  = $request->tag_id;
+        $followtag->save();
+        return response()->json([
+            'message' => 'success'
+        ]);
+    }
+
+    // ajaxでフォローしているタグを削除
+    public function unFollowTag(Request $request) {
+        $remove_tag = Followtag::where('id', $request->tag_id)->delete();
+        return response()->json([
+            'message' => 'success'
+        ]);
     }
 
     // プロフィール編集ページ表示

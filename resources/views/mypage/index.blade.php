@@ -39,42 +39,42 @@
 						</div>
 						<div class="tweet-footer">
 							@if (Auth::check())
-				                <div class="article_img_footer_good_field" id="good">
-				                    <span>いいね！</span>
-				                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-				                    <span id="good_count">{{count($post->goods)}}</span>
-				                </div>
-				            @else
-				                <a href="{{url('/login?a_d='. $post->id)}}">
-				                <div class="article_img_footer_good_field">
-				                    <span>いいね！</span>
-				                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-				                    <span id="good_count">{{count($post->goods)}}</span>
-				                </div>
-				                </a>
-				            @endif
-				            <div class="article_img_footer_comment_field">
-				                <span>コメント</span>
-				                <i class="fa fa-commenting-o" aria-hidden="true"></i>
-				                <span>{{count($post->comments)}}</span>
-				            </div>
+								<div class="article_img_footer_good_field" id="good">
+										<span>いいね！</span>
+										<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+										<span id="good_count">{{count($post->goods)}}</span>
+								</div>
+							@else
+								<a href="{{url('/login?a_d='. $post->id)}}">
+								<div class="article_img_footer_good_field">
+										<span>いいね！</span>
+										<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+										<span id="good_count">{{count($post->goods)}}</span>
+								</div>
+								</a>
+							@endif
+								<div class="article_img_footer_comment_field">
+										<span>コメント</span>
+										<i class="fa fa-commenting-o" aria-hidden="true"></i>
+										<span>{{count($post->comments)}}</span>
+								</div>
 						</div>
 						<div class="tweet-episode">
 							<p>
-				                エピソード:&nbsp;{{$post->episode}}
-				            </p>
-				            <p>
-				                年代:&nbsp;{{AppUtil::photoAgeLabel()[$post->age]}}
-				            </p>
-				            <p>
-				                撮影時の気持ち:&nbsp;{{AppUtil::photoFeelingLabel()[$post->feeling]}}
-				            </p>
-				            <p>
-				                撮影場所:&nbsp;{{AppUtil::postNumberRemove($post->address)}}
-				            </p>
-				            <p>
-				                撮影した日:&nbsp;{{date('Y年n月', strtotime($post->photo_date))}}
-				            </p>
+								エピソード:&nbsp;{{$post->episode}}
+							</p>
+							<p>
+								年代:&nbsp;{{AppUtil::photoAgeLabel()[$post->age]}}
+							</p>
+							<p>
+								撮影時の気持ち:&nbsp;{{AppUtil::photoFeelingLabel()[$post->feeling]}}
+							</p>
+							<p>
+								撮影場所:&nbsp;{{AppUtil::postNumberRemove($post->address)}}
+							</p>
+							<p>
+								撮影した日:&nbsp;{{date('Y年n月', strtotime($post->photo_date))}}
+							</p>
 						</div>
 					</div>
 					<div class="tweet-comment">
