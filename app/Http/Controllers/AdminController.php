@@ -24,6 +24,8 @@ use Carbon\Carbon;
 use App\Event;
 use App\EventPost;
 use Illuminate\Support\Facades\DB;
+use App\Inquiry;
+use App\InquiryResponse;
 
 class AdminController extends Controller
 {
@@ -31,7 +33,7 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-    // ユーザー関連
+    /////////////////////////////////////////////// ユーザー関連 ///////////////////////////
     public function getUser(Request $request) {
         $query = User::orderBy('created_at', 'desc');
         if (isset($request->nickname)) {
@@ -126,7 +128,8 @@ class AdminController extends Controller
         return redirect(url('/admin/posts'));
     }
 
-    // タグ関連
+    /////////////////////////////////////////// タグ関連 ////////////////////////
+
     public function getTags(Request $request) {
         $query = Tag::orderBy('created_at', 'desc');
         if ($request->name) {
@@ -169,7 +172,7 @@ class AdminController extends Controller
         }
     }
 
-    // イベント関連
+    //////////////////////////////////////////////// イベント関連 /////////////////////////////
     public function getEvents(Request $request) {
         $today = Carbon::now();
         $query = Event::orderBy('created_at', 'desc');
@@ -203,6 +206,9 @@ class AdminController extends Controller
                     break;
                 case 'review':
                     $query = $query->where('state', Event::REVIEW);
+                    break;
+                case 'wait_close':
+                    $query = $query->where('state', Event::WAIT_CLOSE);
                     break;
                 case 'close':
                     $query = $query->where('state', Event::CLOSE);
@@ -316,6 +322,22 @@ class AdminController extends Controller
         return view('admin.event.create_ranking', compact('event', 'posts', 'eventPosts'));
     }
 
+    public function postEventCreateRanking(Request $request) {
+        Log::info($request->all());
+        $event = Event::find($request->event_id);
+        if (empty($event)) {
+            abort(404);
+        }
+        if ($request->event_state == Event::REVIEW) {
+            $event->state = Event::WAIT_CLOSE;
+            session()->flash('flash_message', '順位付けが完了しました。');
+        }else {
+            $event->state = Event::REVIEW;
+        }
+        $event->save();
+        return redirect(url('/admin/event/create/ranking', $event->id));
+    }
+
     public function ajaxEventCreateRanking(Request $request) {
         $eventPostExist = EventPost::where('event_id', $request->event_id)->where('post_id', $request->post_id)->exists();
         $res_array = [];
@@ -404,5 +426,71 @@ class AdminController extends Controller
             ];
         }
         return $res_array;
+    }
+
+    // イベント削除
+    public function deleteEvent(Request $request) {
+        $event = Event::find($request->event_id);
+        if (empty($event)) {
+            abort(404);
+        }
+        $event->delete();
+        session()->flash('flash_message', 'イベントの削除が完了しました。');
+        return redirect(url('/admin/event'));
+    }
+
+
+    ///////////////////////// お問い合わせ ///////////////////////
+
+    public function getInquiry() {
+        $inquiries = Inquiry::orderBy('created_at', 'desc')->paginate(30);
+        return view('admin.inquiry.index', compact('inquiries'));
+    }
+
+    public function getInquiryDetail($id) {
+        $inquiry = Inquiry::find($id);
+        if (empty($inquiry)) {
+            abort(404);
+        }
+        $inquiry->state = Inquiry::READ;
+        $inquiry->save();
+        $admin_users = User::where('identification', User::IDENTIFICATION_ADMIN)->get();
+        return view('admin.inquiry.detail', compact('inquiry', 'admin_users'));
+    }
+
+    public function postInquiryResponse(Request $request) {
+        $rules = [
+            'response'   => ['required', 'string', 'regex:#[^\s|　]+.*$#'],
+            'inquiry_id' => 'required|exists:inquiries,id',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $this->throwValidationException($request, $validator);
+        }
+
+        $inquiry = Inquiry::find($request->inquiry_id);
+        if (empty($inquiry)) {
+            abort(404);
+        }
+        $inquiry->state = Inquiry::RESPONSED;
+        $inquiry->save();
+
+        $response = new InquiryResponse();
+        $response->inquiry_id = $request->inquiry_id;
+        $response->content    = $request->response;
+        $response->save();
+
+        $mail_params = [
+            'email'            => $inquiry->email,
+            'inquiry_content'  => $inquiry->content,
+            'response_content' =>  $response->content
+        ];
+
+        AppUtil::sendMail($inquiry->email, $inquiry->email,
+            'emails.inquiry.mail_to_user_response',
+            $mail_params, 'OmoideMap お問い合わせの返信');
+
+        session()->flash('flash_message', '返答が完了しました。');
+        return redirect(url('/admin/inquiry', $inquiry->id));
     }
 }

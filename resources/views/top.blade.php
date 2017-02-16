@@ -77,88 +77,114 @@ a:hover {
 </style>
 @stop
 @section('body')
+<?php
+use App\Post;
+?>
+<div id="search_type" data-id="0" style="display:none;"></div>
 <div class="top_img">
-	<img src="{{url('/top_img_4.jpg')}}" alt="" >
-	<a href="{{url('/register')}}">
-		<input type="button" value="思い出を投稿する" class="btn btn-warning">
-	</a>
+	<img src="{{url('/top_img_5.jpg')}}" alt="" >
 </div>
 <div class="top_register_field">
 	<input type="button" value="思い出を投稿する" class="btn btn-warning">
 </div>
 <div class="top_wrapper">
-	<div class="top_prefectures">
-		<div class="top_region">
-			@foreach($regions as $region)
-				<div class="region_title">
-					{{$region->name}}
+	<div class="top_left_contents">
+		<div class="top_main">
+			<article class="top_article_list">
+				<div class="top_article_list_title">
+					<h3>思い出</h3>
 				</div>
 				<ul>
-					@foreach($region->prefectures as $prefecture)
-						<li class="prefecture_name" data-name="{{$prefecture->name}}">{{$prefecture->name}}</li>
-					@endforeach
+					<div class="top_loading_img">
+						<img src="{{url('/loading.gif')}}">
+					</div>
 				</ul>
-			@endforeach
+			</article>
+			@if (count($events) != 0)
+				<div class="event_field">
+					<div class="event_title">
+						<div class="event_title_left">
+							イベント
+						</div>
+						<div class="event_title_right"></div>
+					</div>
+					<ul class="event_content">
+						@foreach ($events as $event)
+							<li>
+								<a href="{{url('/event', $event->id)}}">
+									<div class="event_content_list_top">
+										<div class="event_content_list_top_title">
+											{{$event->title}}
+										</div>
+										<div class="event_content_list_top_img" style="background-image: url({{url($event->image)}})"></div>
+									</div>
+									<div class="event_content_list_bottom">
+										<p>{{$event->title}}</p>
+										<p>{{str_replace('-', '/', $event->start)}}~{{str_replace('-', '/', $event->end)}}</p>
+									</div>
+								</a>
+							</li>
+						@endforeach
+					</ul>
+				</div>
+			@endif
 		</div>
 	</div>
-	<div class="top_main">
-	<div class="top_map">
-		<div class="top_map_search">
-			<form action="{{url('/')}}" onsubmit="keywordSubmit(); return false;">
-				<div class="input-group">
-					<input type="text" class="form-control keyword_search" id="keyword" placeholder="場所やキーワードで検索">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="submit">
-							<i class='glyphicon glyphicon-search'></i>
-						</button>
-					</span>
+	<div class="top_right_contents">
+		<div class="top_map">
+			<div class="top_map_search">
+				<form action="{{url('/')}}" onsubmit="keywordSubmit(); return false;">
+					<div class="input-group">
+						<input type="text" class="form-control keyword_search" id="keyword" placeholder="場所やキーワードで検索">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit">
+								<i class='glyphicon glyphicon-search'></i>
+							</button>
+						</span>
+					</div>
+				</form>
+		    </div>
+		    <div class="top_map_main">
+		        <div class="map-embed">
+		        	<div id="map-canvas"></div>
+		        </div>
+				<div class="btn-group btn-group-justified" role="group">
+					<div class="btn-group" role="group">
+						<button type="button" class="btn map_btn_all active_border">全て表示</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn map_btn_travel">旅行</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn map_btn_date">デート</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn map_btn_everyday">日常</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn map_btn_eat">食事</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn map_btn_lodging">宿泊</button>
+					</div>
 				</div>
-			</form>
-	    </div>
-	    <div class="top_map_main">
-	        <div class="map-embed">
-	        	<div id="map-canvas"></div>
-	        </div>
-	    </div>
-	</div>
-	<article class="top_article_list">
-		<h2>思い出</h2>
-		<ul>
-			<div class="top_loading_img">
-				<img src="{{url('/loading.gif')}}">
-			</div>
-		</ul>
-	</article>
-	@if (count($events) != 0)
-		<div class="event_field">
-			<div class="event_title">
-				<div class="event_title_left">
-					イベント
-				</div>
-				<div class="event_title_right"></div>
-			</div>
-			<ul class="event_content">
-				@foreach ($events as $event)
-					<li>
-						<a href="{{url('/event', $event->id)}}">
-							<div class="event_content_list_top">
-								<div class="event_content_list_top_title">
-									{{$event->title}}
-								</div>
-								<div class="event_content_list_top_img" style="background-image: url({{url($event->image)}})"></div>
-							</div>
-							<div class="event_content_list_bottom">
-								<p>{{$event->title}}</p>
-								<p>{{str_replace('-', '/', $event->start)}}~{{str_replace('-', '/', $event->end)}}</p>
-							</div>
-						</a>
-					</li>
+		    </div>
+		</div>
+		<div class="top_prefectures">
+			<div class="top_region">
+				@foreach($regions as $region)
+					<div class="region_title">
+						{{$region->name}}
+					</div>
+					<ul>
+						@foreach($region->prefectures as $prefecture)
+							<li class="prefecture_name" data-name="{{$prefecture->name}}">{{$prefecture->name}}</li>
+						@endforeach
+					</ul>
 				@endforeach
-			</ul>
+			</div>
 		</div>
-	@endif
 	</div>
-	@include('parts.sidebar')
 </div>
 @stop
 @section('js_partial')
@@ -166,6 +192,7 @@ a:hover {
 <script type="text/javascript" src="{{url('/js/jquery.imagefit.min.js')}}"></script>
 <script type="text/javascript">
 $.ajaxSetup({headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }});
+$("#search_type").data('id', 1);
 // マーカーのデータ
 var markerData = [
 	@foreach ($posts as $post)
@@ -178,18 +205,22 @@ var markerData = [
 			good: "{{$post->goods->count()}}",
 			comment: "{{$post->comments->count()}}",
 			url: "{{url('/article/detail', $post->id)}}",
+			feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
+			age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
+			tag: "{{AppUtil::mapTag($post)}}",
+			episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
 		},
 		@endif
 	@endforeach
 ];
-
+tagReplace(markerData);
 var marker = [];
 var infoWindow = [];
 var map;
 var current_num = 0;
 var res_articles = [];
 var page_num = 1;
-var list_num = 4;
+var list_num = 20;
 ////////////////// カスタムマーカー
 function CustomMarker(latlng, map, args, markerData) {
 	this.latlng = latlng;
@@ -204,7 +235,6 @@ CustomMarker.prototype = new google.maps.OverlayView();
 CustomMarker.prototype.draw = function() {
 
 	var self = this;
-
 	var div = this.div;
 	var span = this.span;
 	var markerData = this.markerData;
@@ -222,24 +252,32 @@ CustomMarker.prototype.draw = function() {
 
 		var uluru = {lat: markerData.lat, lng: markerData.lng};
 		var infowindow = new google.maps.InfoWindow({
-			content: '<div class="marker_img" style="background-image:url(' + markerData['image'] + ');"></div>'
-					+ '<div class="marker_title">' + markerData['title'] + '</div>'
-					+ '<div class="marker_good_field"><span>いいね!</span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i><span>' + markerData['good'] + '</span>'
-					+ '<span>コメント</span><i class="fa fa-commenting-o" aria-hidden="true"></i><span>' + markerData['comment'] + '</span></div>',
+			content: '<div class="marker_wrap">'
+					+	'<a href="' + markerData['url'] + '"><div class="marker_img" style="background-image:url(' + markerData['image'] + ');"></div></a>'
+					+ 	'<div class="marker_good_field">'
+					+		'<a href="' + markerData['url'] + '"><span>いいね!</span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i><span>' + markerData['good'] + '</span>'
+					+ 		'<span>コメント</span><i class="fa fa-commenting-o" aria-hidden="true"></i><span>' + markerData['comment'] + '</span></a>'
+					+		'<div><a href="#"><i class="fa fa-twitter-square marker_twitter fa-2x" aria-hidden="true"></i></a><a href="#"><i class="fa fa-facebook-official marker_facebook fa-2x" aria-hidden="true"></i></a><a href="#"><i class="fa fa-instagram marker_instagram fa-2x" aria-hidden="true"></i></a></div>'
+					+		'<a href="' + markerData['url'] + '"><div class="marker_feeling_field"><span class="btn btn-danger article_list_data_label">' + markerData['feeling'] + '</span>'
+					+		'<span class="btn btn-success article_list_data_label">' + markerData['age'] + '</span></div>'
+					+		'<div>' + markerData['tag'] + '</div></a>'
+					+ 	'</div>'
+					+'</div>'
+					+'<a href="' + markerData['url'] + '"><div class="marker_episode">' + markerData['episode'] + '</div></a>',
 			position: uluru
 		});
 
-		google.maps.event.addDomListener(div, "click", function() {
-			location.href = markerData.url;
-		});
+		// google.maps.event.addDomListener(div, "click", function() {
+		// 	location.href = markerData.url;
+		// });
 
-		google.maps.event.addDomListener(div, "mouseover", function() {
+		google.maps.event.addDomListener(div, "click", function() {
 			infowindow.open(map);
 		});
 
-		google.maps.event.addDomListener(div, "mouseout", function() {
-			infowindow.close();
-		});
+		// google.maps.event.addDomListener(map, "click", function() {
+		// 	infowindow.close();
+		// });
 
 		var panes = this.getPanes();
 		panes.overlayImage.appendChild(div);
@@ -268,10 +306,10 @@ CustomMarker.prototype.getPosition = function() {
 };
 ///////////////// カスタムマーカー終わり
 
-init();
+init(0);
 
 ///////////googlemap
-function init() {
+function init(type) {
     // キャンパスの要素を取得する
     var canvas = document.getElementById( 'map-canvas' ) ;
 
@@ -289,10 +327,10 @@ function init() {
     var map = new google.maps.Map( canvas , mapOptions ) ;
 
 	google.maps.event.addListenerOnce(map, 'idle', function() {
-		dispLatLang(map);
+		dispLatLang(map, type);
 	});
 
-	postLatLangZoom(map);
+	postLatLangZoom(map, type);
 
 	for (var i = 0; i < markerData.length; i++) {
 		markerLatLng = new google.maps.LatLng({lat: markerData[i]['lat'], lng: markerData[i]['lng']});
@@ -331,13 +369,13 @@ function setZoomLimit(map, mapTypeId){
   }
 }
 
-function postLatLangZoom(map) {
+function postLatLangZoom(map, type) {
 	google.maps.event.addListener(map, 'dragend', function() {
-		dispLatLang(map);
+		dispLatLang(map, type);
 	});
 
 	google.maps.event.addListener(map, 'zoom_changed', function() {
-		dispLatLang(map);
+		dispLatLang(map, type);
 	});
 
 	google.maps.event.addListenerOnce(map, "projection_changed", function(){
@@ -350,7 +388,7 @@ function postLatLangZoom(map) {
     });
 }
 
-function dispLatLang(map) {
+function dispLatLang(map, type) {
 	$(".top_loading_img").css('display', '');
 	current_num = 0;
 	res_articles = [];
@@ -362,7 +400,8 @@ function dispLatLang(map) {
 			'sw_lat': latlng.getSouthWest().lat(),
 			'sw_lng': latlng.getSouthWest().lng(),
 			'ne_lat': latlng.getNorthEast().lat(),
-			'ne_lng': latlng.getNorthEast().lng()
+			'ne_lng': latlng.getNorthEast().lng(),
+			'type'  : type
 		},
 		success: function(res) {
 			res_articles = res.articles;
@@ -396,6 +435,7 @@ function dispLatLang(map) {
 }
 // 場所を検索
 function addressFocus(address, map, type) {
+	var search_type = $("#search_type").data('id');
 	// キャンパスの要素を取得する
     var canvas = document.getElementById( 'map-canvas' );
 	var geocoder = new google.maps.Geocoder();
@@ -423,10 +463,10 @@ function addressFocus(address, map, type) {
 			var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
 			google.maps.event.addListenerOnce(map, 'center_changed', function() {
-				dispLatLang(map);
+				dispLatLang(map, search_type);
 			});
 
-			postLatLangZoom(map);
+			postLatLangZoom(map, search_type);
 
 			for (var i = 0; i < markerData.length; i++) {
 				markerLatLng = new google.maps.LatLng({lat: markerData[i]['lat'], lng: markerData[i]['lng']});
@@ -456,6 +496,14 @@ function keywordSubmit() {
 	addressFocus(address, map, 'keyword');
 }
 
+function tagReplace(markerData) {
+	for (var i = 0; i < markerData.length; i++) {
+		markerData[i]['tag'] = markerData[i]['tag'].replace(/&lt;/g, '<');
+		markerData[i]['tag'] = markerData[i]['tag'].replace(/&quot;/g, '"');
+		markerData[i]['tag'] = markerData[i]['tag'].replace(/&gt;/g, '>');
+	}
+}
+
 $(document).on('click', '#next', function() {
 	page_num += 1;
 	NextPrev();
@@ -481,7 +529,6 @@ function NextPrev() {
 		current_num = articleListDesign(res_articles, i, current_num);
 	}
 	if (current_num < res_articles.length) {
-		console.log('heloo');
 		$(".top_article_list")
 		.children('ul')
 		.append('<input type="button" class="btn btn-primary" id="next" value="Next&nbsp;>">')
@@ -535,6 +582,180 @@ $(".prefecture_name").on('click', function() {
 	addressFocus(prefecture_name, map, 'prefecture');
 	$("html,body").animate({scrollTop:$('.top_map_search').offset().top});
 });
+
+// 全てを表示をクリック
+$('.map_btn_all').click(function () {
+	$('.active_border').removeClass('active_border');
+	$(this).addClass('active_border');
+	$("#search_type").data('id', 0);
+	markerData = [
+		@foreach ($posts as $post)
+			@if (isset($post->oneImage->image))
+			{
+				lat: {{$post->lat}},
+				lng: {{$post->lng}},
+				image: "{{url($post->oneImage->image)}}",
+				title: "{{$post->title}}",
+				good: "{{$post->goods->count()}}",
+				comment: "{{$post->comments->count()}}",
+				url: "{{url('/article/detail', $post->id)}}",
+				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
+				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
+				tag: "{{AppUtil::mapTag($post)}}",
+				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
+			},
+			@endif
+		@endforeach
+	];
+	tagReplace(markerData);
+	init(0);
+});
+
+// 旅行をクリック
+$('.map_btn_travel').click(function () {
+	var type = Number("{{AppUtil::TRAVEL}}");
+	$('.active_border').removeClass('active_border');
+	$(this).addClass('active_border');
+	$("#search_type").data('id', type);
+	markerData = [
+		@foreach (Post::where('feeling', AppUtil::TRAVEL)->get() as $post)
+			@if (isset($post->oneImage->image))
+			{
+				lat: {{$post->lat}},
+				lng: {{$post->lng}},
+				image: "{{url($post->oneImage->image)}}",
+				title: "{{$post->title}}",
+				good: "{{$post->goods->count()}}",
+				comment: "{{$post->comments->count()}}",
+				url: "{{url('/article/detail', $post->id)}}",
+				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
+				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
+				tag: "{{AppUtil::mapTag($post)}}",
+				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
+			},
+			@endif
+		@endforeach
+	];
+	tagReplace(markerData);
+	init(type);
+});
+
+// デートをクリック
+$('.map_btn_date').click(function () {
+	var type = Number("{{AppUtil::DATE}}");
+	$('.active_border').removeClass('active_border');
+	$(this).addClass('active_border');
+	$("#search_type").data('id', type);
+	markerData = [
+		@foreach (Post::where('feeling', AppUtil::DATE)->get() as $post)
+			@if (isset($post->oneImage->image))
+			{
+				lat: {{$post->lat}},
+				lng: {{$post->lng}},
+				image: "{{url($post->oneImage->image)}}",
+				title: "{{$post->title}}",
+				good: "{{$post->goods->count()}}",
+				comment: "{{$post->comments->count()}}",
+				url: "{{url('/article/detail', $post->id)}}",
+				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
+				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
+				tag: "{{AppUtil::mapTag($post)}}",
+				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
+			},
+			@endif
+		@endforeach
+	];
+	tagReplace(markerData);
+	init(type);
+});
+
+// 日常をクリック
+$('.map_btn_everyday').click(function () {
+	var type = Number("{{AppUtil::EVERYDAY}}");
+	$('.active_border').removeClass('active_border');
+	$(this).addClass('active_border');
+	$("#search_type").data('id', type);
+	markerData = [
+		@foreach (Post::where('feeling', AppUtil::EVERYDAY)->get() as $post)
+			@if (isset($post->oneImage->image))
+			{
+				lat: {{$post->lat}},
+				lng: {{$post->lng}},
+				image: "{{url($post->oneImage->image)}}",
+				title: "{{$post->title}}",
+				good: "{{$post->goods->count()}}",
+				comment: "{{$post->comments->count()}}",
+				url: "{{url('/article/detail', $post->id)}}",
+				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
+				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
+				tag: "{{AppUtil::mapTag($post)}}",
+				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
+			},
+			@endif
+		@endforeach
+	];
+	tagReplace(markerData);
+	init(type);
+});
+
+// 食事をクリック
+$('.map_btn_eat').click(function () {
+	var type = Number("{{AppUtil::EAT}}");
+	$('.active_border').removeClass('active_border');
+	$(this).addClass('active_border');
+	$("#search_type").data('id', type);
+	markerData = [
+		@foreach (Post::where('feeling', AppUtil::EAT)->get() as $post)
+			@if (isset($post->oneImage->image))
+			{
+				lat: {{$post->lat}},
+				lng: {{$post->lng}},
+				image: "{{url($post->oneImage->image)}}",
+				title: "{{$post->title}}",
+				good: "{{$post->goods->count()}}",
+				comment: "{{$post->comments->count()}}",
+				url: "{{url('/article/detail', $post->id)}}",
+				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
+				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
+				tag: "{{AppUtil::mapTag($post)}}",
+				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
+			},
+			@endif
+		@endforeach
+	];
+	tagReplace(markerData);
+	init(type);
+});
+
+// 宿泊をクリック
+$('.map_btn_lodging').click(function () {
+	var type = Number("{{AppUtil::LODGING}}");
+	$('.active_border').removeClass('active_border');
+	$(this).addClass('active_border');
+	$("#search_type").data('id', type);
+	markerData = [
+		@foreach (Post::where('feeling', AppUtil::LODGING)->get() as $post)
+			@if (isset($post->oneImage->image))
+			{
+				lat: {{$post->lat}},
+				lng: {{$post->lng}},
+				image: "{{url($post->oneImage->image)}}",
+				title: "{{$post->title}}",
+				good: "{{$post->goods->count()}}",
+				comment: "{{$post->comments->count()}}",
+				url: "{{url('/article/detail', $post->id)}}",
+				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
+				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
+				tag: "{{AppUtil::mapTag($post)}}",
+				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
+			},
+			@endif
+		@endforeach
+	];
+	tagReplace(markerData);
+	init(type);
+});
+
 
 
 ////////////// googlemap 終わり

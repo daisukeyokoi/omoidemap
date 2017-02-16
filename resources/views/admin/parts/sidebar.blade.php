@@ -1,3 +1,6 @@
+<?php
+use App\Inquiry;
+ ?>
 <div class="admin_sidebar">
     <a href="{{url('/admin')}}">
         <div class="admin_sidebar_title">
@@ -29,11 +32,13 @@
     <div class="admin_sidebar_title" data-target="#collapseInquiry" data-toggle="collapse">
         <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
         <a>お問い合わせ</a>
+        @if (Inquiry::where('state', Inquiry::NOT_READ)->count() != 0)
+            <span class="badge bg-red">{{Inquiry::where('state', Inquiry::NOT_READ)->count()}}</span>
+        @endif
     </div>
     <div class="collapse" id="collapseInquiry">
         <ul class="card-block">
-            <a href="#"><li><i class="fa fa-circle-o" aria-hidden="true"></i>ユーザー</li></a>
-            <a href="#"><li><i class="fa fa-circle-o" aria-hidden="true"></i>記事</li></a>
+            <a href="{{url('admin/inquiry')}}"><li><i class="fa fa-circle-o" aria-hidden="true"></i>お問い合わせ</li></a>
         </ul>
     </div>
 </div>

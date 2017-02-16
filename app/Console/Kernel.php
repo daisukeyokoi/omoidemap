@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\Inspire::class,
+        \App\Console\Commands\UpdateStateEvent::class,
     ];
 
     /**
@@ -26,5 +27,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('inspire')
                  ->hourly();
+        // イベントの状態を変更
+        $schedule->command('event:updatestate')
+                 ->daily();
     }
 }

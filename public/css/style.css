@@ -50,6 +50,18 @@ ul {
     list-style: none;
     padding: 0;
 }
+.active_border {
+    border: 2px red solid;
+}
+.btn-group>.btn-group:first-child:not(:last-child)>.btn:last-child, .btn-group>.btn-group:first-child:not(:last-child)>.dropdown-toggle {
+    outline: 0;
+}
+.btn-group>.btn-group:not(:first-child):not(:last-child)>.btn {
+    outline: 0;
+}
+.btn-group>.btn-group:last-child:not(:first-child)>.btn:first-child {
+    outline: 0;
+}
 
 /* ========================================
   ヘッダー
@@ -80,6 +92,7 @@ header h1 {
 }
 .header_left img{
     width: 100%;
+    margin-top: 8px;
 }
 .header_right {
   float: left;
@@ -278,16 +291,28 @@ header h1 {
 /* ========================================
   TOPページ
 ======================================== */
+.top_right_contents {
+    overflow: hidden;
+    float: right;
+    width: 50%;
+}
+.top_left_contents {
+    overflow: hidden;
+    float: left;
+    width: 50%;
+}
 .top_wrapper {
 	width: 90%;
 	margin: 0 auto;
 	overflow: hidden;
+    margin-bottom: 50px;
 }
 .top_main {
-    width: 63%;
+    width: 90%;
     float: left;
     overflow: hidden;
     margin-bottom: 50px;
+    margin-top: 20px;
 }
 .top_img {
     width: 100%;
@@ -332,7 +357,7 @@ header h1 {
 .top_map {
     width: 100%;
     height: auto;
-    padding-top: 68px;
+    padding-top: 20px;
     overflow: hidden;
     padding-bottom: 50px;
     float: left;
@@ -354,11 +379,10 @@ header h1 {
 }
 .top_prefectures {
     background-color: #F9F7F4;
-    width: 35%;
+    width: 100%;
     float: right;
-    margin-top: 122px;
     overflow: hidden;
-    height: 600px;
+    height: auto;
 }
 .top_region {
     overflow: hidden;
@@ -389,10 +413,16 @@ header h1 {
     width: 100%;
     float: left;
 }
-.top_article_list h2 {
-    font-size: 22px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid black;
+.top_article_list_title {
+    background-color: #DCDDDE;
+    font-size: 20px;
+    overflow: hidden;
+}
+.top_article_list_title h3 {
+    border-left: 10px solid #FF7C6C;
+    margin: 7px;
+    padding-left: 7px;
+
 }
 .top_article_list ul{
     overflow: hidden;
@@ -400,15 +430,15 @@ header h1 {
 .top_article_list ul li {
     overflow: hidden;
     border-bottom: 1px solid #C1C6C4;
-    padding-bottom: 20px;
-    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 .article_list_main {
     overflow: hidden;
 }
 .article_list_img {
-    width: 110px;
-    height: 110px;
+    width: 90px;
+    height: 90px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -417,7 +447,7 @@ header h1 {
     margin-right: 3%;
 }
 .article_list_data {
-    width: 77%;
+    width: 70%;
     float: left;
 }
 .article_list_data_label {
@@ -437,7 +467,7 @@ header h1 {
 .article_list_data_title {
     margin-bottom: 5px;
     overflow: hidden;
-    height: 60px;
+    height: 40px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
@@ -480,17 +510,26 @@ header h1 {
 #prev {
     margin-top: 10px;
 }
+.marker_wrap {
+    overflow: hidden;
+    margin-bottom: 5px;
+}
 .marker_img {
-	width: 250px;
-	height: 170px;
+	width: 90px;
+	height: 90px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    float: left;
 }
 .marker_title {
     margin: 10px 0;
     font-weight: bold;
     font-size: 14px;
+}
+.marker_good_field {
+    float: right;
+    margin-left: 5px;
 }
 .marker_good_field span{
     margin-right: 5px;
@@ -498,7 +537,45 @@ header h1 {
 .marker_good_field i {
     margin-right: 2px;
 }
-
+.marker_feeling_field {
+    margin-top: 5px;
+}
+.marker_twitter {
+    padding-right: 10px;
+}
+.marker_facebook {
+    padding-right: 10px;
+}
+.marker_episode {
+    width: 250px;
+    word-break: break-all;
+}
+.map_btn_all {
+    background-color: #67D1D8;
+    color: white;
+    outline: 0;
+}
+.map_btn_travel {
+    background-color: #FED05F;
+    color: white;
+    outline: 0;
+}
+.map_btn_date {
+    background-color: #FF93A6;
+    color: white;
+}
+.map_btn_everyday {
+    background-color: #AFD79B;
+    color: white;
+}
+.map_btn_eat {
+    background-color: #F9674C;
+    color: white;
+}
+.map_btn_lodging {
+    background-color: #A087C9;
+    color: white;
+}
 .top_tag_field {
     position: absolute;
     bottom: 0;
@@ -1156,6 +1233,33 @@ header h1 {
 #feeling {
     width: 20%;
 }
+
+/* ========================================
+  お問い合わせページ
+======================================== */
+.inquiry_box {
+    width: 60%;
+    margin: 100px auto;
+}
+.inquiry_box h1{
+    margin-bottom: 50px;
+    font-size: 26px;
+}
+.inquiry_box span {
+    margin-left: 2%;
+}
+.inquiry_box table>tbody>tr>td {
+    padding: 30px;
+}
+.inquiry_btn_field {
+    text-align: center;
+}
+.inquiry_btn_field button {
+    margin-top: 30px;
+    background-color: white;
+    border: black 1px solid;
+}
+
 
 
 /* ========================================

@@ -28,6 +28,9 @@ ul {
     text-align: center;
     margin-bottom: 50px;
 }
+.bg-red {
+    background-color: red;
+}
 
 /* ========================================
   ヘッダー
@@ -139,6 +142,19 @@ ul {
     font-size: 16px;
     color: white;
     background-color: #F64F47;
+    margin-left: 2%;
+}
+
+.top_ul_inquiry {
+    overflow: hidden;
+}
+.top_ul_inquiry li {
+    float: left;
+    padding: 30px 50px;
+    border-radius: 25px;
+    font-size: 16px;
+    color: white;
+    background-color: #1788B7;
     margin-left: 2%;
 }
 
@@ -376,4 +392,43 @@ ul {
 .event_detail_post li {
     cursor: pointer;
     z-index: 9999;
+}
+
+/* ========================================
+  お問い合わせ
+======================================== */
+.inquiry_detail_box {
+    overflow: hidden;
+    width: 70%;
+    margin: 50px auto;
+}
+.inquiry_detail_subject {
+    font-size: 18px;
+    border-bottom: 1px solid gray;
+    margin-bottom: 20px;
+}
+.inquiry_detail_content {
+    overflow: hidden;
+    border-bottom: 1px dotted gray;
+    margin-top: 10px;
+}
+.inquiry_detail_content p {
+    font-size: 18px;
+    width: 95%;
+    margin: 0 auto 20px auto;
+}
+.inquiry_detail_data {
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.inquiry_detail_date {
+    float: right;
+}
+.inquiry_detail_email {
+    float: left;
+}
+.inquiry_response_box {
+    overflow: hidden;
+    width: 70%;
+    margin: 50px auto;
 }

@@ -103,7 +103,7 @@ ul {
         <!-- photo feeling -->
         <div class="photo_feeling">
             @foreach(AppUtil::photoFeelingList() as $key => $value)
-                <input type="radio" name="photo_feeling" id="feeling_select_{{$value}}" value="{{$value}}" @if (old('photo_feeling', AppUtil::HAPPY) == $value) checked @endif>
+                <input type="radio" name="photo_feeling" id="feeling_select_{{$value}}" value="{{$value}}" @if (old('photo_feeling', AppUtil::TRAVEL) == $value) checked @endif>
                 <label for="feeling_select_{{$value}}">{{$key}}</label>
             @endforeach
         </div>
@@ -122,7 +122,7 @@ ul {
         <p>タグ</p>
         <div class="a_post_tag_field">
             <form action="{{url('/')}}" onsubmit="tagSubmit(); return false;">
-                <input type="text" class="form-control" id="tag_text" placeholder="タグ名を入力してください。" maxlength="20">
+                <input type="text" class="form-control" id="tag_text" placeholder="タグ名を入力してください。" maxlength="10">
                 <input type="button" class="btn" id="add_tag" value="追加">
             </form>
             <div id="new_tag_field" class="">

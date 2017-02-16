@@ -57,7 +57,7 @@
         <h2>撮影時の気持ち</h2>
         <select id="feeling" class="form-control">
             @foreach (AppUtil::photoFeelingList() as $key => $value)
-                <option value="{{$value}}" @if ($value == AppUtil::FUN) selected @endif>{{$key}}</option>
+                <option value="{{$value}}" @if ($value == AppUtil::TRAVEL) selected @endif>{{$key}}</option>
             @endforeach
         </select>
         <div class="ranking_total">
@@ -170,7 +170,6 @@
                     +           '</div>'
                     +           '<div class="search_result_img" style="background-image: url(' + posts[i][0].image + ')"></div>'
                     +           '<div class="search_result_data_left">'
-                    +               '<div class="search_result_data">' + posts[i][0].title + '</div>'
                     +               '<div class="search_result_data">' + posts[i][0].address + '</div>'
                     +           '</div>'
                     +           '<div class="search_result_data_right">'

@@ -2,7 +2,7 @@
 <div class="clearfix">
     <a href="{{url('/')}}">
         <div class="header_left">
-            <img src="{{url('/header_icon.jpg')}}">
+            <img src="{{url('/header_icon_1.jpg')}}">
         </div>
     </a>
     <div class="header_search">
