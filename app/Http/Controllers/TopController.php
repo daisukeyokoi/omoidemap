@@ -22,6 +22,7 @@ use App\PostsTag;
 use App\Event;
 use App\User;
 use Carbon\Carbon;
+use App\Inquiry;
 
 class TopController extends Controller
 {
@@ -44,9 +45,16 @@ class TopController extends Controller
 
     // 記事取得
     public function ajaxGetArticle(Request $request) {
-        $posts = Post::mapRange($request->sw_lat, $request->sw_lng, $request->ne_lat, $request->ne_lng)
-                        ->goodsSort()
-                        ->get();
+        if ($request->type == 0) {
+            $posts = Post::mapRange($request->sw_lat, $request->sw_lng, $request->ne_lat, $request->ne_lng)
+                            ->goodsSort()
+                            ->get();
+        }else {
+            $posts = Post::mapRange($request->sw_lat, $request->sw_lng, $request->ne_lat, $request->ne_lng)
+                            ->where('feeling', $request->type)
+                            ->goodsSort()
+                            ->get();
+        }
         $articles = [];
         foreach($posts as $post) {
             $articles[] = [
@@ -338,6 +346,71 @@ class TopController extends Controller
         $posts = Post::where('event_id', $id)->get();
         $other_events = Event::where('id', '!=', $id)->where('end', '>=', $today)->get();
         return view('event.index', compact('event', 'posts', 'other_events'));
+    }
+
+
+    ////////////////////////// お問い合わせページ///////////////////////
+    private function inquiryFormValidCheck(Request $request) {
+        $rules = [
+			'email'   => 'required|max:50|email',
+			'subject' => ['required', 'max:50', 'string', 'regex:#[^\s|　]+.*$#'],
+			'content' => ['required', 'max:500', 'string', 'regex:#[^\s|　]+.*$#'],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+		if ($validator->fails()) {
+			$this->throwValidationException($request, $validator);
+		}
+    }
+
+    // お問い合わせ画面表示
+    public function getInquiry() {
+        return view('inquiry.index');
+    }
+
+    // お問い合わせ確認画面を表示
+    public function postInquiry(Request $request) {
+        self::inquiryFormValidCheck($request);
+        // 二重処理対策用ページトークン
+		$request->session()->flash('ptoken_contact', AppUtil::FLG_ON);
+
+        return view('inquiry.confirm')->withInput($request->input());
+    }
+
+    public function getCompleteInquiry() {
+        return redirect(url('/inquiry'));
+    }
+
+    public function postConfirmInquiry(Request $request) {
+        if ($request->has('back')) {
+            return redirect()->back()->withInput();
+        }
+        self::inquiryFormValidCheck($request);
+        // 確認ページで付与したページトークンを取り出し、トークンがなければ404ページを出す
+		if(!$request->session()->pull('ptoken_contact', AppUtil::FLG_OFF)){
+			abort(404);
+		}
+
+        $inquiry = new Inquiry();
+        $inquiry->email      = $request->email;
+        $inquiry->subject    = $request->subject;
+        $inquiry->content    = $request->content;
+        $inquiry->save();
+
+        $mail_params = [
+            'email'   => $inquiry->email,
+            'subject' => $inquiry->subject,
+            'content' => $inquiry->content,
+        ];
+
+        AppUtil::sendMail($inquiry->email, $inquiry->name,
+            'emails.inquiry.mail_to_user',
+            $mail_params, 'OmoideMap お問い合わせを受け付けました。');
+
+        return view('inquiry.complete');
+
+
+
+
     }
 
 }

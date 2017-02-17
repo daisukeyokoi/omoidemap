@@ -26,8 +26,10 @@ class AppUtil {
 	//////////////////////////////////////////////////////////////
 	// $paramsは連想配列
 	// viewpathは配列またはviewのみ　(html.view と text.view)を想定しています。// html用のものとtext用のものを想定している。
-	public static function sendMail($fromAddress, $fromName, $toAddress, $toName, $viewPath, $params, $subject){
+	public static function sendMail($toAddress, $toName, $viewPath, $params, $subject){
 		try{
+            $fromAddress = config('app.from_system_address');
+            $fromName = config('app.from_system_address_name');
 			Mail::send($viewPath, $params, function ($message) use($fromAddress, $fromName, $toAddress, $toName, $viewPath, $subject){
 				$message->from($fromAddress, $fromName)->to($toAddress, $toName)->subject($subject);
 			});
@@ -157,32 +159,29 @@ class AppUtil {
     //////////////////////////////////////////////////////////////
 	// 投稿の感情のリスト
 	//////////////////////////////////////////////////////////////
-    const HAPPY      = 1;
-    const SAD        = 2;
-    const FUN        = 3;
-    const NOSTALGIC  = 4;
-    const EXCITEMENT = 5;
-    const LOVE       = 6;
+    const TRAVEL   = 1;
+    const DATE     = 2;
+    const EVERYDAY = 3;
+    const EAT      = 4;
+    const LODGING  = 5;
 
     public static function photoFeelingList() {
         $list = [];
-        $list['嬉しい']   = self::HAPPY;
-        $list['切ない']   = self::SAD;
-        $list['楽しい']   = self::FUN;
-        $list['懐かしい'] = self::NOSTALGIC;
-        $list['感動']    = self::EXCITEMENT;
-        $list['恋愛']    = self::LOVE;
+        $list['旅行'] = self::TRAVEL;
+        $list['デート'] = self::DATE;
+        $list['日常'] = self::EVERYDAY;
+        $list['食事'] = self::EAT;
+        $list['宿泊'] = self::LODGING;
         return $list;
     }
 
     public static function photoFeelingLabel() {
         $label = [];
-        $label[self::HAPPY]      = '嬉しい';
-        $label[self::SAD]        = '悲しい';
-        $label[self::FUN]        = '楽しい';
-        $label[self::NOSTALGIC]  = '懐かしい';
-        $label[self::EXCITEMENT] = '感動';
-        $label[self::LOVE]       = '恋愛';
+        $label[self::TRAVEL]   = '旅行';
+        $label[self::DATE]     = 'デート';
+        $label[self::EVERYDAY] = '日常';
+        $label[self::EAT]      = '食事';
+        $label[self::LODGING]  = '宿泊';
         return $label;
     }
 
@@ -241,6 +240,20 @@ class AppUtil {
         $tags_name = 'タグ:';
         foreach($postTags as $postTag) {
             if ($tag_count > 5) {
+                break;
+            }
+            $tags_name = $tags_name . '<span class="article_list_data_tag">'. $postTag->tag->name. '</span>';
+            $tag_count += 1;
+        }
+        return $tags_name;
+    }
+
+    public static function mapTag($post) {
+        $tag_count = 0;
+        $postTags = $post->postsTags;
+        $tags_name = 'タグ:';
+        foreach($postTags as $postTag) {
+            if ($tag_count > 1) {
                 break;
             }
             $tags_name = $tags_name . '<span class="article_list_data_tag">'. $postTag->tag->name. '</span>';

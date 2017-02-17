@@ -36,7 +36,7 @@ return [
     'digits_between'       => ':attribute を正しく入力してください。', // :min :max
     'email'                => ':attribute を正しいメールアドレスの形式で入力してください。',
     'filled'               => 'The :attribute field is required.',
-    'exists'               => 'The selected :attribute is invalid.',
+    'exists'               => ':attribute は存在しません',
     'image'                => ':attribute は画像ファイルを添付してください。',
     'in'                   => 'The selected :attribute is invalid.',
     'integer'              => ':attribute を正しく入力してください。',
@@ -111,6 +111,16 @@ return [
         'start'       => '開催期間',
         'end'         => '開催期間',
         'state'       => '状態',
+
+        // お問い合わせ
+        'email'   => 'メール',
+        'subject' => '件名',
+        'content' => '本文',
+
+        // 管理画面お問い合わせ
+        'admin_id'   => '返信者',
+        'response'   => '返答',
+        'inquiry_id' => 'お問い合わせID',
 	],
 
 ];

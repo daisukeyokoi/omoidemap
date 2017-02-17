@@ -1,0 +1,44 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Inquiry extends Model
+{
+    protected $table = 'inquiries';
+
+    ////////////////////////////////////////////////////////////////////////////
+	// const
+	////////////////////////////////////////////////////////////////////////////
+
+    // 状態
+    const NOT_READ  = 0;
+    const READ      = 1;
+    const RESPONSED = 2;
+
+    ////////////////////////////////////////////////////////////////////////////
+	// util
+	////////////////////////////////////////////////////////////////////////////
+    public function responses() {
+        return $this->hasMany('App\InquiryResponse');
+    }
+
+    public static function getState() {
+        $list = [
+            self::NOT_READ  => '未読',
+            self::READ      => '既読',
+            self::RESPONSED => '対応済み'
+        ];
+        return $list;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+	// scope
+	////////////////////////////////////////////////////////////////////////////
+
+    public function scopeNotRead($query) {
+        return $query->where('state', self::NOT_READ);
+    }
+
+}

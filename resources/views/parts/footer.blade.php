@@ -6,7 +6,7 @@
             <a href="#"><li>運営者情報</li></a>
             <a href="#"><li>免責条項</li></a>
             <a href="#"><li>プライバシーポリシー</li></a>
-            <a href="#"><li>お問い合わせ</li></a>
+            <a href="{{url('/inquiry')}}"><li>お問い合わせ</li></a>
         </ul>
     </div>
     <div class="footer_data_list">

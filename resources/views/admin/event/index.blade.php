@@ -82,7 +82,10 @@
                                 <input type="radio" name="state" value="open" @if (Input::get('state', 'all') == 'open') checked @endif>公開中
                             </label>
                             <label>
-                                <input type="radio" name="state" value="reveiw" @if (Input::get('state', 'all') == 'review') checked @endif>審査中
+                                <input type="radio" name="state" value="review" @if (Input::get('state', 'all') == 'review') checked @endif>審査中
+                            </label>
+                            <label>
+                                <input type="radio" name="state" value="wait_close" @if (Input::get('state', 'all') == 'wait_close') checked @endif>審査期間終了待ち
                             </label>
                             <label>
                                 <input type="radio" name="state" value="close" @if (Input::get('state', 'all') == 'close') checked @endif>終了
@@ -118,6 +121,8 @@
                             公開
                         @elseif ($event->state == 2)
                             審査中
+                        @elseif ($event->state == 3)
+                            審査終了で審査期間終了待ち
                         @else
                             終了
                         @endif

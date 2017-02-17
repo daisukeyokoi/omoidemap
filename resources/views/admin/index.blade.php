@@ -11,4 +11,8 @@
         <a href="{{url('/admin/event')}}"><li>イベント一覧</li></a>
         <a href="{{url('/admin/event/create')}}"><li>イベント作成</li></a>
     </ul>
+    <h2>お問い合わせ</h2>
+    <ul class="top_ul_inquiry">
+        <a href="{{url('/admin/inquiry')}}"><li>お問い合わせ一覧</li></a>
+    </ul>
 @stop

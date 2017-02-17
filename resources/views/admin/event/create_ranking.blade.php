@@ -174,8 +174,26 @@
 </style>
 @stop
 @section('body')
+@include('parts.errormessage')
 <div class="event_create_ranking_main" id="main_column">
     <p>クリックすると順位のところに追加されます。</p>
+    @if ($event->state == 2)
+        <form method="post" action="{{url('/admin/event/create/ranking')}}" id="e_id_form" style="display:none;">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="hidden" name="event_id" value="{{$event->id}}">
+            <input type="hidden" name="event_state" value="{{$event->state}}">
+            <input type="submit" class="btn btn-success" value="順位付けを完了する" onclick="return confirm_dialog(this, '順位付けを完了してもよろしいですか？');">
+        </form>
+    @elseif ($event->state == 3)
+        <form action="{{url('/admin/event/create/ranking')}}" method="post" id="e_back_form">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="hidden" name="event_id" value="{{$event->id}}">
+            <input type="hidden" name="event_state" value="{{$event->state}}">
+            <input type="submit" class="btn btn-danger" value="順位付けを変更する">
+        </form>
+    @elseif ($event->state == 4)
+        順位発表後なので変更はできません
+    @endif
     <h2>{{$event->title}}の順位付け</h2>
     <ul class="event_detail_post">
         @foreach($posts as $post)
@@ -196,7 +214,9 @@
                     <div class="sidebar_rankmark_{{$eventPost->ranking}}">
                         <div class="sidebar_rankmark_string">{{$eventPost->ranking}}</div>
                     </div>
-                    <img class="event_ranking_remove" data-id="{{$eventPost->post->id}}" src="{{url('/remove.png')}}" style="width: 30px; height: 30px; z-index: 999; right: -10px; top: -10px; position: absolute;">
+                    @if ($event->state == 2)
+                        <img class="event_ranking_remove" data-id="{{$eventPost->post->id}}" src="{{url('/remove.png')}}" style="width: 30px; height: 30px; z-index: 999; right: -10px; top: -10px; position: absolute;">
+                    @endif
                 </div>
             </li>
         @endforeach
@@ -211,45 +231,39 @@ $(function() {
     var count = Number("{{$event->eventPosts->count()}}");
     var event_id = Number("{{$event->id}}");
     var remove_url = "{{url('/remove.png')}}";
+    var event_state = "{{$event->state}}";
+    $(document).ready(function () {
+        if (count != 0) {
+            $("#e_id_form").show();
+        }
+    });
     $("#sidebar, #main_column").stick_in_parent();
     $('.event_detail_post_list').on('click', function() {
-        count += 1;
-        console.log(count);
-        var post_id = $(this).data('id');
-        var url_img = $(this).data('image');
-        $.ajax({
-            type: "POST",
-            url: "{{url('/admin/event/ajax/create/ranking')}}",
-            data: {
-                'event_id': event_id,
-                'post_id': post_id,
-                'ranking': count
-            },
-            success: function(res) {
-                if (res.message == 'success') {
-                    recreateSideRanking(res);
-                }else {
-                    count -= 1;
+        if (event_state == 2) {
+            count += 1;
+            var post_id = $(this).data('id');
+            var url_img = $(this).data('image');
+            $.ajax({
+                type: "POST",
+                url: "{{url('/admin/event/ajax/create/ranking')}}",
+                data: {
+                    'event_id': event_id,
+                    'post_id': post_id,
+                    'ranking': count
+                },
+                success: function(res) {
+                    if (res.message == 'success') {
+                        recreateSideRanking(res);
+                        $("#e_id_form").show();
+                    }else {
+                        count -= 1;
+                        if (count == 0) {
+                            $("#e_id_form").hide();
+                        }
+                    }
                 }
-            }
-        });
-
-        // if (count < 11) {
-        //     var post_id = $(this).data('id');
-        //     var url = $(this).data('image');
-        //     $("#event_ranking_side")
-        //     .append(
-        //          '<li>'
-        //         +   '<div class="event_create_ranking_post_image_side" style="background-image: url(' + url + ')">'
-        //         +       '<div class="sidebar_rankmark_' + count + '">'
-        //         +           '<div class="sidebar_rankmark_string">' + count + '</div>'
-        //         +       '</div>'
-        //         +   '</div>'
-        //         +'</li>'
-        //     );
-        // }else {
-        //     alert('すでに10位まで選択されています。')
-        // }
+            });
+        }
     });
     $(document).on('click', '.event_ranking_remove', function() {
         var parent = $(this).closest('li');
@@ -264,6 +278,9 @@ $(function() {
             success: function(res) {
                 recreateSideRanking(res);
                 count -= 1;
+                if (count == 0) {
+                    $("#e_id_form").hide();
+                }
             }
         })
     });

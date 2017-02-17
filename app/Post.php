@@ -35,7 +35,23 @@ class Post extends Model
         return $this->hasMany('App\Good');
     }
 
+    public function eventPost() {
+        return $this->hasOne('App\EventPost');
+    }
+
     public function delete() {
+        if ($this->event_id != 0) {
+            if (count($this->eventPost) != 0) {
+                $eventPosts = EventPost::where('event_id', $this->event_id)->get();
+                foreach ($eventPosts as $eventPost) {
+                    if ($eventPost->ranking > $this->event_id) {
+                        $eventPost->ranking -= 1;
+                        $eventPost->save();
+                    }
+                }
+                $this->eventPost->delete();
+            }
+        }
         if (count($this->comments()->get()) != 0){
 			$this->comments()->delete();
 		}

@@ -30,7 +30,7 @@
                 <td>開催期間</td>
                 <td>
                     <select name="start_year" class="form-control event_day_form">
-                        @for ($i = 0; $i < 10; $i++)
+                        @for ($i = -5; $i < 5; $i++)
                             <option value="{{$today->year + $i}}" @if (old('start_year', $start[0]) == $today->year + $i) selected @endif>{{$today->year + $i}}</option>
                         @endfor
                     </select>年
@@ -45,7 +45,7 @@
                         @endfor
                     </select>&nbsp;~&nbsp;
                     <select name="end_year" class="form-control event_day_form">
-                        @for ($i = 0; $i < 10; $i++)
+                        @for ($i = -5; $i < 5; $i++)
                             <option value="{{$today->year + $i}}" @if (old('end_year', $end[0]) == $today->year + $i) selected @endif>{{$today->year + $i}}</option>
                         @endfor
                     </select>年
@@ -74,7 +74,10 @@
                         <input type="radio" name="state" value="2" @if (old('state', $event->state) == 2) checked @endif>審査中
                     </label>
                     <label>
-                        <input type="radio" name="state" value="3" @if (Input::get('state', $event->state) == 3) checked @endif>終了
+                        <input type="radio" name="state" value="3" @if (old('state', $event->state) == 3) checked @endif>審査終了発表待ち
+                    </label>
+                    <label>
+                        <input type="radio" name="state" value="4" @if (Input::get('state', $event->state) == 4) checked @endif>終了
                     </label>
                 </td>
             </tr>

@@ -22,7 +22,7 @@
 							<form method="POST" class="delete_post" id="delete_post_{{$post->id}}" action="/mypage/deletePost/{{$post->id}}">
 								<input type="hidden" name="_token" value="{{csrf_token()}}">
 								<input type="hidden" name="post_id" value="{{$post->id}}">
-								<i class="fa fa-trash fa-lg post_delete_btn" aria-hidden="true"></i>
+								<i class="fa fa-trash fa-lg post_delete_btn" aria-hidden="t1rue"></i>
 							</form>
 							<a href="{{url('/mypage/post', $post->id)}}"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a>
 						</div>
