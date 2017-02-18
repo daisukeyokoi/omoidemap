@@ -81,11 +81,30 @@ a:hover {
 use App\Post;
 ?>
 <div id="search_type" data-id="0" style="display:none;"></div>
+<div class="sp_feeling_btn_field">
+	<div class="btn-group btn-group-justified" role="group">
+		<div class="btn-group" role="group">
+			<button type="button" class="btn map_btn_all active_border">全て表示</button>
+		</div>
+		<div class="btn-group" role="group">
+			<button type="button" class="btn map_btn_travel">旅行</button>
+		</div>
+		<div class="btn-group" role="group">
+			<button type="button" class="btn map_btn_date">デート</button>
+		</div>
+		<div class="btn-group" role="group">
+			<button type="button" class="btn map_btn_everyday">日常</button>
+		</div>
+		<div class="btn-group" role="group">
+			<button type="button" class="btn map_btn_eat">食事</button>
+		</div>
+		<div class="btn-group" role="group">
+			<button type="button" class="btn map_btn_lodging">宿泊</button>
+		</div>
+	</div>
+</div>
 <div class="top_img">
 	<img src="{{url('/top_img_5.jpg')}}" alt="" >
-</div>
-<div class="top_register_field">
-	<input type="button" value="思い出を投稿する" class="btn btn-warning">
 </div>
 <div class="top_wrapper">
 	<div class="top_left_contents">
@@ -148,7 +167,7 @@ use App\Post;
 		        <div class="map-embed">
 		        	<div id="map-canvas"></div>
 		        </div>
-				<div class="btn-group btn-group-justified" role="group">
+				<div class="btn-group btn-group-justified under_map" role="group">
 					<div class="btn-group" role="group">
 						<button type="button" class="btn map_btn_all active_border">全て表示</button>
 					</div>
@@ -169,6 +188,17 @@ use App\Post;
 					</div>
 				</div>
 		    </div>
+			<div class="btn-group btn-group-justified sp_under_menu" role="group">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn sp_under_map" style="font-size: 14px;">思い出マップ</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn sp_under_episode" style="font-size: 14px;">エピソード</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn sp_under_mypage" style="font-size: 14px;">マイページ</button>
+				</div>
+			</div>
 		</div>
 		<div class="top_prefectures">
 			<div class="top_region">
@@ -320,7 +350,8 @@ function init(type) {
     var mapOptions = {
         zoom: 5,
         center: latlng ,		// 中心座標 [latlng]
-		scrollwheel: false,
+		scrollwheel: true,
+		disableDefaultUI: true,
     };
 
     // [canvas]に、[mapOptions]の内容の、地図のインスタンス([map])を作成する
@@ -448,14 +479,16 @@ function addressFocus(address, map, type) {
 				var mapOptions = {
 					zoom: 15,
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
-					scrollwheel: false
+					scrollwheel: true,
+					disableDefaultUI: true,
 				};
 			}else {
 				// 地図表示に関するオプション
 				var mapOptions = {
 					zoom: 10,
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
-					scrollwheel: false
+					scrollwheel: true,
+					disableDefaultUI: true,
 				};
 			}
 

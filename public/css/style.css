@@ -291,6 +291,12 @@ header h1 {
 /* ========================================
   TOPページ
 ======================================== */
+.sp_feeling_btn_field {
+    display: none;
+}
+.sp_under_menu {
+    display: none;
+}
 .top_right_contents {
     overflow: hidden;
     float: right;
@@ -363,7 +369,7 @@ header h1 {
     float: left;
 }
 .map-embed {
-    height: 600px;
+    height: 500px;
 }
 .top_map h2 {
     padding-bottom: 10px;
@@ -2271,16 +2277,44 @@ footer a:hover {
     }
 
     /*トップページ*/
+    .sp_under_menu {
+        display: block;
+        position: fixed;
+        bottom: 0;
+    }
+    .top_wrapper {
+        width: 100%;
+    }
     .top_main {
         float: none;
         width: 100%;
         margin-bottom: 40px;
     }
     .top_img {
-        margin-top: 46px;
+        display: none;
+    }
+    .under_map {
+        display: none;
+    }
+    .top_left_contents {
+        display: none;
+    }
+    .top_right_contents {
+        float: none;
+        width: 100%;
+    }
+    .top_map_search {
+        display: none;
     }
     .top_img input {
         display: none;
+    }
+    .sp_feeling_btn_field {
+        width: 100%;
+        display: block;
+        position: fixed;
+        top: 46px;
+        z-index: 2;
     }
     @media all and (max-width: 640px) {
         .top_img input {
@@ -2308,16 +2342,14 @@ footer a:hover {
     .top_map {
         float: none;
         width: 100%;
-        padding-top: 20px;
-    }
-    .top_map_search {
-        width: 100%;
+        padding-top: 0px;
+        padding-bottom: 0px;
     }
     .top_prefectures {
-        float: none;
-        width: 100%;
-        margin-top: 0px;
-        height: auto;
+        display: none;
+    }
+    footer {
+        display: none;
     }
     .top_article_list {
         float: none;
@@ -2390,7 +2422,7 @@ footer a:hover {
         }
     }
     .map-embed {
-        height: 300px;
+        height: 550px;
     }
 
     /*ログイン*/
@@ -2467,9 +2499,6 @@ footer a:hover {
     }
 
     /*トップページ*/
-    .top_wrapper {
-    	width: 95%;
-    }
     .article_list_img {
         height: 70px;
         width: 70px;
@@ -2489,6 +2518,43 @@ footer a:hover {
         padding-bottom: 2px;
         top: 54%;
         left: 35%;
+    }
+    .btn-group>.btn-group:first-child:not(:last-child)>.btn:last-child, .btn-group>.btn-group:first-child:not(:last-child)>.dropdown-toggle {
+        font-size: 10px;
+        font-weight: bold;
+        border-radius: 0;
+    }
+    .btn-group>.btn-group:not(:first-child):not(:last-child)>.btn {
+        font-size: 10px;
+        font-weight: bold;
+        border-radius: 0;
+    }
+    .btn-group>.btn-group:last-child:not(:first-child)>.btn:first-child {
+        font-size: 10px;
+        font-weight: bold;
+        border-radius: 0;
+    }
+    .sp_under_map {
+        background-color:#FF677E;
+        color: white;
+        height: 50px;
+        border-radius: 0;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .sp_under_episode {
+        background-color: #7FD9D9;
+        color: white;
+        height: 50px;
+        border-radius: 0;
+        font-weight: bold;
+    }
+    .sp_under_mypage {
+        background-color: #FFBD4C;
+        color: white;
+        height: 50px;
+        border-radius: 0;
+        font-weight: bold;
     }
     .top_register_field input {
         width: 50%;
