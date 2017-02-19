@@ -223,7 +223,6 @@ use App\Post;
 <script type="text/javascript" src="{{url('/js/jquery.imagefit.min.js')}}"></script>
 <script type="text/javascript">
 $.ajaxSetup({headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }});
-$("#search_type").data('id', 1);
 // マーカーのデータ
 var markerData = <?php echo json_encode(AppUtil::createMarkerData($posts), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 var marker = [];
