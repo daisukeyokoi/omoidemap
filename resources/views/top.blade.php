@@ -81,25 +81,26 @@ a:hover {
 use App\Post;
 ?>
 <div id="search_type" data-id="0" style="display:none;"></div>
+<div id="episode_flg" data-id="0" style="display:none;"></div>
 <div class="sp_feeling_btn_field">
 	<div class="btn-group btn-group-justified" role="group">
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_all active_border">全て表示</button>
+			<button type="button" class="btn map_btn_all active_border" style="height: 40px;">全て表示</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_travel">旅行</button>
+			<button type="button" class="btn map_btn_travel" style="height: 40px;">旅行</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_date">デート</button>
+			<button type="button" class="btn map_btn_date" style="height: 40px;">デート</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_everyday">日常</button>
+			<button type="button" class="btn map_btn_everyday" style="height: 40px;">日常</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_eat">食事</button>
+			<button type="button" class="btn map_btn_eat" style="height: 40px;">食事</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_lodging">宿泊</button>
+			<button type="button" class="btn map_btn_lodging" style="height: 40px;">宿泊</button>
 		</div>
 	</div>
 </div>
@@ -224,26 +225,7 @@ use App\Post;
 $.ajaxSetup({headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }});
 $("#search_type").data('id', 1);
 // マーカーのデータ
-var markerData = [
-	@foreach ($posts as $post)
-		@if (isset($post->oneImage->image))
-		{
-			lat: {{$post->lat}},
-			lng: {{$post->lng}},
-			image: "{{url($post->oneImage->image)}}",
-			title: "{{$post->title}}",
-			good: "{{$post->goods->count()}}",
-			comment: "{{$post->comments->count()}}",
-			url: "{{url('/article/detail', $post->id)}}",
-			feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
-			age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
-			tag: "{{AppUtil::mapTag($post)}}",
-			episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
-		},
-		@endif
-	@endforeach
-];
-tagReplace(markerData);
+var markerData = <?php echo json_encode(AppUtil::createMarkerData($posts), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 var marker = [];
 var infoWindow = [];
 var map;
@@ -251,6 +233,13 @@ var current_num = 0;
 var res_articles = [];
 var page_num = 1;
 var list_num = 20;
+var basic_lat = 37.6510589;
+var basic_lng = 139.72682550000002;
+var basic_zoom = 5;
+var basic_sw_lat;
+var basic_sw_lng;
+var basic_ne_lat;
+var basic_ne_lng;
 ////////////////// カスタムマーカー
 function CustomMarker(latlng, map, args, markerData) {
 	this.latlng = latlng;
@@ -336,19 +325,29 @@ CustomMarker.prototype.getPosition = function() {
 };
 ///////////////// カスタムマーカー終わり
 
-init(0);
+init(0, true);
 
 ///////////googlemap
-function init(type) {
+function init(type, default_flg) {
+	var paramsArray = getUrlParams();
+	if (default_flg) {
+		var lat  = basic_lat;
+		var lng  = basic_lng;
+		var zoom = basic_zoom;
+	}else {
+		var lat = Number(paramsArray['lat']);
+		var lng = Number(paramsArray['lng']);
+		var zoom = Number(paramsArray['zoom']);
+	}
+
     // キャンパスの要素を取得する
     var canvas = document.getElementById( 'map-canvas' ) ;
 
     // 中心の位置座標を指定する
-    var latlng = new google.maps.LatLng( 37.6510589 , 139.72682550000002 );
-
+    var latlng = new google.maps.LatLng( lat , lng );
     // 地図のオプションを設定する
     var mapOptions = {
-        zoom: 5,
+        zoom: zoom,
         center: latlng ,		// 中心座標 [latlng]
 		scrollwheel: true,
 		disableDefaultUI: true,
@@ -358,9 +357,10 @@ function init(type) {
     var map = new google.maps.Map( canvas , mapOptions ) ;
 
 	google.maps.event.addListenerOnce(map, 'idle', function() {
-		dispLatLang(map, type);
+		var bounds = map.getBounds();
+		history.pushState(null, null, location.pathname + '?lat=' + latlng.lat() + '&lng=' + latlng.lng() + '&zoom=' + zoom + '&sw_lat=' + bounds.getSouthWest().lat() + '&sw_lng=' + bounds.getSouthWest().lng() + '&ne_lat=' + bounds.getNorthEast().lat() + '&ne_lng=' + bounds.getNorthEast().lng());
+		dispLatLang(type);
 	});
-
 	postLatLangZoom(map, type);
 
 	for (var i = 0; i < markerData.length; i++) {
@@ -402,11 +402,13 @@ function setZoomLimit(map, mapTypeId){
 
 function postLatLangZoom(map, type) {
 	google.maps.event.addListener(map, 'dragend', function() {
-		dispLatLang(map, type);
+		changeUrl(map);
+		dispLatLang(type);
 	});
 
 	google.maps.event.addListener(map, 'zoom_changed', function() {
-		dispLatLang(map, type);
+		changeUrl(map);
+		dispLatLang(type);
 	});
 
 	google.maps.event.addListenerOnce(map, "projection_changed", function(){
@@ -418,21 +420,47 @@ function postLatLangZoom(map, type) {
       map.setMapTypeId(google.maps.MapTypeId.ROADMAP);  //もとに戻す
     });
 }
+// urlを変更
+function changeUrl(map) {
+	var mapArray = [];
+	var bounds = map.getBounds();
+	mapArray['lat'] = map.getCenter().lat();
+	mapArray['lng'] = map.getCenter().lng();
+	mapArray['zoom'] = map.getZoom();
+	mapArray['sw_lat'] = bounds.getSouthWest().lat();
+	mapArray['sw_lng'] = bounds.getSouthWest().lng();
+	mapArray['ne_lat'] = bounds.getNorthEast().lat();
+	mapArray['ne_lng'] = bounds.getNorthEast().lng();
+	history.pushState(null, null, location.pathname + '?lat=' + mapArray['lat'] + '&lng=' + mapArray['lng'] + '&zoom=' + mapArray['zoom'] + '&sw_lat=' + mapArray['sw_lat'] + '&sw_lng=' + mapArray['sw_lng'] + '&ne_lat=' + mapArray['ne_lat'] + '&ne_lng=' + mapArray['ne_lng']);
+}
 
-function dispLatLang(map, type) {
+function getUrlParams() {
+	var url = location.href;
+	var parameters = url.split("?");
+	var params = parameters[1].split('&');
+	var paramsArray = [];
+	for (var i = 0; i < params.length; i++) {
+		neet = params[i].split('=');
+		paramsArray[neet[0]] = neet[1];
+	}
+	return paramsArray;
+}
+function dispLatLang(type) {
 	$(".top_loading_img").css('display', '');
 	current_num = 0;
 	res_articles = [];
-	var latlng = map.getBounds();
+
+	// urlパラメータを取得
+	var paramsArray = getUrlParams();
 	$.ajax({
 		type: "POST",
 		url: "{{url('/ajax/article_list')}}",
 		data: {
-			'sw_lat': latlng.getSouthWest().lat(),
-			'sw_lng': latlng.getSouthWest().lng(),
-			'ne_lat': latlng.getNorthEast().lat(),
-			'ne_lng': latlng.getNorthEast().lng(),
-			'type'  : type
+			'sw_lat': paramsArray['sw_lat'],
+			'sw_lng': paramsArray['sw_lng'],
+			'ne_lat': paramsArray['ne_lat'],
+			'ne_lng': paramsArray['ne_lng'],
+			'type'  : type,
 		},
 		success: function(res) {
 			res_articles = res.articles;
@@ -496,7 +524,8 @@ function addressFocus(address, map, type) {
 			var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
 			google.maps.event.addListenerOnce(map, 'center_changed', function() {
-				dispLatLang(map, search_type);
+				changeUrl(map);
+				dispLatLang(search_type);
 			});
 
 			postLatLangZoom(map, search_type);
@@ -527,14 +556,6 @@ function addressFocus(address, map, type) {
 function keywordSubmit() {
 	var address = $("#keyword").val();
 	addressFocus(address, map, 'keyword');
-}
-
-function tagReplace(markerData) {
-	for (var i = 0; i < markerData.length; i++) {
-		markerData[i]['tag'] = markerData[i]['tag'].replace(/&lt;/g, '<');
-		markerData[i]['tag'] = markerData[i]['tag'].replace(/&quot;/g, '"');
-		markerData[i]['tag'] = markerData[i]['tag'].replace(/&gt;/g, '>');
-	}
 }
 
 $(document).on('click', '#next', function() {
@@ -609,6 +630,38 @@ function articleListDesign(res_articles, i, current_num) {
 	return current_num += 1;
 }
 
+function feelingTypeChangeMarker(type, self) {
+	type = Number(type);
+	$('.active_border').removeClass('active_border');
+	self.addClass('active_border');
+	$("#search_type").data('id', type);
+	var episode_flg = $('#episode_flg').data('id');
+	switch (type) {
+		case 1:
+			markerData = <?php echo json_encode(AppUtil::createMarkerData(Post::where('feeling', AppUtil::TRAVEL)->get()), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+			break;
+		case 2:
+			markerData = <?php echo json_encode(AppUtil::createMarkerData(Post::where('feeling', AppUtil::DATE)->get()), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+			break;
+		case 3:
+			markerData = <?php echo json_encode(AppUtil::createMarkerData(Post::where('feeling', AppUtil::EVERYDAY)->get()), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+			break;
+		case 4:
+			markerData = <?php echo json_encode(AppUtil::createMarkerData(Post::where('feeling', AppUtil::EAT)->get()), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+			break;
+		case 5:
+			markerData = <?php echo json_encode(AppUtil::createMarkerData(Post::where('feeling', AppUtil::LODGING)->get()), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+			break;
+		default:
+			markerData = <?php echo json_encode(AppUtil::createMarkerData($posts), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+	}
+	if (episode_flg) {
+		dispLatLang(type);
+	}else {
+		init(type, true);
+	}
+}
+
 // 都道府県クリックでそこにズーム
 $(".prefecture_name").on('click', function() {
 	var prefecture_name = $(this).data('name');
@@ -618,176 +671,57 @@ $(".prefecture_name").on('click', function() {
 
 // 全てを表示をクリック
 $('.map_btn_all').click(function () {
-	$('.active_border').removeClass('active_border');
-	$(this).addClass('active_border');
-	$("#search_type").data('id', 0);
-	markerData = [
-		@foreach ($posts as $post)
-			@if (isset($post->oneImage->image))
-			{
-				lat: {{$post->lat}},
-				lng: {{$post->lng}},
-				image: "{{url($post->oneImage->image)}}",
-				title: "{{$post->title}}",
-				good: "{{$post->goods->count()}}",
-				comment: "{{$post->comments->count()}}",
-				url: "{{url('/article/detail', $post->id)}}",
-				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
-				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
-				tag: "{{AppUtil::mapTag($post)}}",
-				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
-			},
-			@endif
-		@endforeach
-	];
-	tagReplace(markerData);
-	init(0);
+	var self = $(this);
+	feelingTypeChangeMarker(0, self);
 });
 
 // 旅行をクリック
 $('.map_btn_travel').click(function () {
-	var type = Number("{{AppUtil::TRAVEL}}");
-	$('.active_border').removeClass('active_border');
-	$(this).addClass('active_border');
-	$("#search_type").data('id', type);
-	markerData = [
-		@foreach (Post::where('feeling', AppUtil::TRAVEL)->get() as $post)
-			@if (isset($post->oneImage->image))
-			{
-				lat: {{$post->lat}},
-				lng: {{$post->lng}},
-				image: "{{url($post->oneImage->image)}}",
-				title: "{{$post->title}}",
-				good: "{{$post->goods->count()}}",
-				comment: "{{$post->comments->count()}}",
-				url: "{{url('/article/detail', $post->id)}}",
-				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
-				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
-				tag: "{{AppUtil::mapTag($post)}}",
-				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
-			},
-			@endif
-		@endforeach
-	];
-	tagReplace(markerData);
-	init(type);
+	var self = $(this);
+	feelingTypeChangeMarker("{{AppUtil::TRAVEL}}", self);
 });
 
 // デートをクリック
 $('.map_btn_date').click(function () {
-	var type = Number("{{AppUtil::DATE}}");
-	$('.active_border').removeClass('active_border');
-	$(this).addClass('active_border');
-	$("#search_type").data('id', type);
-	markerData = [
-		@foreach (Post::where('feeling', AppUtil::DATE)->get() as $post)
-			@if (isset($post->oneImage->image))
-			{
-				lat: {{$post->lat}},
-				lng: {{$post->lng}},
-				image: "{{url($post->oneImage->image)}}",
-				title: "{{$post->title}}",
-				good: "{{$post->goods->count()}}",
-				comment: "{{$post->comments->count()}}",
-				url: "{{url('/article/detail', $post->id)}}",
-				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
-				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
-				tag: "{{AppUtil::mapTag($post)}}",
-				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
-			},
-			@endif
-		@endforeach
-	];
-	tagReplace(markerData);
-	init(type);
+	var self = $(this);
+	feelingTypeChangeMarker("{{AppUtil::DATE}}", self);
 });
 
 // 日常をクリック
 $('.map_btn_everyday').click(function () {
-	var type = Number("{{AppUtil::EVERYDAY}}");
-	$('.active_border').removeClass('active_border');
-	$(this).addClass('active_border');
-	$("#search_type").data('id', type);
-	markerData = [
-		@foreach (Post::where('feeling', AppUtil::EVERYDAY)->get() as $post)
-			@if (isset($post->oneImage->image))
-			{
-				lat: {{$post->lat}},
-				lng: {{$post->lng}},
-				image: "{{url($post->oneImage->image)}}",
-				title: "{{$post->title}}",
-				good: "{{$post->goods->count()}}",
-				comment: "{{$post->comments->count()}}",
-				url: "{{url('/article/detail', $post->id)}}",
-				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
-				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
-				tag: "{{AppUtil::mapTag($post)}}",
-				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
-			},
-			@endif
-		@endforeach
-	];
-	tagReplace(markerData);
-	init(type);
+	var self = $(this);
+	feelingTypeChangeMarker("{{AppUtil::EVERYDAY}}", self);
 });
 
 // 食事をクリック
 $('.map_btn_eat').click(function () {
-	var type = Number("{{AppUtil::EAT}}");
-	$('.active_border').removeClass('active_border');
-	$(this).addClass('active_border');
-	$("#search_type").data('id', type);
-	markerData = [
-		@foreach (Post::where('feeling', AppUtil::EAT)->get() as $post)
-			@if (isset($post->oneImage->image))
-			{
-				lat: {{$post->lat}},
-				lng: {{$post->lng}},
-				image: "{{url($post->oneImage->image)}}",
-				title: "{{$post->title}}",
-				good: "{{$post->goods->count()}}",
-				comment: "{{$post->comments->count()}}",
-				url: "{{url('/article/detail', $post->id)}}",
-				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
-				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
-				tag: "{{AppUtil::mapTag($post)}}",
-				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
-			},
-			@endif
-		@endforeach
-	];
-	tagReplace(markerData);
-	init(type);
+	var self = $(this);
+	feelingTypeChangeMarker("{{AppUtil::EAT}}", self);
 });
 
 // 宿泊をクリック
 $('.map_btn_lodging').click(function () {
-	var type = Number("{{AppUtil::LODGING}}");
-	$('.active_border').removeClass('active_border');
-	$(this).addClass('active_border');
-	$("#search_type").data('id', type);
-	markerData = [
-		@foreach (Post::where('feeling', AppUtil::LODGING)->get() as $post)
-			@if (isset($post->oneImage->image))
-			{
-				lat: {{$post->lat}},
-				lng: {{$post->lng}},
-				image: "{{url($post->oneImage->image)}}",
-				title: "{{$post->title}}",
-				good: "{{$post->goods->count()}}",
-				comment: "{{$post->comments->count()}}",
-				url: "{{url('/article/detail', $post->id)}}",
-				feeling: "{{AppUtil::photoFeelingLabel()[$post->feeling]}}",
-				age: "{{AppUtil::photoAgeLabel()[$post->age]}}",
-				tag: "{{AppUtil::mapTag($post)}}",
-				episode: "{{AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)}}"
-			},
-			@endif
-		@endforeach
-	];
-	tagReplace(markerData);
-	init(type);
+	var self = $(this);
+	feelingTypeChangeMarker("{{AppUtil::LODGING}}", self);
 });
+
+// タブレットスマホで思い出マップボタンをクリック
+$('.sp_under_map').click(function(){
+	$('#episode_flg').data('id', 0);
+	var type = $("#search_type").data('id');
+	$('.map-embed').show();
+	$('.top_map_search').show();
+	$('.top_left_contents').hide();
+	init(type, false);
+});
+
+$('.sp_under_episode').click(function(){
+	$('#episode_flg').data('id', 1);
+	$('.top_map_search').hide();
+	$('.map-embed').hide();
+	$('.top_left_contents').show();
+});
+
 
 
 

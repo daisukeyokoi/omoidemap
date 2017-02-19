@@ -2297,6 +2297,8 @@ footer a:hover {
         display: none;
     }
     .top_left_contents {
+        float: none;
+        width: 100%;
         display: none;
     }
     .top_right_contents {
@@ -2304,7 +2306,10 @@ footer a:hover {
         width: 100%;
     }
     .top_map_search {
-        display: none;
+        position: fixed;
+        top: 90px;
+        left: 10%;
+        z-index: 2;
     }
     .top_img input {
         display: none;
@@ -2315,6 +2320,7 @@ footer a:hover {
         position: fixed;
         top: 46px;
         z-index: 2;
+        height: 40px;
     }
     @media all and (max-width: 640px) {
         .top_img input {
@@ -2422,7 +2428,7 @@ footer a:hover {
         }
     }
     .map-embed {
-        height: 550px;
+        height: 600px;
     }
 
     /*ログイン*/

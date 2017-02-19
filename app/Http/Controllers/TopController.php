@@ -72,7 +72,10 @@ class TopController extends Controller
             ];
         }
         return response()->json([
-            'articles' => $articles
+            'articles' => $articles,
+            'lat' => $request->lat,
+            'lng' => $request->lng,
+            'zoom' => $request->zoom
         ]);
     }
 
