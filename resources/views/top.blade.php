@@ -269,7 +269,7 @@ CustomMarker.prototype.draw = function() {
 			div.dataset.marker_id = self.args.marker_id;
 		}
 
-		var uluru = {lat: markerData.lat, lng: markerData.lng};
+		var uluru = {lat: Number(markerData.lat), lng: Number(markerData.lng)};
 		var infowindow = new google.maps.InfoWindow({
 			content: '<div class="marker_wrap">'
 					+	'<a href="' + markerData['url'] + '"><div class="marker_img" style="background-image:url(' + markerData['image'] + ');"></div></a>'
