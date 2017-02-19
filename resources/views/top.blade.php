@@ -364,7 +364,7 @@ function init(type, default_flg) {
 	postLatLangZoom(map, type);
 
 	for (var i = 0; i < markerData.length; i++) {
-		markerLatLng = new google.maps.LatLng({lat: markerData[i]['lat'], lng: markerData[i]['lng']});
+		markerLatLng = new google.maps.LatLng({lat: Number(markerData[i]['lat']), lng: Number(markerData[i]['lng']}));
 		var overlay = new CustomMarker(
 			markerLatLng,
 			map,
@@ -533,7 +533,7 @@ function addressFocus(address, map, type) {
 			postLatLangZoom(map, search_type);
 
 			for (var i = 0; i < markerData.length; i++) {
-				markerLatLng = new google.maps.LatLng({lat: markerData[i]['lat'], lng: markerData[i]['lng']});
+				markerLatLng = new google.maps.LatLng({lat: Number(markerData[i]['lat']), lng: Number(markerData[i]['lng']}));
 				var overlay = new CustomMarker(
 					markerLatLng,
 					map,
