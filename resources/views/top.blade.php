@@ -436,12 +436,14 @@ function changeUrl(map) {
 
 function getUrlParams() {
 	var url = location.href;
-	var parameters = url.split("?");
-	var params = parameters[1].split('&');
 	var paramsArray = [];
-	for (var i = 0; i < params.length; i++) {
-		neet = params[i].split('=');
-		paramsArray[neet[0]] = neet[1];
+	if (url.match('&')) {
+		var parameters = url.split("?");
+		var params = parameters[1].split('&');
+		for (var i = 0; i < params.length; i++) {
+			neet = params[i].split('=');
+			paramsArray[neet[0]] = neet[1];
+		}
 	}
 	return paramsArray;
 }
