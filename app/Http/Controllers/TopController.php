@@ -218,12 +218,10 @@ class TopController extends Controller
             if ($tag) {
                 $query = Post::whereHas('postsTags', function($query) use($tag) {
                     $query->where('tag_id', $tag);
-                })->orwhere('title', 'like', '%'.$keyword.'%')
-                  ->orwhere('episode', 'like', '%'.$keyword.'%')
+                })->orwhere('episode', 'like', '%'.$keyword.'%')
                   ->goodsSort();
             }else {
-                $query = Post::where('title', 'like', '%'.$keyword.'%')
-                                ->orwhere('episode', 'like', '%'.$keyword.'%')
+                $query = Post::where('episode', 'like', '%'.$keyword.'%')
                                 ->goodsSort();
             }
             $posts = $query->paginate(18);

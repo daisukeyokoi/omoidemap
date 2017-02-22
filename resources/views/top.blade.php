@@ -85,22 +85,22 @@ use App\Post;
 <div class="sp_feeling_btn_field">
 	<div class="btn-group btn-group-justified" role="group">
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_all active_border" style="height: 40px;">全て表示</button>
+			<button type="button" class="btn map_btn_all active_border">全て表示</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_travel" style="height: 40px;">旅行</button>
+			<button type="button" class="btn map_btn_travel">旅行</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_date" style="height: 40px;">デート</button>
+			<button type="button" class="btn map_btn_date">デート</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_everyday" style="height: 40px;">日常</button>
+			<button type="button" class="btn map_btn_everyday">日常</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_eat" style="height: 40px;">食事</button>
+			<button type="button" class="btn map_btn_eat">食事</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn map_btn_lodging" style="height: 40px;">宿泊</button>
+			<button type="button" class="btn map_btn_lodging">宿泊</button>
 		</div>
 	</div>
 </div>
@@ -189,15 +189,17 @@ use App\Post;
 					</div>
 				</div>
 		    </div>
-			<div class="btn-group btn-group-justified sp_under_menu" role="group">
-				<div class="btn-group" role="group">
-					<button type="button" class="btn sp_under_map" style="font-size: 14px;">思い出マップ</button>
-				</div>
-				<div class="btn-group" role="group">
-					<button type="button" class="btn sp_under_episode" style="font-size: 14px;">エピソード</button>
-				</div>
-				<div class="btn-group" role="group">
-					<button type="button" class="btn sp_under_mypage" style="font-size: 14px;">マイページ</button>
+			<div class="sp_under_menu">
+				<div class="btn-group btn-group-justified" role="group">
+					<div class="btn-group" role="group">
+						<button type="button" class="btn sp_under_map">思い出マップ</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn sp_under_episode">エピソード</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn sp_under_mypage">マイページ</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -224,10 +226,21 @@ use App\Post;
 <script type="text/javascript">
 $.ajaxSetup({headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }});
 $(window).resize(function() {
-	if ($(window).width() >= 768) {
+	if ($(window).width() > 768) {
 		$('.map-embed').show();
 		$('.top_map_search').show();
 		$('.top_left_contents').show();
+	}else {
+		var episode_flg = $("#episode_flg").data('id');
+		if (episode_flg) {
+			$('.top_left_contents').show();
+			$('.map-embed').hide();
+			$('.top_map_search').hide();
+		}else {
+			$('.top_left_contents').hide();
+			$('.map-embed').show();
+			$('.top_map_search').show();
+		}
 	}
 });
 // マーカーのデータ
@@ -721,6 +734,7 @@ $('.sp_under_map').click(function(){
 	$('.top_map_search').show();
 	$('.top_left_contents').hide();
 	init(type, false);
+
 });
 
 $('.sp_under_episode').click(function(){
