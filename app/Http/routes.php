@@ -44,6 +44,18 @@ Route::group(['prefix' => 'login'], function() {
   Route::post('/', 'Auth\AuthController@postLogin');
 });
 
+// ソーシャルログイン
+
+// twitter
+Route::get('auth/twitter', 'Auth\AuthController@redirectToTwitterProvider');
+Route::get('auth/twitter/callback', 'Auth\AuthController@handleTwitterProviderCallback');
+
+// facebook
+Route::get('auth/facebook', 'Auth\AuthController@redirectToFacebookProvider');
+Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookProviderCallback');
+
+
+
 // 新着記事を表示
 Route::group(['prefix' => 'new_post'], function() {
     Route::get('/', 'TopController@getNewPost');

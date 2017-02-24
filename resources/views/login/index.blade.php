@@ -12,6 +12,14 @@
     <div class="login_box_title">
         ログイン
     </div>
+    <div class="twitter_login btn">
+        <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+        <a href="{{url('/auth/twitter')}}">twitterでログインする</a>
+    </div>
+    <div class="facebook_login btn">
+        <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
+        <a href="{{url('/auth/facebook')}}">facebookでログインする</a>
+    </div>
     @include('parts.errormessage')
     <form action="{{url('/login')}}" method="post">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -25,18 +33,16 @@
             <div class="login_text">
                 <input type="password" name="password" placeholder="(必須)パスワードを入力してください。" class="form-control">
             </div>
-            <div class="login_text">
+            <div class="login_memory">
                 <label>
                     <input type="checkbox" name="remember" value="{{AppUtil::FLG_ON}}">ログイン情報を記憶する
                 </label>
+                <span class="password_reset"><a href="{{url('/reminder')}}">パスワードを忘れた方はこちら</a></span>
             </div>
             <div class="login_btn">
                 <input type="submit" value="ログイン" class="btn btn-success btn-lg btn-block">
             </div>
         </div>
     </form>
-    <div class="password_reset">
-        <a href="{{url('/reminder')}}">パスワードを忘れた方はこちら</a>
-    </div>
 </div>
 @stop

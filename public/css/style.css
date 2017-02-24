@@ -673,7 +673,7 @@ header h1 {
   ログイン画面
 ======================================== */
 .login_box {
-  width: 50%;
+  width: 448px;
   margin: 150px auto;
   border: solid 1px #EDEFED;
   position: relative;
@@ -685,22 +685,65 @@ header h1 {
   font-size: 20px;
   padding: 10px 5%;
   background-color: #EDEFED;
+  text-align: center;
 }
 .login_text {
-  margin: 20px 4%;
+    width: 378px;
+    margin: 20px auto 5px auto;
+}
+.login_text input {
+    height: 60px;
+}
+.login_memory {
+    width: 378px;
+    margin: 20px auto 10px auto;
+    font-size: 12px;
 }
 .login_btn {
-  margin: 20px 4% 0 4%;
+    width: 378px;
+    margin: 10px auto 20px auto;
 }
 
 .password_reset {
   float: right;
   margin-bottom: 20px;
   margin-right: 20px;
+  overflow: hidden;
 }
 
 .login_message {
   margin: 20px 4%;
+}
+
+.twitter_login {
+    display: block;
+    background-color: #1DA1F2;
+    overflow: hidden;
+    width: 378px;
+    margin: 20px auto 5px auto;
+    padding: 17px 0;
+    font-size: 16px;
+}
+.twitter_login a {
+    color: white;
+}
+.twitter_login i {
+    color: white;
+}
+.facebook_login {
+    display: block;
+    background-color: #3B5998;
+    overflow: hidden;
+    width: 378px;
+    margin: 5px auto 20px auto;
+    padding: 17px 0;
+    font-size: 16px;
+}
+.facebook_login a {
+    color: white;
+}
+.facebook_login i {
+    color: white;
 }
 
 
@@ -2477,7 +2520,7 @@ footer a:hover {
 
     /*ログイン*/
     .login_box {
-        width: 70%;
+        width: 448px;
         margin-top: 100px;
     }
 
@@ -2676,8 +2719,36 @@ footer a:hover {
 
     /*ログイン*/
     .login_box {
-        width: 80%;
-        margin-top: 80px;
+        width: 100%;
+        margin-top: 50px;
+    }
+
+    .login_text {
+        width: 90%;
+        text-align: center;
+    }
+    .login_text input {
+        height: 40px;
+    }
+    .password_reset {
+        float: none;
+        display: block;
+    }
+    .twitter_login {
+        width: 90%;
+        padding: 12px 0;
+        font-size: 14px;
+    }
+    .facebook_login {
+        width: 90%;
+        padding: 12px 0;
+        font-size: 14px;
+    }
+    .login_btn {
+        width: 90%;
+    }
+    .login_memory {
+        text-align: center;
     }
 
     /*タグページ*/

@@ -105,7 +105,7 @@ use App\Post;
 	</div>
 </div>
 <div class="top_img">
-	<img src="{{url('/top_img_5.jpg')}}" alt="" >
+	<img src="{{url('/top_img_6.jpg')}}" alt="" >
 </div>
 <div class="top_wrapper">
 	<div class="top_left_contents">
