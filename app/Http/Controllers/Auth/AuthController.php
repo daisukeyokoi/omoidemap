@@ -87,7 +87,7 @@ class AuthController extends Controller
     });
 
     session()->flash('flash_message', 'ユーザー確認登録メールを送りました。ユーザー認証してください。');
-		return redirect('/login');
+		return redirect(url('/login'));
   }
 
   /**
@@ -99,14 +99,14 @@ class AuthController extends Controller
 		$user = User::where('confirmation_token', $token)->first();
 		if (! $user){
 			session()->flash('flash_message', '無効なトークンです');
-			return redirect('/login');
+			return redirect(url('/login'));
 		}
 
 		// トークンの初期化と登録完了日設定
 		$user->confirm();
 		$user->save();
 		Auth::login($user);
-		return redirect('/mypage');
+		return redirect(url('/mypage'));
 	}
 
     /**
@@ -178,7 +178,7 @@ class AuthController extends Controller
 	 */
 	public function getLogout(){
 		Auth::logout();
-		return redirect("/login");
+		return redirect(url('/login'));
 	}
 
 
@@ -215,7 +215,7 @@ class AuthController extends Controller
 
         if (!$condition) {
             session()->flash('flash_message', '現在このメールアドレスは使用されているため利用できません。');
-            return redirect('/register');
+            return redirect(url('/register'));
         }
         $password = $oauth_id;
         $login = Auth::attempt([
@@ -227,7 +227,7 @@ class AuthController extends Controller
         }
 
         session()->flash('flash_message', '認証に失敗しました。');
-        return redirect('/login');
+        return redirect(url('/login'));
 
     }
 
@@ -259,7 +259,7 @@ class AuthController extends Controller
 
         if (!$condition) {
             session()->flash('flash_message', '現在このメールアドレスは使用されているため利用できません。');
-            return redirect('/register');
+            return redirect(url('/register'));
         }
         $password = $oauth_id;
         $login = Auth::attempt([
@@ -271,7 +271,7 @@ class AuthController extends Controller
         }
 
         session()->flash('flash_message', '認証に失敗しました。');
-        return redirect('/login');
+        return redirect(url('/login'));
 
     }
 
