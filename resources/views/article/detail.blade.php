@@ -65,36 +65,40 @@ a:hover {
     </div>
     <div class="article_detail_description">
         <div class="article_detail_description_episode">
-            <p>
-                エピソード:&nbsp;{{$article->episode}}
-            </p>
-            <p>
-                年代:&nbsp;{{AppUtil::photoAgeLabel()[$article->age]}}
-            </p>
-            <p>
-                撮影時の気持ち:&nbsp;{{AppUtil::photoFeelingLabel()[$article->feeling]}}
-            </p>
-            <p>
-                撮影場所:&nbsp;{{AppUtil::postNumberRemove($article->address)}}
-            </p>
+            <p>{!! htmlspecialchars(nl2br($article->episode)) !!}</p>
         </div>
     </div>
     <div class="article_detail_comment_tag_field">
-        <div class="article_detail_tag">
-            <div class="article_detail_tag_header">
-                <i class="fa fa-tags" aria-hidden="true"></i>
-                <span>タグ</span>
+        <div class="article_detail_tag_information_field">
+            <div class="article_detail_tag">
+                <div class="article_detail_tag_header">
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                    <span>タグ</span>
+                </div>
+                <div class="article_detail_tag_content">
+                    @if (count($article->postsTags) != 0)
+                        <ul>
+                            @foreach ($article->postsTags as $postTag)
+                                <a href="{{url('/tag', $postTag->tag->id)}}"><li>{{$postTag->tag->name}}</li></a>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p>タグ付けされていません</p>
+                    @endif
+                </div>
             </div>
-            <div class="article_detail_tag_content">
-                @if (count($article->postsTags) != 0)
+            <div class="article_detail_information">
+                <div class="article_detail_information_header">
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                    <span>情報</span>
+                </div>
+                <div class="article_detail_information_content">
                     <ul>
-                        @foreach ($article->postsTags as $postTag)
-                            <a href="{{url('/tag', $postTag->tag->id)}}"><li>{{$postTag->tag->name}}</li></a>
-                        @endforeach
+                        <li><span class="article_detail_information_content_title">撮影時の年代</span><span class="article_detail_information_content_content">{{AppUtil::photoAgeLabel()[$article->age]}}</span></li>
+                        <li><span class="article_detail_information_content_title">思い出の種類</span><span class="article_detail_information_content_content">{{AppUtil::photoFeelingLabel()[$article->feeling]}}</span></li>
+                        <li><span class="article_detail_information_content_title">撮影場所</span><span class="article_detail_information_content_content">{{AppUtil::postNumberRemove($article->address)}}</span></li>
                     </ul>
-                @else
-                    <p>タグ付けされていません</p>
-                @endif
+                </div>
             </div>
         </div>
         <div class="article_detail_comment">
@@ -108,7 +112,7 @@ a:hover {
                         <img src="{{url('/show/user', $comment->user_id)}}" alt="画像" />
                         <div class="article_detail_comment_body_content">
                             <p>{{$comment->user->nickname}}</p>
-                            {!! nl2br($comment->content) !!}
+                            {!! htmlspecialchars(nl2br($comment->content)) !!}
                             <p class="article_detail_comment_body_date">{{$comment->created_at}}</p>
                         </div>
                     </div>

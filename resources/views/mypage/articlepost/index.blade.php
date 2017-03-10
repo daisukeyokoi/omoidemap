@@ -504,7 +504,7 @@ ul {
                 settingMarker(results[0].geometry.location, map);
 
                 // 住所を取得(日本の場合だけ「日本, 」を削除)
-                var address_true = results[0].formatted_address.replace(/^日本, /, '');
+                var address_true = results[0].formatted_address.replace(/日本|,|Unnamed|Road /, '');
                 document.getElementById('address_true').value = address_true;
                 jpCheck(results);
 
@@ -562,7 +562,7 @@ ul {
     }
 
     function jpCheck(results) {
-        if (results[0].formatted_address.slice(0,2) != '日本') {
+        if (results[0].formatted_address.match(/日本/) == null) {
             $("#jp_flg").val({{AppUtil::FLG_OFF}});
         }else {
             $("#jp_flg").val({{AppUtil::FLG_ON}});

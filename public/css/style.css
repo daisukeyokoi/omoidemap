@@ -944,8 +944,13 @@ header h1 {
 }
 
 /*タグ*/
-.article_detail_tag {
+.article_detail_tag_information_field {
+    overflow: hidden;
+    float: right;
     width: 30%;
+}
+.article_detail_tag {
+    width: 100%;
     border: 1px solid #C1C6C4;
     border-radius: 10px;
     float: right;
@@ -961,6 +966,13 @@ header h1 {
     margin: 10px auto;
     overflow: hidden;
 }
+.article_detail_information {
+    width: 100%;
+    border: 1px solid #C1C6C4;
+    border-radius: 10px;
+    float: right;
+    margin-top: 30px;
+}
 .article_detail_tag_content li {
     border: 1px solid #C1C6C4;
     border-radius: 5px;
@@ -969,6 +981,25 @@ header h1 {
     background-color: #E9F8EF;
     float: left;
     margin: 3px;
+}
+
+.article_detail_information_header {
+    padding: 10px 0 10px 5%;
+    border-bottom: 1px solid #C1C6C4;
+}
+.article_detail_information_content li{
+    width: 90%;
+    margin: 10px auto;
+    overflow: hidden;
+}
+
+.article_detail_information_content_title {
+    width: 40%;
+    float: left;
+}
+.article_detail_information_content_content {
+    width: 50%;
+    float: right;
 }
 
 /* ========================================
@@ -2538,6 +2569,13 @@ footer a:hover {
         float: none;
         width: 100%;
         margin-bottom: 20px;
+    }
+
+    .article_detail_tag_information_field {
+        float: none;
+        width: 100%;
+        overflow: hidden;
+        margin-bottom: 50px;
     }
 
     /*タグページ*/
