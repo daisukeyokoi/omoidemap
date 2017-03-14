@@ -438,12 +438,13 @@ header h1 {
     float: left;
 }
 .top_article_list_title {
-    background-color: #bddeff;
+    color: #fff;
+    background-color: #ff8d8d;
     font-size: 20px;
     overflow: hidden;
 }
 .top_article_list_title h3 {
-    border-left: 10px solid #FF7C6C;
+    border-left: 10px solid rgb(255, 200, 205);
     margin: 7px;
     padding-left: 7px;
 
@@ -672,7 +673,7 @@ header h1 {
 .event_field {
     width: 100%;
     float: left;
-    background-color: #ffbec3;
+    background-color: #bbffea;
     margin-top: 50px;
 }
 .event_field li:hover {
@@ -694,7 +695,7 @@ header h1 {
     height: 20px;
     width: 85%;
     font-weight: bold;
-    border-bottom: 3px solid #DFD7CD;
+    border-bottom: 3px solid #7ecaff;
     margin: 0 auto;
 }
 .event_content {
