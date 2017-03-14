@@ -3210,7 +3210,7 @@ footer a:hover {
         position: fixed;
         overflow: hidden;
         bottom: 90px;
-        background-color: yellow;
+        background-color: #ffd77a;
         margin: 0 2.5% 5px 2.5%;
     }
     .sp_event_main {
@@ -3240,8 +3240,8 @@ footer a:hover {
     }
     .sp_event_right_title {
         color: white;
-        background-color: blue;
-        width: 99%;
+        background-color: #5151ff;
+        width: 100%;
         text-align: center;
         margin-bottom: 3px;
         margin-top: 5px;
@@ -3259,13 +3259,13 @@ footer a:hover {
     .sp_event_right_detail {
         float: left;
         width: 48%;
-        background-color: pink;
+        background-color: #ff99ab;
     }
     .sp_event_right_join {
         float: left;
         width: 48%;
         margin-left: 4%;
-        background-color: pink;
+        background-color: #ff99ab;
     }
     .sp_event_cros {
         position: absolute;
