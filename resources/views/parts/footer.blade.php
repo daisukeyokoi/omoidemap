@@ -3,8 +3,8 @@
     <div class="footer_data_list">
         <p class="footer_title">管理者情報</p>
         <ul>
-            <a href="#"><li>運営者情報</li></a>
-            <a href="#"><li>免責条項</li></a>
+            <a href="{{url("/footer?title=運営者情報")}}"><li>運営者情報</li></a>
+            <a href="{{url("/footer?title=免責条項")}}"><li>免責条項</li></a>
             <a href="#"><li>プライバシーポリシー</li></a>
             <a href="{{url('/inquiry')}}"><li>お問い合わせ</li></a>
         </ul>

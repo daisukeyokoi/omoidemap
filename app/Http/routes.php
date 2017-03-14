@@ -21,6 +21,11 @@ use App\Http\Controllers\MypageController;
 // Topページ
 Route::get('/', 'TopController@index');
 
+// footer Page
+Route::get('/footer', 'TopController@showFooter');
+
+
+
 // 会員登録画面表示
 Route::group(['prefix' => 'register'], function() {
   Route::get('/', 'Auth\AuthController@getRegister');

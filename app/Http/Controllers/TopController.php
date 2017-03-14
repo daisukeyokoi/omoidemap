@@ -535,4 +535,10 @@ class TopController extends Controller
 
     }
 
+    // footer page
+    public function showFooter() {
+      return view('footer.index');
+
+    }
+
 }
