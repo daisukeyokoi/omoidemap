@@ -395,7 +395,7 @@ header h1 {
     height: auto;
 }
 .top_prefectures {
-    background-color: #F9F7F4;
+    background-color: rgb(253, 253, 211);
     width: 100%;
     float: right;
     overflow: hidden;
@@ -431,7 +431,7 @@ header h1 {
     float: left;
 }
 .top_article_list_title {
-    background-color: #DCDDDE;
+    background-color: #bddeff;
     font-size: 20px;
     overflow: hidden;
 }
@@ -665,7 +665,7 @@ header h1 {
 .event_field {
     width: 100%;
     float: left;
-    background-color: #F6F5F3;
+    background-color: #ffbec3;
     margin-top: 50px;
 }
 .event_field li:hover {
@@ -888,7 +888,7 @@ header h1 {
     overflow: hidden;
 }
 .article_detail_nickname_title {
-    background-color: #BBBBBB;
+    background-color: rgba(255, 229, 91, 0.44);
     padding: 10px 0;
     padding-left: 3%;
     font-size: 18px;
@@ -929,7 +929,7 @@ header h1 {
     height: auto;
 }
 .article_img_footer {
-    background-color: #BBBBBB;
+    background-color: rgba(255, 229, 91, 0.44);
     font-size: 14px;
     font-weight: bold;
     overflow: hidden;
@@ -1809,7 +1809,7 @@ header h1 {
 .mypage_list .timeline .tweet .tweet-main{
     width: 100%;
     overflow: hidden;
-    background-color: black;
+    background-color: rgba(255, 243, 179, 0.46);
 }
 
 .mypage_list .timeline .tweet .tweet-main .tweet-tags{
@@ -1849,7 +1849,7 @@ header h1 {
 }
 
 .mypage_list .timeline .tweet .tweet-main .tweet-footer {
-    background-color: #BBBBBB;
+    background-color: rgba(255, 229, 91, 0.44);
     font-size: 14px;
     font-weight: bold;
     overflow: hidden;
