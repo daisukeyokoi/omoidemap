@@ -364,6 +364,13 @@ header h1 {
 .top_register_field {
     display: none;
 }
+.top_post_btn {
+    text-align: center;
+    margin-top: 20px;
+}
+.top_post_btn .btn {
+    width: 100%;
+}
 @media all and (max-width: 920px) {
     .top_img input {
         font-size: 12px;
@@ -376,7 +383,7 @@ header h1 {
     height: auto;
     padding-top: 20px;
     overflow: hidden;
-    padding-bottom: 50px;
+    padding-bottom: 30px;
     float: left;
 }
 .map-embed {
@@ -484,7 +491,7 @@ header h1 {
 .article_list_data_title {
     margin-bottom: 5px;
     overflow: hidden;
-    height: 40px;
+    height: auto;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
@@ -543,7 +550,7 @@ header h1 {
 @media all and (max-width: 970px) {
     .article_list_data_title {
         height: 35px;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 4;
     }
     .article_list_img {
         width: 85px;
@@ -800,12 +807,17 @@ header h1 {
     margin: 20px auto 5px auto;
     padding: 17px 0;
     font-size: 16px;
+    color: white;
 }
 .twitter_login a {
     color: white;
 }
+.twitter_login:hover {
+    color: white;
+}
 .twitter_login i {
     color: white;
+    margin-right: 5px;
 }
 .facebook_login {
     display: block;
@@ -815,12 +827,17 @@ header h1 {
     margin: 5px auto 20px auto;
     padding: 17px 0;
     font-size: 16px;
+    color: white;
 }
 .facebook_login a {
     color: white;
 }
+.facebook_login:hover {
+    color:white;
+}
 .facebook_login i {
     color: white;
+    margin-right: 5px;
 }
 
 
@@ -2964,6 +2981,9 @@ footer a:hover {
     }
 
     /*トップページ*/
+    .top_post_btn {
+        display: none;
+    }
     .sp_under_menu {
         display: block;
         position: fixed;
@@ -3082,7 +3102,7 @@ footer a:hover {
     }
     .article_list_data_title {
         height: auto;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 4;
     }
     .sp_feeling_btn_field>.btn-group>.btn-group:first-child:not(:last-child)>.btn:last-child, .btn-group>.btn-group:first-child:not(:last-child)>.dropdown-toggle {
         font-size: 20px;
@@ -3133,7 +3153,7 @@ footer a:hover {
         }
         .article_list_data_title {
             height: auto;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 4;
         }
         .sidebar_article_img {
             width: 90px;
@@ -3158,7 +3178,7 @@ footer a:hover {
         }
         .article_list_data_title {
             height: auto;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 4;
         }
         .sidebar_article_img {
             width: 80px;
@@ -3396,7 +3416,7 @@ footer a:hover {
     }
     .mypage_list .follow-block {
         width: 95%;
-
+    }
     /*//////////////ランキングページ*/
     /*ヘッダー*/
     .ranking_header {
@@ -3490,7 +3510,7 @@ footer a:hover {
     }
     .article_list_data_title {
         height: auto;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 4;
         width: 100%;
     }
     .top_img h1 {

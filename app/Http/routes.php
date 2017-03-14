@@ -252,6 +252,7 @@ Route::group(['middleware' => 'auth'], function() {
                 Route::get('/detail/{id}', 'AdminController@getEventDetail');
                 Route::get('/create', 'AdminController@getEventCreate');
                 Route::get('/create/ranking/{id}', 'AdminController@getEventCreateRanking');
+                Route::post('/create/ranking', 'AdminController@postEventCreateRanking');
                 Route::post('/create', 'AdminController@postEventCreate');
                 Route::get('/edit/{id}', 'AdminController@getEventEdit');
                 Route::post('/edit', 'AdminController@postEventEdit');

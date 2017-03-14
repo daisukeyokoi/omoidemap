@@ -46,7 +46,7 @@ class UpdateStateEvent extends Command
         }
 
         // 開催期間が終了したイベントを審査中に変更する
-        $events_e = Event::where('end', $today)->where('state', Event::OPEN)->get();
+        $events_e = Event::where('end', date('Y-m-d', strtotime("$today - 1 day")))->where('state', Event::OPEN)->get();
         foreach($events_e as $event) {
             $event->state = Event::REVIEW;
             $event->save();

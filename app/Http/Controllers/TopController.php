@@ -208,7 +208,6 @@ class TopController extends Controller
     // いきたい
     public function ajaxPlusGo(Request $request) {
         $post = Post::find($request->post_id);
-        Log::info($post);
         if (empty($post) || !Auth::check()) {
             return response()->json([
                 'message' => 'error'

@@ -74,6 +74,16 @@ a:hover {
 .top_loading_img {
 	text-align: center;
 }
+@media all and (max-width: 768px) {
+	footer  {
+		display: none;
+	}
+}
+@media all and (max-width: 480px) {
+	footer {
+		display: none;
+	}
+}
 </style>
 @if (count($events) == 0)
 <style>
@@ -81,16 +91,10 @@ a:hover {
 	.sp_posting_btn {
 		bottom: 120px;
 	}
-	.fotter  {
-		display: none;
-	}
 }
 @media all and (max-width: 480px) {
 	.sp_posting_btn {
 		bottom: 60px;
-	}
-	.footer {
-		display: none;
 	}
 }
 </style>
@@ -209,6 +213,9 @@ use App\Post;
 					</div>
 				</div>
 		    </div>
+			<div class="top_post_btn">
+				<a href="@if (Auth::check()){{url('/mypage/a_post')}} @else {{url('/login?post_article=1')}} @endif"><button class="btn btn-primary">思い出を投稿する</button></a>
+			</div>
 			<a href="@if (Auth::check()){{url('/mypage/a_post')}} @else {{url('/login?post_article=1')}} @endif"><div class="sp_posting_btn"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></div></a>
 			@if (count($events) != 0)
 				<div class="sp_event">
