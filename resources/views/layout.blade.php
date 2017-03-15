@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="思い出の場所の写真とエピソードを投稿するサイトです。自分にとってはなんでもない風景でも、誰かにとっては特別な場所かもしれない。それを集めて地図にする。">
-    <meta name="keywords" content="思い出,旅行,まっぷ,写真,食事,デート, おもいでまっぷ,思い出マップ">
+    <meta name="description" content="皆の思い出で作る観光マップサイト。思い出の場所を共有して観光マップを作成します。思い出の場所を巡る、一味違う観光を体験してみてください！">
+    <meta name="keywords" content="思い出,観光,SNS,旅行,地図,写真,食事,デート,おすすめ,おもいでまっぷ,思い出マップ">
     <meta property="og:url" content="{{Request::url()}}">
     <meta property="og:type" content="website">
     <meta property="og:title" content="思い出マップ">
-    <meta property="og:description" content="思い出の場所の写真とエピソードを投稿するサイトです。自分にとってはなんでもない風景でも、誰かにとっては特別な場所かもしれない。それを集めて地図にする。">
+    <meta property="og:description" content="皆の思い出で作る観光マップサイト。思い出の場所を共有して観光マップを作成します。思い出の場所を巡る、一味違う観光を体験してみてください！">
     <title>思い出マップ</title>
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">

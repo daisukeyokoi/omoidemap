@@ -12,6 +12,10 @@
 }
 h1 {
   margin: 0;
+  color: #fff;
+  background-color: #ff8d8d;
+  font-size: 20px;
+  overflow: hidden;
 }
 
 .clearfix {
@@ -1348,9 +1352,9 @@ header h1 {
     overflow: hidden;
 }
 .ranking_wrapper h1 {
-    border-bottom: 2px solid black;
+    /*border-bottom: 2px solid black;*/
     display: inline-block;
-    padding-right: 20px;
+    padding: 5px 20px;
 }
 .ranking_main {
     width: 70%;

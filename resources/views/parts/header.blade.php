@@ -45,7 +45,7 @@
         @else
             <a href="{{url('/mypage')}}"><li>マイページ</li></a>
         @endif
-        <a href="{{url('/ranking')}}"><li>Ranking</li></a>
+        <a href="{{url('/ranking')}}"><li>ランキング</li></a>
         <a href="#"><li>このサイトについて</li></a>
     </ul>
 </nav>

@@ -9,7 +9,7 @@
     </ul>
 </div>
 <div class="ranking_wrapper">
-    <h1>RANKING</h1>
+    <h1>ランキング</h1>
     @if (Input::get('r_type') == 'prefectures')
         <select id="prefecture" class="form-control">
             @foreach ($prefectures as $prefecture)
