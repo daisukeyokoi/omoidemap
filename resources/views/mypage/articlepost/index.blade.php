@@ -445,7 +445,8 @@ ul {
     function settingMarker(position, map) {
         var marker = new google.maps.Marker({
             map: map,
-            position: position
+            position: position,
+            draggable:true,
         });
         markersArray.push(marker);
 
