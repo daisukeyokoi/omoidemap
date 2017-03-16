@@ -474,10 +474,10 @@ function setZoomLimit(map, mapTypeId){
   var mapType = mapTypeRegistry.get(mapTypeId);
   //ズームレベルを設定する
   if ($(window).width() <= 768) {
-	  mapType.maxZoom = 15;  //SATELLITE・HYBRIDは機能しない
+	  mapType.maxZoom = 20;  //SATELLITE・HYBRIDは機能しない
 	  mapType.minZoom = 4;
   }else {
-	  mapType.maxZoom = 15;  //SATELLITE・HYBRIDは機能しない
+	  mapType.maxZoom = 20;  //SATELLITE・HYBRIDは機能しない
 	  mapType.minZoom = 5;
   }
 }
