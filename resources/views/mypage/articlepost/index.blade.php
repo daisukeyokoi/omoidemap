@@ -425,7 +425,7 @@ ul {
 
         // 地図のオプションを設定する
         var mapOptions = {
-            zoom: 18,
+            zoom: 20,
             center: latlng ,		// 中心座標 [latlng]
         };
 
@@ -533,7 +533,7 @@ ul {
         var geocoder = new google.maps.Geocoder();
 
         var mapOptions = {
-            zoom: 18,
+            zoom: 20,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 

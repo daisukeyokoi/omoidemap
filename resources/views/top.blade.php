@@ -322,6 +322,8 @@ var basic_sw_lat;
 var basic_sw_lng;
 var basic_ne_lat;
 var basic_ne_lng;
+
+
 ////////////////// カスタムマーカー
 function CustomMarker(latlng, map, args, markerData) {
 	this.latlng = latlng;
@@ -372,7 +374,10 @@ CustomMarker.prototype.draw = function() {
 		// 	location.href = markerData.url;
 		// });
 
+
+
 		google.maps.event.addDomListener(div, "click", function() {
+
 			infowindow.open(map);
 		});
 
@@ -405,6 +410,7 @@ CustomMarker.prototype.remove = function() {
 CustomMarker.prototype.getPosition = function() {
 	return this.latlng;
 };
+
 ///////////////// カスタムマーカー終わり
 
 init(0, true);
@@ -881,5 +887,7 @@ $(function(){
         });
     });
 });
+
+
 </script>
 @stop
