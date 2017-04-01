@@ -281,4 +281,29 @@ class AppUtil {
             return '/background_4.jpg';
         }
     }
+
+    //////////////////////////////////////////////////////////////
+    // マーカーデータ作成
+    //////////////////////////////////////////////////////////////
+    public static function createMarkerData($posts) {
+        $markerData = [];
+        foreach($posts as $post) {
+            if (isset($post->oneImage->image)) {
+                $data = [
+                    'lat' => $post->lat,
+                    'lng' => $post->lng,
+                    'image' => url($post->oneImage->image),
+                    'good' => $post->goods->count(),
+                    'comment' => $post->comments->count(),
+                    'url' => url('/article/detail', $post->id),
+                    'feeling' => AppUtil::photoFeelingLabel()[$post->feeling],
+                    'age' => AppUtil::photoAgeLabel()[$post->age],
+                    'tag' => AppUtil::mapTag($post),
+                    'episode' => AppUtil::wordRound(preg_replace('/[\n\r\t]/', '', $post->episode), 56)
+                ];
+                $markerData[] = $data;
+            }
+        }
+        return $markerData;
+    }
 }

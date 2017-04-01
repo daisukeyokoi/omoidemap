@@ -267,7 +267,6 @@ class MypageController extends Controller
             // タグの生成
             if (!empty($request->tags)) {
                 $tags = array_unique($request->tags);
-                Log::info($tags);
                 for ($i = 0; $i < count($tags); $i ++) {
                     if (!Tag::where('name', $tags[$i])->exists()) {
                         $tag = new Tag();

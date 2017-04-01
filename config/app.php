@@ -145,6 +145,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -204,6 +205,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'AppUtil'   => App\Helpers\AppUtil::class,
         'Image'     => Intervention\Image\Facades\Image::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 

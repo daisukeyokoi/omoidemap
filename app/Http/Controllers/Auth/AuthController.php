@@ -23,7 +23,7 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use App\Helpers\AppUtil;
-
+use Socialite;
 class AuthController extends Controller
 {
     /*
@@ -50,23 +50,23 @@ class AuthController extends Controller
   // 仮会員登録
   public function postRegister(Request $request) {
     $rules = [
-      'nickname'       => 'required|string',
+            'nickname'       => 'required|string',
 			'password'       => 'required|confirmed|min:6|max:64|alpha_num',
 			'email'          => 'required|max:255|email|unique:users',
 		];
 
 		$messages = [
-      'nickname.required'  => 'ニックネームを入力してください。',
-      'nickname.string'    => 'ニックネームは文字列で入力してください。',
-      'password.required'  => 'パスワードを入力してください。',
-      'password.confirmed' => '再入力されたパスワードと異なっています。',
-      'password.min'       => 'パスワードは6文字以上で入力してください。',
-      'password.max'       => 'パスワードは64文字以上で入力してください。',
-      'password.alpha_num' => 'パスワードは半角英数字で入力してください。',
-      'email.required'     => 'メールアドレスを入力してください。',
-      'email.max'          => 'メールアドレスは255文字以内で入力してください。',
-      'email.email'        => 'メールアドレスを入力してください。',
-			'email.unique'       => 'そのメールアドレスは既に使用されています。',
+          'nickname.required'  => 'ニックネームを入力してください。',
+          'nickname.string'    => 'ニックネームは文字列で入力してください。',
+          'password.required'  => 'パスワードを入力してください。',
+          'password.confirmed' => '再入力されたパスワードと異なっています。',
+          'password.min'       => 'パスワードは6文字以上で入力してください。',
+          'password.max'       => 'パスワードは64文字以上で入力してください。',
+          'password.alpha_num' => 'パスワードは半角英数字で入力してください。',
+          'email.required'     => 'メールアドレスを入力してください。',
+          'email.max'          => 'メールアドレスは255文字以内で入力してください。',
+          'email.email'        => 'メールアドレスを入力してください。',
+          'email.unique'       => 'そのメールアドレスは既に使用されています。',
 		];
     $validator = Validator::make($request->all(), $rules, $messages);
     if ($validator->fails()) {
@@ -87,7 +87,7 @@ class AuthController extends Controller
     });
 
     session()->flash('flash_message', 'ユーザー確認登録メールを送りました。ユーザー認証してください。');
-		return redirect('/login');
+		return redirect(url('/login'));
   }
 
   /**
@@ -99,14 +99,14 @@ class AuthController extends Controller
 		$user = User::where('confirmation_token', $token)->first();
 		if (! $user){
 			session()->flash('flash_message', '無効なトークンです');
-			return redirect('/login');
+			return redirect(url('/login'));
 		}
 
 		// トークンの初期化と登録完了日設定
 		$user->confirm();
 		$user->save();
 		Auth::login($user);
-		return redirect('/mypage');
+		return redirect(url('/mypage'));
 	}
 
     /**
@@ -124,6 +124,16 @@ class AuthController extends Controller
             session()->put('a_d', $request->a_d);
         }else {
             session()->forget('a_d');
+        }
+
+        if (isset($request->e_id)) {
+            session()->put('e_id', $request->e_id);
+        }else {
+            session()->forget('e_id');
+        }
+
+        if (isset($request->post_article)) {
+            session()->put('post_article', AppUtil::FLG_ON);
         }
         return view('login.index');
     }
@@ -156,8 +166,12 @@ class AuthController extends Controller
 			if (session()->has('a_d')) {
 				return redirect(url('/article/detail', session()->pull('a_d')));
 			} else {
-                if (isset($request->event_id)) {
-                    return redirect(url('/mypage/a_post?e_id='.$request->event_id));
+                if (session()->has('e_id')) {
+                    return redirect(url('/mypage/a_post?e_id='.session()->pull('e_id')));
+                }
+                if (session()->has('post_article')) {
+                    session()->forget('post_article');
+                    return redirect(url('/mypage/a_post'));
                 }
                 if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
                     return redirect(url('/mypage'));
@@ -173,14 +187,150 @@ class AuthController extends Controller
 
 
 
-  /**
+    /**
 	 * ログアウト処理
 	 */
 	public function getLogout(){
 		Auth::logout();
-		return redirect("/login");
+		return redirect(url('/login'));
 	}
 
+
+
+    /**
+	 * ソーシャルログイン
+	 */
+
+    // twitter
+    public function redirectToTwitterProvider() {
+        return Socialite::driver('twitter')->redirect();
+    }
+
+    public function handleTwitterProviderCallback() {
+        try {
+            $user = Socialite::with('twitter')->user();
+        }catch (Exeption $e) {
+            return redirect(url('/auth/twitter'));
+        }
+
+        $nickname = $user->nickname;
+        $email = $user->email;
+        $oauth_id = $user->id;
+        $avatar = $user->avatar_original;
+        $condition = true;
+        if (count($email) == 0) {
+            session()->flash('flash_message', 'Twitterアカウントからemailアドレスへのアクセスを許可するように設定してください');
+            return redirect(url('/login'));
+        }
+
+        if (!User::where('oauth_id', $oauth_id)->exists()) {
+            $condition = $this->OAuthRegister($nickname, $email, $oauth_id, $avatar);
+        }
+
+        if (!$condition) {
+            session()->flash('flash_message', '現在このメールアドレスは使用されているため利用できません。');
+            return redirect(url('/register'));
+        }
+        $password = $oauth_id;
+        $login = Auth::attempt([
+            'email' => $email,
+            'password' => $password
+        ]);
+        if ($login) {
+            if (session()->has('a_d')) {
+				return redirect(url('/article/detail', session()->pull('a_d')));
+			} else {
+                if (session()->has('e_id')) {
+                    return redirect(url('/mypage/a_post?e_id='.session()->pull('e_id')));
+                }
+                if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
+                    return redirect(url('/mypage'));
+                }else {
+                    return redirect(url('/admin'));
+                }
+			}
+        }
+
+        session()->flash('flash_message', '認証に失敗しました。');
+        return redirect(url('/login'));
+
+    }
+
+    // facebook
+    public function redirectToFacebookProvider() {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function handleFacebookProviderCallback() {
+        try {
+            $user = Socialite::driver('facebook')->user();
+        }catch (Exeption $e) {
+            return redirect(url('/auth/twitter'));
+        }
+
+		$email = $user->getEmail();
+		$nickname = $user->getName();
+        $oauth_id = $user->getId();
+        $avatar = $user->getAvatar();
+        $condition = true;
+        if (count($email) == 0) {
+            session()->flash('flash_message', 'Facebookアカウントからemailアドレスへのアクセスを許可するように設定してください');
+            return redirect(url('/login'));
+        }
+
+        if (!User::where('oauth_id', $oauth_id)->exists()) {
+            $condition = $this->OAuthRegister($nickname, $email, $oauth_id, $avatar);
+        }
+
+        if (!$condition) {
+            session()->flash('flash_message', '現在このメールアドレスは使用されているため利用できません。');
+            return redirect(url('/register'));
+        }
+        $password = $oauth_id;
+        $login = Auth::attempt([
+            'email' => $email,
+            'password' => $password
+        ]);
+        if ($login) {
+            if (session()->has('a_d')) {
+				return redirect(url('/article/detail', session()->pull('a_d')));
+			} else {
+                if (session()->has('e_id')) {
+                    return redirect(url('/mypage/a_post?e_id='.session()->pull('e_id')));
+                }
+                if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
+                    return redirect(url('/mypage'));
+                }else {
+                    return redirect(url('/admin'));
+                }
+			}
+        }
+
+        session()->flash('flash_message', '認証に失敗しました。');
+        return redirect(url('/login'));
+
+    }
+
+    private function OAuthRegister($nickname, $email, $oauth_id, $avatar) {
+        if (User::where('email', $email)->exists()) {
+            return false;
+        }
+
+        $user = new User();
+        $user->nickname = $nickname;
+        $user->email = $email;
+        $user->oauth_id = $oauth_id;
+        $user->password = bcrypt($oauth_id);
+        $user->confirmation_token = "";
+        $user->confirmed_at = Carbon::now();
+        $user->created_at = Carbon::now();
+        if (count($avatar) != 0) {
+            $image = AppUtil::saveImage($avatar, 'user_profile', 700);
+            $user->image = $image;
+        }
+        $user->save();
+        return true;
+    }
 
 
 

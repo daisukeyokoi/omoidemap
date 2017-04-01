@@ -35,6 +35,10 @@ class Post extends Model
         return $this->hasMany('App\Good');
     }
 
+    public function goes() {
+        return $this->hasMany('App\Go');
+    }
+
     public function eventPost() {
         return $this->hasOne('App\EventPost');
     }
@@ -80,6 +84,12 @@ class Post extends Model
     public function scopeGoodsSort($query) {
         return $query->leftJoin('goods', 'posts.id', '=', 'goods.post_id')
                      ->selectRaw('posts.*, count(goods.post_id) as count')
+                     ->groupBy('posts.id')
+                     ->orderBy('count', 'desc');
+    }
+    public function scopeGoesSort($query) {
+        return $query->leftJoin('goes', 'posts.id', '=', 'goes.post_id')
+                     ->selectRaw('posts.*, count(goes.post_id) as count')
                      ->groupBy('posts.id')
                      ->orderBy('count', 'desc');
     }

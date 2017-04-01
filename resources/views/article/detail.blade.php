@@ -47,13 +47,25 @@ a:hover {
                     <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                     <span id="good_count">{{count($article->goods)}}</span>
                 </div>
+                <div class="article_img_footer_good_field" id="go">
+                    <span>いきたい！</span>
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                    <span id="go_count">{{count($article->goes)}}</span>
+                </div>
             @else
                 <a href="{{url('/login?a_d='. $article->id)}}">
-                <div class="article_img_footer_good_field">
-                    <span>いいね！</span>
-                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                    <span id="good_count">{{count($article->goods)}}</span>
-                </div>
+                    <div class="article_img_footer_good_field">
+                        <span>いいね！</span>
+                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <span id="good_count">{{count($article->goods)}}</span>
+                    </div>
+                </a>
+                <a href="{{url('/login?a_d='. $article->id)}}">
+                    <div class="article_img_footer_good_field">
+                        <span>いきたい！</span>
+                        <i class="fa fa-car" aria-hidden="true"></i>
+                        <span id="go_count">{{count($article->goes)}}</span>
+                    </div>
                 </a>
             @endif
             <div class="article_img_footer_comment_field">
@@ -65,36 +77,40 @@ a:hover {
     </div>
     <div class="article_detail_description">
         <div class="article_detail_description_episode">
-            <p>
-                エピソード:&nbsp;{{$article->episode}}
-            </p>
-            <p>
-                年代:&nbsp;{{AppUtil::photoAgeLabel()[$article->age]}}
-            </p>
-            <p>
-                撮影時の気持ち:&nbsp;{{AppUtil::photoFeelingLabel()[$article->feeling]}}
-            </p>
-            <p>
-                撮影場所:&nbsp;{{AppUtil::postNumberRemove($article->address)}}
-            </p>
+            <p>{!! nl2br(htmlspecialchars($article->episode)) !!}</p>
         </div>
     </div>
     <div class="article_detail_comment_tag_field">
-        <div class="article_detail_tag">
-            <div class="article_detail_tag_header">
-                <i class="fa fa-tags" aria-hidden="true"></i>
-                <span>タグ</span>
+        <div class="article_detail_tag_information_field">
+            <div class="article_detail_tag">
+                <div class="article_detail_tag_header">
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                    <span>タグ</span>
+                </div>
+                <div class="article_detail_tag_content">
+                    @if (count($article->postsTags) != 0)
+                        <ul>
+                            @foreach ($article->postsTags as $postTag)
+                                <a href="{{url('/tag', $postTag->tag->id)}}"><li>{{$postTag->tag->name}}</li></a>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p>タグ付けされていません</p>
+                    @endif
+                </div>
             </div>
-            <div class="article_detail_tag_content">
-                @if (count($article->postsTags) != 0)
+            <div class="article_detail_information">
+                <div class="article_detail_information_header">
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                    <span>情報</span>
+                </div>
+                <div class="article_detail_information_content">
                     <ul>
-                        @foreach ($article->postsTags as $postTag)
-                            <a href="{{url('/tag', $postTag->tag->id)}}"><li>{{$postTag->tag->name}}</li></a>
-                        @endforeach
+                        <li><span class="article_detail_information_content_title">撮影時の年代</span><span class="article_detail_information_content_content">{{AppUtil::photoAgeLabel()[$article->age]}}</span></li>
+                        <li><span class="article_detail_information_content_title">思い出の種類</span><span class="article_detail_information_content_content">{{AppUtil::photoFeelingLabel()[$article->feeling]}}</span></li>
+                        <li><span class="article_detail_information_content_title">撮影場所</span><span class="article_detail_information_content_content">{{AppUtil::postNumberRemove($article->address)}}</span></li>
                     </ul>
-                @else
-                    <p>タグ付けされていません</p>
-                @endif
+                </div>
             </div>
         </div>
         <div class="article_detail_comment">
@@ -108,7 +124,7 @@ a:hover {
                         <img src="{{url('/show/user', $comment->user_id)}}" alt="画像" />
                         <div class="article_detail_comment_body_content">
                             <p>{{$comment->user->nickname}}</p>
-                            {!! nl2br($comment->content) !!}
+                            {!! nl2br(htmlspecialchars($comment->content)) !!}
                             <p class="article_detail_comment_body_date">{{$comment->created_at}}</p>
                         </div>
                     </div>
@@ -160,6 +176,28 @@ $(function() {
                     alert('すでにいいねしています。');
                 }else {
                     alert('自分の投稿にいいねはできません。');
+                }
+            },
+        })
+    });
+
+    $("#go").on('click', function(){
+        var post_id = {{$article->id}};
+        $.ajax({
+            type: "POST",
+            url: "{{url('/plus_go')}}",
+            data: {
+                "post_id": post_id
+            },
+            success: function(res) {
+                if (res.message == 'success') {
+                    $("#go_count").text(res.count);
+                }else if (res.message == 'error'){
+                    alert('エラーが発生したためいきたい!できませんでした。');
+                }else if (res.message == 'already'){
+                    alert('すでにいきたい!しています。');
+                }else {
+                    alert('自分の投稿にいきたい！はできません。');
                 }
             },
         })

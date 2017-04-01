@@ -24,6 +24,9 @@ use App\Event;
 use App\User;
 use Carbon\Carbon;
 use App\Inquiry;
+use App\Favorite;
+use Illuminate\Http\JsonResponse;
+use App\Go;
 
 class TopController extends Controller
 {
@@ -32,7 +35,7 @@ class TopController extends Controller
     public function index(Request $request) {
         $regions = Region::all();
         $posts = Post::all();
-        $events = Event::where('state', Event::OPEN)->take(6)->get();
+        $events = Event::where('state', Event::OPEN)->orderBy('created_at', 'desc')->take(6)->get();
         return view('top', compact('regions', 'posts', 'tags', 'events'));
     }
 
@@ -68,15 +71,58 @@ class TopController extends Controller
                     'tag'      => AppUtil::topTag($post),
                     'address'  => AppUtil::postNumberRemove($post->address),
                     'goods'    => count($post->goods),
-                    'comments' => count($post->comments)
+                    'comments' => count($post->comments),
+                    'id'       => $post->id,
+                    'nickname' => $post->user->nickname
                 ]
             ];
         }
         return response()->json([
-            'articles' => $articles
+            'articles' => $articles,
+            'lat' => $request->lat,
+            'lng' => $request->lng,
+            'zoom' => $request->zoom
         ]);
     }
 
+    //////////////////////// お気に入り登録 //////////////
+    public function ajaxFavoritePost(Request $request) {
+        if (!Auth::check()) {
+            $response = ['error' => 'login'];
+            return JsonResponse::create($response);
+        }
+
+        $post_id = $request->post_id;
+        $user = Auth::user();
+        $response = [];
+        if ($user->favPosts()->find($post_id)) {
+            $user->favPosts()->detach($post_id);
+        }else {
+            $post = Post::find($post_id);
+            if ($post->user_id != $user->id) {
+                $user->favPosts()->attach($post_id);
+            }else {
+                $response = ['error' => 'post'];
+            }
+        }
+        return JsonResponse::create($response);
+    }
+
+    // チェック
+    public function ajaxFavoriteCheck(Request $request) {
+        if (!Auth::check()) {
+            $response = ['error' => 'login'];
+            return JsonResponse::create($response);
+        }
+        $post_id = $request->post_id;
+        $user = Auth::user();
+        if ($user->favPosts()->find($post_id)) {
+            $response = ['mes' => 's'];
+        }else {
+            $response = ['mes' => 'e'];
+        }
+        return JsonResponse::create($response);
+    }
 
     ///////////////////////// 新着ページ//////////////
     // 新着記事表示
@@ -159,6 +205,37 @@ class TopController extends Controller
         ]);
     }
 
+    // いきたい
+    public function ajaxPlusGo(Request $request) {
+        $post = Post::find($request->post_id);
+        Log::info($post);
+        if (empty($post) || !Auth::check()) {
+            return response()->json([
+                'message' => 'error'
+            ]);
+        }
+        $user_id = Auth::user()->id;
+        if ($post->user_id == $user_id) {
+            return response()->json([
+                'message' => 'you'
+            ]);
+        }
+        if (Go::where('post_id', $request->post_id)->where('user_id', $user_id)->exists()) {
+            return response()->json([
+                'message' => 'already'
+            ]);
+        }
+        $go = new Go();
+        $go->post_id = $request->post_id;
+        $go->user_id = $user_id;
+        $go->save();
+        $go_count = Go::where('post_id', $request->post_id)->count();
+        return response()->json([
+            'message' => 'success',
+            'count'   => $go_count
+        ]);
+    }
+
     // コメント投稿
     public function postComment(Request $request) {
         $rules = [
@@ -232,12 +309,10 @@ class TopController extends Controller
             if ($tag) {
                 $query = Post::whereHas('postsTags', function($query) use($tag) {
                     $query->where('tag_id', $tag);
-                })->orwhere('title', 'like', '%'.$keyword.'%')
-                  ->orwhere('episode', 'like', '%'.$keyword.'%')
+                })->orwhere('episode', 'like', '%'.$keyword.'%')
                   ->goodsSort();
             }else {
-                $query = Post::where('title', 'like', '%'.$keyword.'%')
-                                ->orwhere('episode', 'like', '%'.$keyword.'%')
+                $query = Post::where('episode', 'like', '%'.$keyword.'%')
                                 ->goodsSort();
             }
             $posts = $query->paginate(18);
@@ -249,91 +324,116 @@ class TopController extends Controller
     }
 
     ////////////////////////// ランキングページ///////////////////////
-    public function getRanking() {
-        $posts = Post::goodsSort()->take(3)->get();
+    public function getRanking(Request $request) {
+        if(isset($request->r_type)) {
+            switch ($request->r_type) {
+                case 'prefectures':
+                    if (isset($request->prefecture)) {
+                        $posts = Post::where('address', 'like', '%'.$request->prefecture.'%')->goodsSort()->take(3)->get();
+                    }else {
+                        $posts = Post::where('address', 'like', '%東京都%')->goodsSort()->take(3)->get();
+                    }
+                    break;
+                case 'category':
+                    if (isset($request->feeling)) {
+                        $posts = Post::where('feeling', $request->feeling)->goodsSort()->take(3)->get();
+                    }else {
+                        $posts = Post::where('feeling', 1)->goodsSort()->take(3)->get();
+                    }
+                    break;
+                case 'go':
+                    $posts = Post::goesSort()->take(3)->get();
+                    break;
+                default:
+                    $posts = Post::goodsSort()->take(3)->get();
+                    break;
+            }
+        }else {
+            $posts = Post::goodsSort()->take(3)->get();
+        }
         $rank = 0;
         $prefectures = Prefecture::all();
         $tags = Tag::postsSort()->take(30)->get();
         return view('ranking.index', compact('posts', 'rank', 'prefectures', 'tags'));
     }
 
-    public function ajaxGetRankingPrefectures(Request $request) {
-        $prefecture = Prefecture::find($request->prefecture_id);
-        if (empty($prefecture)) {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }
-        $posts = Post::where('address', 'like', '%'.$prefecture->name.'%')->goodsSort()->take(3)->get();
-        if (count($posts) == 0) {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }else {
-            $articles = self::createRankingArticles($posts);
-            return response()->json([
-                'message' => 'success',
-                'posts'   => $articles
-            ]);
-        }
-    }
-
-    public function ajaxGetRankingFeeling(Request $request) {
-        $posts = Post::where('feeling', $request->feeling_id)->goodsSort()->take(3)->get();
-        if (count($posts) == 0) {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }else {
-            $articles = self::createRankingArticles($posts);
-            return response()->json([
-                'message' => 'success',
-                'posts'   => $articles
-            ]);
-        }
-    }
-
-    public function ajaxGetRankingTags(Request $request) {
-        $tag = Tag::find($request->tag_id);
-        if (count($tag) == 0) {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }
-        $posts = $tag->postsTags()->leftjoin('posts', 'posts_tags.post_id', '=', 'posts.id')
-                                  ->selectRaw('posts_tags.post_id, posts.*')
-                                  ->groupBy('posts.id')
-                                  ->leftJoin('goods', 'posts.id', '=', 'goods.post_id')
-                                  ->selectRaw('posts.*, count(goods.post_id) as count')
-                                  ->groupBy('posts.id')
-                                  ->orderBy('count', 'desc')
-                                  ->take(3)
-                                  ->get();
-        if (count($posts) == 0) {
-          return response()->json([
-              'message' => 'error'
-          ]);
-        }else {
-            $articles = [];
-            foreach($posts as $post) {
-                $articles[] = [
-                    [
-                        'url'      => url('/article/detail', $post->post->id),
-                        'image'    => "'" .url($post->post->oneImage->image)."'",
-                        'title'    => $post->post->title,
-                        'address'  => AppUtil::postNumberRemove($post->post->address),
-                        'user_image' => url('/show/user', $post->post->user_id),
-                        'goods'    => count($post->post->goods),
-                        'comments' => count($post->post->comments)
-                    ]
-                ];
-            }
-          return response()->json([
-              'message' => 'success',
-              'posts'   => $articles
-          ]);
-        }
-    }
+    // public function ajaxGetRankingPrefectures(Request $request) {
+    //     $prefecture = Prefecture::find($request->prefecture_id);
+    //     if (empty($prefecture)) {
+    //         return response()->json([
+    //             'message' => 'error'
+    //         ]);
+    //     }
+    //     $posts = Post::where('address', 'like', '%'.$prefecture->name.'%')->goodsSort()->take(3)->get();
+    //     if (count($posts) == 0) {
+    //         return response()->json([
+    //             'message' => 'error'
+    //         ]);
+    //     }else {
+    //         $articles = self::createRankingArticles($posts);
+    //         return response()->json([
+    //             'message' => 'success',
+    //             'posts'   => $articles
+    //         ]);
+    //     }
+    // }
+    //
+    // public function ajaxGetRankingFeeling(Request $request) {
+    //     $posts = Post::where('feeling', $request->feeling_id)->goodsSort()->take(3)->get();
+    //     if (count($posts) == 0) {
+    //         return response()->json([
+    //             'message' => 'error'
+    //         ]);
+    //     }else {
+    //         $articles = self::createRankingArticles($posts);
+    //         return response()->json([
+    //             'message' => 'success',
+    //             'posts'   => $articles
+    //         ]);
+    //     }
+    // }
+    //
+    // public function ajaxGetRankingTags(Request $request) {
+    //     $tag = Tag::find($request->tag_id);
+    //     if (count($tag) == 0) {
+    //         return response()->json([
+    //             'message' => 'error'
+    //         ]);
+    //     }
+    //     $posts = $tag->postsTags()->leftjoin('posts', 'posts_tags.post_id', '=', 'posts.id')
+    //                               ->selectRaw('posts_tags.post_id, posts.*')
+    //                               ->groupBy('posts.id')
+    //                               ->leftJoin('goods', 'posts.id', '=', 'goods.post_id')
+    //                               ->selectRaw('posts.*, count(goods.post_id) as count')
+    //                               ->groupBy('posts.id')
+    //                               ->orderBy('count', 'desc')
+    //                               ->take(3)
+    //                               ->get();
+    //     if (count($posts) == 0) {
+    //       return response()->json([
+    //           'message' => 'error'
+    //       ]);
+    //     }else {
+    //         $articles = [];
+    //         foreach($posts as $post) {
+    //             $articles[] = [
+    //                 [
+    //                     'url'      => url('/article/detail', $post->post->id),
+    //                     'image'    => "'" .url($post->post->oneImage->image)."'",
+    //                     'title'    => $post->post->title,
+    //                     'address'  => AppUtil::postNumberRemove($post->post->address),
+    //                     'user_image' => url('/show/user', $post->post->user_id),
+    //                     'goods'    => count($post->post->goods),
+    //                     'comments' => count($post->post->comments)
+    //                 ]
+    //             ];
+    //         }
+    //       return response()->json([
+    //           'message' => 'success',
+    //           'posts'   => $articles
+    //       ]);
+    //     }
+    // }
 
     private function createRankingArticles($posts) {
         $articles = [];
@@ -359,10 +459,14 @@ class TopController extends Controller
         if (empty($event)) {
             abort(404);
         }
+        if ($event->state == Event::YET) {
+            abort(404);
+        }
         $today = Carbon::today();
         $posts = Post::where('event_id', $id)->get();
-        $other_events = Event::where('id', '!=', $id)->where('end', '>=', $today)->get();
-        return view('event.index', compact('event', 'posts', 'other_events'));
+        $other_events = Event::where('id', '!=', $id)->where('end', '>=', $today)->where('state', '!=', Event::CLOSE)->get();
+        $end_events = Event::where('id', '!=', $id)->where('state', Event::CLOSE)->orderBy('created_at', 'desc')->get();
+        return view('event.index', compact('event', 'posts', 'other_events', 'end_events'));
     }
 
 

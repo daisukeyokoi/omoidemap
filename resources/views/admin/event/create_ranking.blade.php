@@ -193,6 +193,8 @@
         </form>
     @elseif ($event->state == 4)
         順位発表後なので変更はできません
+    @else
+        審査期間ではないため順位付けはできません
     @endif
     <h2>{{$event->title}}の順位付け</h2>
     <ul class="event_detail_post">

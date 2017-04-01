@@ -323,7 +323,6 @@ class AdminController extends Controller
     }
 
     public function postEventCreateRanking(Request $request) {
-        Log::info($request->all());
         $event = Event::find($request->event_id);
         if (empty($event)) {
             abort(404);

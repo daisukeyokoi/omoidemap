@@ -44,6 +44,18 @@ Route::group(['prefix' => 'login'], function() {
   Route::post('/', 'Auth\AuthController@postLogin');
 });
 
+// ソーシャルログイン
+
+// twitter
+Route::get('auth/twitter', 'Auth\AuthController@redirectToTwitterProvider');
+Route::get('auth/twitter/callback', 'Auth\AuthController@handleTwitterProviderCallback');
+
+// facebook
+Route::get('auth/facebook', 'Auth\AuthController@redirectToFacebookProvider');
+Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookProviderCallback');
+
+
+
 // 新着記事を表示
 Route::group(['prefix' => 'new_post'], function() {
     Route::get('/', 'TopController@getNewPost');
@@ -90,17 +102,23 @@ Route::group(['prefix' => 'event'], function() {
 Route::any('/get_prefectures', 'TopController@ajaxGetPrefectures');
 // いいね
 Route::any('/plus_good', 'TopController@ajaxPlusGood');
+// 行きたい
+Route::any('/plus_go', 'TopController@ajaxPlusGo');
 // 記事取得
 Route::any('/ajax/article_list', 'TopController@ajaxGetArticle');
+// お気に入り
+Route::any('/ajax/favorite/post', 'TopController@ajaxFavoritePost');
+// お気に入りチェック
+Route::any('/ajax/favcheck', 'TopController@ajaxFavoriteCheck');
 
-Route::group(['prefix' => 'ajax/ranking'], function() {
-    // 都道府県ランキング取得
-    Route::any('/prefectures', 'TopController@ajaxGetRankingPrefectures');
-    // 感情ランキング取得
-    Route::any('/feeling', 'TopController@ajaxGetRankingFeeling');
-    // タグランキング取得
-    Route::any('/tags', 'TopController@ajaxGetRankingTags');
-});
+// Route::group(['prefix' => 'ajax/ranking'], function() {
+//     // 都道府県ランキング取得
+//     Route::any('/prefectures', 'TopController@ajaxGetRankingPrefectures');
+//     // 感情ランキング取得
+//     Route::any('/feeling', 'TopController@ajaxGetRankingFeeling');
+//     // タグランキング取得
+//     Route::any('/tags', 'TopController@ajaxGetRankingTags');
+// });
 
 
 
