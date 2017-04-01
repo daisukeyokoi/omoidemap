@@ -16,6 +16,13 @@ a:hover {
 @section('body')
 <div class="tag_img" style="background-image: url({{url('/background.jpg')}})">
 	<h1>{{$tag->name}}</h1>
+	@if (Auth::check())
+		@if (in_array($tag->id, $followtag_ids))
+			<button class="btn btn-default" id="unfollowBtn">フォロー中</button>
+		@else
+			<button class="btn btn-default" id="followBtn">フォロー</button>
+		@endif
+	@endif
 </div>
 <div class="tag_wrapper">
 	<div class="relation_tag">
@@ -73,4 +80,45 @@ a:hover {
 		{!! $articles->render() !!}
 	</div>
 </div>
+@stop
+
+@section('js_partial')
+<script>
+// タグフォロー
+$(document).on('click', '#followBtn', function (){
+	var tag_id = Number("{{$tag->id}}");
+  $.ajax({
+    type: 'POST',
+    url: "{{url('/mypage/followtag/follow')}}",
+    data: {
+      'tag_id': tag_id,
+      '_token': '{{csrf_token()}}'
+    },
+    success: function (res) {
+      console.log(res.message);
+      $('.btn').attr('id', 'unfollowBtn');
+      $('.btn').text('フォロー中');
+    }
+  });
+});
+
+// タグフォロー解除
+$(document).on('click', '#unfollowBtn', function (){
+  var tag_id = Number("{{$tag->id}}");
+  $.ajax({
+    type: 'POST',
+    url: "{{url('/mypage/followtag/unfollow')}}",
+    data: {
+      'tag_id': tag_id,
+      '_token': '{{csrf_token()}}'
+    },
+    success: function (res) {
+      console.log(res.message);
+      $('.btn').attr('id', 'followBtn');
+      $('.btn').text('フォロー');
+    }
+  });
+});
+
+</script>
 @stop

@@ -3,8 +3,8 @@
 @section('mypage_content')
 @include('parts.errormessage')
 <div class="profile-content">
-	
-	<div class="side">
+
+	<div class="profile-side">
 		<ul class="setting">
 			<a href="{{url('/mypage/updateprofile')}}">
 				<li class="profile">
@@ -18,11 +18,15 @@
 			</a>
 		</ul>
 	</div>
-	
+
 	<div class="profile-main selected" id="privacy">
 		<div class="title">
 			<i class="fa fa-lock fa-lg" aria-hidden="true"></i>プライバシー設定
 		</div>
+		<select class='select_title' onchange="location.href=value">
+			<option value="/mypage/updateprofile"><i class="fa fa-user fa-lg" aria-hidden="true"></i>プロフィール</option>
+			<option value="/mypage/updateprivacy" selected="selected"><i class="fa fa-user fa-lg" aria-hidden="true"></i>プライバシー</option>
+		</select>
 		<table class="content">
 			<div class="sub_title">
 				<i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i>メールアドレス

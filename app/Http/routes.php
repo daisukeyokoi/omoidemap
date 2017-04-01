@@ -49,14 +49,6 @@ Route::group(['prefix' => 'new_post'], function() {
     Route::get('/', 'TopController@getNewPost');
 });
 
-// お問い合わせ
-Route::group(['prefix' => 'inquiry'], function () {
-    Route::get('/', 'TopController@getInquiry');
-    Route::post('/', 'TopController@postInquiry');
-    Route::post('/complete', 'TopController@postConfirmInquiry');
-    Route::get('/complete', 'TopController@getCompleteInquiry');
-});
-
 // ログアウト (認証済みが前提だが未認証でもokなのでフィルタ外)
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
@@ -125,6 +117,11 @@ Route::group(['middleware' => 'auth'], function () {
             // タイムライン
             Route::get('/', 'MypageController@getIndex');
             Route::post('/deletePost/{id}', 'MypageController@deletePost');
+            Route::post('/deleteComment/{id}', 'MypageController@deleteComment');
+            Route::post('/getPost', 'MypageController@getPostInfo');
+
+            // コメント編集
+            Route::post('/updateComment', 'MypageController@updateComment');
 
             // 記事編集ページ
             Route::get('/post/{id}', 'MypageController@getPost');
@@ -190,7 +187,7 @@ Route::group(['middleware' => 'auth'], function() {
                 Route::post('/delete', 'AdminController@deletePosts');
             });
 
-            //　タグ関連
+            // タグ関連
             Route::group(['prefix' => 'tags'], function() {
                 Route::get('/', 'AdminController@getTags');
                 Route::get('/detail/{id}', 'AdminController@getTagsDetail');
@@ -205,20 +202,12 @@ Route::group(['middleware' => 'auth'], function() {
                 Route::get('/detail/{id}', 'AdminController@getEventDetail');
                 Route::get('/create', 'AdminController@getEventCreate');
                 Route::get('/create/ranking/{id}', 'AdminController@getEventCreateRanking');
-                Route::post('/create/ranking', 'AdminController@postEventCreateRanking');
                 Route::post('/create', 'AdminController@postEventCreate');
                 Route::get('/edit/{id}', 'AdminController@getEventEdit');
                 Route::post('/edit', 'AdminController@postEventEdit');
                 Route::post('/delete', 'AdminController@deleteEvent');
                 Route::post('/ajax/create/ranking', 'AdminController@ajaxEventCreateRanking');
                 Route::post('/ajax/delete/ranking', 'AdminController@ajaxEventDeleteRanking');
-            });
-
-            // お問い合わせ関連
-            Route::group(['prefix' =>  'inquiry'], function(){
-                Route::get('/', 'AdminController@getInquiry');
-                Route::get('/{id}', 'AdminController@getInquiryDetail');
-                Route::post('/', 'AdminController@postInquiryResponse');
             });
         });
     });

@@ -17,6 +17,7 @@ use App\Helpers\AppUtil;
 use App\PostsImage;
 use App\Tag;
 use App\Post;
+use App\Comment;
 use App\PostsTag;
 use App\Followtag;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +34,25 @@ class MypageController extends Controller
         $user = Auth::user();
         $posts = Post::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
         return view('mypage.index', compact('user', 'posts'));
+    }
+
+    // ajaxで投稿の詳細情報を取得
+    public function getPostInfo(Request $request) {
+        $post  = Post::where('id', $request->tweet_id)->get();
+        $goods = Good::where('post_id', $post[0]["id"])->get();
+        $good_users = [];
+        $url_images = [];
+        foreach ($goods as $good) {
+            $good_user = User::find($good->user_id);
+            array_push($good_users, $good_user);
+            array_push($url_images, url('/show/user', $good_user->id));
+        }
+        return response()->json([
+            'message' => 'success',
+            'tweet'   => $post,
+            'good_users' => $good_users,
+            'url_images' => $url_images
+        ]);
     }
 
     // いいねページ表示
@@ -90,7 +110,8 @@ class MypageController extends Controller
 
     // ajaxでフォローしているタグを削除
     public function unFollowTag(Request $request) {
-        $remove_tag = Followtag::where('id', $request->tag_id)->delete();
+        $user_id = Auth::user()->id;
+        $remove_tag = Followtag::where('user_id', $user_id)->where('tag_id', $request->tag_id)->delete();
         return response()->json([
             'message' => 'success'
         ]);
@@ -148,7 +169,6 @@ class MypageController extends Controller
         if ($validator->fails()) {
             return back()->withInput($request->all())->withErrors($validator);
         }
-        Log::info($request->all());
         $post_id = $request->post_id;
         $post = Post::find($post_id);
         $post->lat     = $request->lat;
@@ -196,6 +216,30 @@ class MypageController extends Controller
         $post_id = $request->post_id;
         $post = Post::findOrFail($post_id);
         $post->delete();
+        return redirect(url('/mypage/'));
+    }
+
+    // コメントを編集
+    public function updateComment(Request $request) {
+        $rules = [
+            'comment'  => 'required|between:5,499'
+        ];
+        $messages = [
+            'comment.required' => 'コメントを入力してください',
+            'comment.between'  => 'コメントは5文字以上500文字以内である必要があります．'
+        ];
+
+        $comment = Comment::find($request->id);
+        $comment->content = $request->comment;
+        $comment->save();
+        return redirect(url('/mypage/'));
+    }
+
+    // コメントを削除
+    public function deleteComment(Request $request) {
+        $comment_id = $request->comment_id;
+        $comment = Comment::findOrFail($comment_id);
+        $comment->delete();
         return redirect(url('/mypage/'));
     }
 
@@ -317,13 +361,14 @@ class MypageController extends Controller
     // メールアドレスを変更
     public function updateEmail(Request $request) {
         $rules = [
-            'email' => 'email|confirmed|unique:users|max:255',
+            'email' => 'email|confirmed|unique:users|max:255|required',
         ];
         $messages = [
             'email.email'     => 'メールアドレスの形式で入力してください',
             'email.unique'    => 'そのメールアドレスは既に使用されています',
             'email.max'       => 'メールアドレスは255字以内で入力してください',
-            'email.confirmed' => '再入力されたメールアドレスと異なります'
+            'email.confirmed' => '再入力されたメールアドレスと異なります',
+            'email.required'  => 'メールアドレスの入力が必要です'
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
@@ -342,13 +387,14 @@ class MypageController extends Controller
     // パスワードを変更
     public function updatePassword(Request $request) {
         $rules = [
-            'password' => 'confirmed|min:6|max:64|alpha_num'
+            'password' => 'confirmed|min:6|max:64|alpha_num|required'
         ];
         $messages = [
             'password.min'       => 'パスワードは6文字以上で入力してください',
             'password.max'       => 'パスワードは64文字以下で入力してください',
             'password.alpha_num' => 'パスワードは半角英数字で入力してください',
-            'password.confirmed' => '再入力されたパスワードと異なります'
+            'password.confirmed' => '再入力されたパスワードと異なります',
+            'password.required'  => 'パスワードの入力が必要です'
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {

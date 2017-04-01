@@ -4,7 +4,7 @@
 @include('parts.errormessage')
 <div class="profile-content">
 
-	<div class="side">
+	<div class="profile-side">
 		<ul class="setting">
 			<a href="#">
 				<li class="profile selected">
@@ -23,6 +23,10 @@
 		<div class="title">
 			<i class="fa fa-user fa-lg" aria-hidden="true"></i>プロフィール設定
 		</div>
+		<select class='select_title' onchange="location.href=value">
+			<option value="/mypage/updateprofile" selected="selected"><i class="fa fa-user fa-lg" aria-hidden="true"></i>プロフィール</option>
+			<option value="/mypage/updateprivacy"><i class="fa fa-user fa-lg" aria-hidden="true"></i>プライバシー</option>
+		</select>
 		<table class="content">
 			<tbody>
 				<tr>
@@ -32,7 +36,7 @@
 					<td>
 						<form method="POST" action="{{url('/mypage/updateprofile/updateImage')}}" enctype="multipart/form-data" class="img_form">
 							<input type="hidden" name="_token" value="{{csrf_token()}}">
-							<input type="file" id="file" name="file">
+							<input type="file" id="file" name="file" onchange="changeImage()">
 							<input type="submit" class="btn btn-success" id="submitBtn" value="画像を変更">
 						</form>
 					</td>

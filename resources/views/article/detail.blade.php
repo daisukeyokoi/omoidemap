@@ -125,6 +125,7 @@ a:hover {
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                         <input type="hidden" name="post_id" value="{{$article->id}}">
+                        <input type="hidden" name="url" value="{{AppUtil::urlSlash(Request::url())}}">
                         <textarea name="comment" rows="8" cols="40" class="form-control" placeholder="5文字以上500文字以内で投稿してください。" maxlength="500">{{old('comment')}}</textarea>
                         <input type="submit" value="コメント投稿" class="btn btn-primary pull-right" onclick="return confirm_dialog(this, '投稿してもよろしいですか？');">
                     </form>

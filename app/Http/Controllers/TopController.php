@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Helpers\AppUtil;
 use App\Tag;
 use App\PostsTag;
+use App\Followtag;
 use App\Event;
 use App\User;
 use Carbon\Carbon;
@@ -35,7 +36,7 @@ class TopController extends Controller
         return view('top', compact('regions', 'posts', 'tags', 'events'));
     }
 
-    //　県取得
+    // 県取得
     public function ajaxGetPrefectures(Request $request) {
         $prefectures = Prefecture::where('region_id', $request->region_id)->get();
         return response()->json([
@@ -181,11 +182,23 @@ class TopController extends Controller
         $comment->post_id = $request->post_id;
         $comment->save();
         session()->flash('flash_message', 'コメントの投稿が完了しました。');
-        return redirect(url('/article/detail', $comment->post_id));
+        if ( $request->url == 'mypage' ) {
+            return redirect(url('/mypage'));
+        } else {
+            return redirect(url('/article/detail', $comment->post_id));
+        }
     }
 
     ////////////////////////// タグページ///////////////////////
     public function getTagArticle($id) {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $followtags = Followtag::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+            $followtag_ids = [];
+            foreach ($followtags as $followtag) {
+                array_push($followtag_ids, $followtag->tag_id);
+            }
+        }
         $tag = Tag::find($id);
         if (empty($tag)) {
             abort(404);
@@ -203,7 +216,11 @@ class TopController extends Controller
                                      ->groupBy('posts.id')
                                      ->orderBy('count', 'desc')
                                      ->paginate(18);
-        return view('tag.index', compact('tag', 'relatePostTags', 'articles'));
+        if (Auth::check()){
+            return view('tag.index', compact('tag', 'followtag_ids', 'relatePostTags', 'articles'));
+        } else {
+            return view('tag.index', compact('tag', 'relatePostTags', 'articles'));
+        }
     }
 
     ////////////////////////// 検索ページ///////////////////////
