@@ -47,13 +47,25 @@ a:hover {
                     <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                     <span id="good_count">{{count($article->goods)}}</span>
                 </div>
+                <div class="article_img_footer_good_field" id="go">
+                    <span>いきたい！</span>
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                    <span id="go_count">{{count($article->goes)}}</span>
+                </div>
             @else
                 <a href="{{url('/login?a_d='. $article->id)}}">
-                <div class="article_img_footer_good_field">
-                    <span>いいね！</span>
-                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                    <span id="good_count">{{count($article->goods)}}</span>
-                </div>
+                    <div class="article_img_footer_good_field">
+                        <span>いいね！</span>
+                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <span id="good_count">{{count($article->goods)}}</span>
+                    </div>
+                </a>
+                <a href="{{url('/login?a_d='. $article->id)}}">
+                    <div class="article_img_footer_good_field">
+                        <span>いきたい！</span>
+                        <i class="fa fa-car" aria-hidden="true"></i>
+                        <span id="go_count">{{count($article->goes)}}</span>
+                    </div>
                 </a>
             @endif
             <div class="article_img_footer_comment_field">
@@ -65,7 +77,7 @@ a:hover {
     </div>
     <div class="article_detail_description">
         <div class="article_detail_description_episode">
-            <p>{!! htmlspecialchars(nl2br($article->episode)) !!}</p>
+            <p>{!! nl2br(htmlspecialchars($article->episode)) !!}</p>
         </div>
     </div>
     <div class="article_detail_comment_tag_field">
@@ -112,7 +124,7 @@ a:hover {
                         <img src="{{url('/show/user', $comment->user_id)}}" alt="画像" />
                         <div class="article_detail_comment_body_content">
                             <p>{{$comment->user->nickname}}</p>
-                            {!! htmlspecialchars(nl2br($comment->content)) !!}
+                            {!! nl2br(htmlspecialchars($comment->content)) !!}
                             <p class="article_detail_comment_body_date">{{$comment->created_at}}</p>
                         </div>
                     </div>
@@ -163,6 +175,28 @@ $(function() {
                     alert('すでにいいねしています。');
                 }else {
                     alert('自分の投稿にいいねはできません。');
+                }
+            },
+        })
+    });
+
+    $("#go").on('click', function(){
+        var post_id = {{$article->id}};
+        $.ajax({
+            type: "POST",
+            url: "{{url('/plus_go')}}",
+            data: {
+                "post_id": post_id
+            },
+            success: function(res) {
+                if (res.message == 'success') {
+                    $("#go_count").text(res.count);
+                }else if (res.message == 'error'){
+                    alert('エラーが発生したためいきたい!できませんでした。');
+                }else if (res.message == 'already'){
+                    alert('すでにいきたい!しています。');
+                }else {
+                    alert('自分の投稿にいきたい！はできません。');
                 }
             },
         })

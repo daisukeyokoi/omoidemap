@@ -125,6 +125,16 @@ class AuthController extends Controller
         }else {
             session()->forget('a_d');
         }
+
+        if (isset($request->e_id)) {
+            session()->put('e_id', $request->e_id);
+        }else {
+            session()->forget('e_id');
+        }
+
+        if (isset($request->post_article)) {
+            session()->put('post_article', AppUtil::FLG_ON);
+        }
         return view('login.index');
     }
 
@@ -156,8 +166,12 @@ class AuthController extends Controller
 			if (session()->has('a_d')) {
 				return redirect(url('/article/detail', session()->pull('a_d')));
 			} else {
-                if (isset($request->event_id)) {
-                    return redirect(url('/mypage/a_post?e_id='.$request->event_id));
+                if (session()->has('e_id')) {
+                    return redirect(url('/mypage/a_post?e_id='.session()->pull('e_id')));
+                }
+                if (session()->has('post_article')) {
+                    session()->forget('post_article');
+                    return redirect(url('/mypage/a_post'));
                 }
                 if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
                     return redirect(url('/mypage'));
@@ -223,7 +237,18 @@ class AuthController extends Controller
             'password' => $password
         ]);
         if ($login) {
-            return redirect(url('/mypage'));
+            if (session()->has('a_d')) {
+				return redirect(url('/article/detail', session()->pull('a_d')));
+			} else {
+                if (session()->has('e_id')) {
+                    return redirect(url('/mypage/a_post?e_id='.session()->pull('e_id')));
+                }
+                if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
+                    return redirect(url('/mypage'));
+                }else {
+                    return redirect(url('/admin'));
+                }
+			}
         }
 
         session()->flash('flash_message', '認証に失敗しました。');
@@ -267,7 +292,18 @@ class AuthController extends Controller
             'password' => $password
         ]);
         if ($login) {
-            return redirect(url('/mypage'));
+            if (session()->has('a_d')) {
+				return redirect(url('/article/detail', session()->pull('a_d')));
+			} else {
+                if (session()->has('e_id')) {
+                    return redirect(url('/mypage/a_post?e_id='.session()->pull('e_id')));
+                }
+                if (Auth::user()->identification == User::IDENTIFICATION_GENERAL) {
+                    return redirect(url('/mypage'));
+                }else {
+                    return redirect(url('/admin'));
+                }
+			}
         }
 
         session()->flash('flash_message', '認証に失敗しました。');

@@ -60,6 +60,10 @@ class User extends Model implements AuthenticatableContract,
 		$this->confirmation_token = '';
 	}
 
+    public function favPosts() {
+        return $this->belongsToMany('App\Post', 'favorites');
+    }
+
     ////////////////////////////////////////////////////////////////////////////
 	// 定数
 	////////////////////////////////////////////////////////////////////////////

@@ -54,7 +54,7 @@ class UpdateStateEvent extends Command
 
         // 審査が終了しており発表まちを終了に変更する
         $four_day_ago = date('Y-m-d', strtotime("-4day"));
-        $events_r = Event::where('end', '<=', $four_day_ago)->where('state', Event::WAITE_CLOSE)->get();
+        $events_r = Event::where('end', '<=', $four_day_ago)->where('state', Event::WAIT_CLOSE)->get();
         foreach ($events_r as $event) {
             $event->state = Event::CLOSE;
             $event->save();

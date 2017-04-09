@@ -50,7 +50,7 @@ a:hover {
 	text-align: center;
 	overflow: hidden;
 }
-.top_article_list li:hover {
+.article_list_header:hover {
 	background-color: white;
 	opacity: 0.7;
 }
@@ -75,6 +75,20 @@ a:hover {
 	text-align: center;
 }
 </style>
+@if (count($events) == 0)
+<style>
+@media all and (max-width: 768px) {
+	.sp_posting_btn {
+		bottom: 120px;
+	}
+}
+@media all and (max-width: 480px) {
+	.sp_posting_btn {
+		bottom: 60px;
+	}
+}
+</style>
+@endif
 @stop
 @section('body')
 <?php
@@ -189,6 +203,34 @@ use App\Post;
 					</div>
 				</div>
 		    </div>
+			<a href="@if (Auth::check()){{url('/mypage/a_post')}} @else {{url('/login?post_article=1')}} @endif"><div class="sp_posting_btn"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></div></a>
+			@if (count($events) != 0)
+				<div class="sp_event">
+					<div class="sp_event_main">
+						<div class="sp_event_left">
+							<div class="sp_event_img" style="background-image: url({{url($events->first()->image)}})"></div>
+						</div>
+						<div class="sp_event_right">
+							<div class="sp_event_right_title">{{$events->first()->title}}コンテスト開催中！</div>
+							<div class="sp_event_right_detail_field">
+								<a href="{{url('/event', $events->first()->id)}}">
+									<div class="sp_event_right_detail">詳細を見る</div>
+								</a>
+								@if (Auth::check())
+									<a href="{{url('/mypage/a_post?e_id='.$events->first()->id)}}">
+										<div class="sp_event_right_join">参加する</div>
+									</a>
+								@else
+									<a href="{{url('/login?e_id='.$events->first()->id)}}">
+										<div class="sp_event_right_join">参加する</div>
+									</a>
+								@endif
+							</div>
+						</div>
+						<span class="sp_event_cros"><i class="fa fa-times-circle fa-lg" aria-hidden="true"></i></span>
+					</div>
+				</div>
+			@endif
 			<div class="sp_under_menu">
 				<div class="btn-group btn-group-justified" role="group">
 					<div class="btn-group" role="group">
@@ -241,6 +283,14 @@ $(window).resize(function() {
 			$('.map-embed').show();
 			$('.top_map_search').show();
 		}
+	}
+});
+$('.sp_event_cros').click(function() {
+	$('.sp_event').hide();
+	if ($(window).width() > 480) {
+		$('.sp_posting_btn').css({'bottom': '120px'});
+	}else {
+		$('.sp_posting_btn').css({'bottom': '60px'});
 	}
 });
 // マーカーのデータ
@@ -491,7 +541,7 @@ function dispLatLang(type) {
 				var length = res_articles.length;
 			}
 			$(".top_loading_img").css('display', 'none');
-			$(".top_article_list").children('ul').children('a').remove();
+			$(".top_article_list").children('ul').children('li').remove();
 			$(".top_article_list").children('ul').children('p').remove();
 			$(".top_article_list").children('ul').children('input').remove();
 			if (res_articles.length != 0) {
@@ -592,7 +642,7 @@ $(document).on('click', '#prev', function() {
 
 // next, prev
 function NextPrev() {
-	$(".top_article_list").children('ul').children('a').remove();
+	$(".top_article_list").children('ul').children('li').remove();
 	$(".top_article_list").children('ul').children('p').remove();
 	$(".top_article_list").children('ul').children('input').remove();
 	if (res_articles.length - current_num > list_num) {
@@ -619,37 +669,85 @@ function NextPrev() {
 
 // 記事リスト作成
 function articleListDesign(res_articles, i, current_num) {
+	var url = "{{url('/ajax/favcheck')}}";
 	$(".top_article_list")
 	.children('ul')
 	.append(
-		'<a href="' + res_articles[i][0].url + '">'
-		+	'<li>'
-		+		'<div class="article_list_main">'
-		+			'<div class="article_list_img" style="background-image: url(' + res_articles[i][0].image +')"></div>'
-		+			'<div class="article_list_data">'
-		+				'<p class="article_list_data_title">' + res_articles[i][0].episode + '</p>'
+		'<li>'
+		+	'<div class="article_list_header">'
+		+		'<a href="' + res_articles[i][0].url + '">'
+		+			'<div class="article_list_header_top">'
+		+				'<i class="fa fa-user" aria-hidden="true"></i>'
+		+				'<span class="article_list_footer_user_name">' + res_articles[i][0].nickname + '</span>'
 		+				'<span class="btn btn-danger article_list_data_label">' + res_articles[i][0].feeling + '</span>'
 		+				'<span class="btn btn-success article_list_data_label">' + res_articles[i][0].age + '</span>'
-		+				'<div>' + res_articles[i][0].tag + '</div>'
+		+				'<span class="article_list_footer_address">' + wordRoundJs(res_articles[i][0].address, 15) + '</span>'
 		+			'</div>'
-		+		'</div>'
-		+		'<div class="article_list_footer">'
-		+			'<span class="article_list_footer_good">いいね！</span>'
-		+        	'<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>'
-		+       	'<span class="article_list_footer_good_count">' + res_articles[i][0].goods + '</span>'
-		+			'<span class="article_list_footer_comment">コメント</span>'
-		+       	'<i class="fa fa-commenting-o" aria-hidden="true"></i>'
-		+			'<span class="article_list_footer_comment_count">' + res_articles[i][0].comments + '</span>'
-		+			'<i class="fa fa-map-marker" aria-hidden="true"></i>'
-		+			'<span class="article_list_footer_address">' + res_articles[i][0].address + '</span>'
-		+			'<i class="fa fa-user" aria-hidden="true"></i>'
-		+			'<span class="article_list_footer_user_name">tanaka</span>'
-		+		'</div>'
-		+	'</li>'
-		+'</a>'
+		+			'<div class="article_list_main">'
+		+				'<div class="article_list_img" style="background-image: url(' + res_articles[i][0].image +')"></div>'
+		+				'<div class="article_list_data">'
+		+					'<p class="article_list_data_title">' + res_articles[i][0].episode + '</p>'
+		// +					'<div>' + res_articles[i][0].tag + '</div>'
+		+				'</div>'
+		+			'</div>'
+		+		'</a>'
+		+	'</div>'
+		+	'<div class="article_list_footer">'
+		+		'<i class="fa fa-heart" aria-hidden="true" data-id="' + res_articles[i][0].id + '" id="fav_' + res_articles[i][0].id + '"></i>'
+		+		'<span class="article_list_footer_good">行きたい！</span>'
+		+      	'<span class="article_list_footer_good_count">' + res_articles[i][0].goods + '</span>'
+		+		'<span class="article_list_footer_comment">コメント&nbsp;</span>'
+		+		'<span class="article_list_footer_comment_count">' + res_articles[i][0].comments + '</span>'
+		+	'</div>'
+		+'</li>'
 	).hide().fadeIn('normal');
+	$.ajax({
+		type: 'POST',
+		url : url,
+		data: {
+			'post_id': res_articles[i][0].id
+		},
+		success: function(res) {
+			if (res.mes == 's') {
+				$("#fav_" + res_articles[i][0].id).addClass('fav_flag');
+			}
+		}
+	});
 	return current_num += 1;
 }
+
+function wordRoundJs(str, length) {
+	var result = '';
+	if (str.length > length) {
+		result = str.slice(0, length) + '...';
+	}else {
+		result = str;
+	}
+	return result;
+}
+
+//　お気に入り登録
+$(document).on('click', '.fa-heart', function(){
+	var post_id = $(this).data('id');
+	var url = "{{url('/ajax/favorite/post')}}";
+	var clicked = $(this);
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: {
+			'post_id': post_id,
+		},
+		success: function (res) {
+			if (typeof(res.error) == 'undefined') {
+				if (clicked.hasClass('fav_flag')) {
+					clicked.removeClass('fav_flag');
+				}else {
+					clicked.addClass('fav_flag');
+				}
+			}
+		}
+	});
+});
 
 function feelingTypeChangeMarker(type, self) {
 	type = Number(type);
@@ -742,6 +840,11 @@ $('.sp_under_episode').click(function(){
 	$('.top_map_search').hide();
 	$('.map-embed').hide();
 	$('.top_left_contents').show();
+});
+
+$('.sp_under_mypage').click(function() {
+	var href = window.location.pathname + 'mypage';
+	window.location.href = href;
 });
 
 

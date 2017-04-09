@@ -148,7 +148,6 @@ class MypageController extends Controller
         if ($validator->fails()) {
             return back()->withInput($request->all())->withErrors($validator);
         }
-        Log::info($request->all());
         $post_id = $request->post_id;
         $post = Post::find($post_id);
         $post->lat     = $request->lat;
@@ -223,7 +222,6 @@ class MypageController extends Controller
             // タグの生成
             if (!empty($request->tags)) {
                 $tags = array_unique($request->tags);
-                Log::info($tags);
                 for ($i = 0; $i < count($tags); $i ++) {
                     if (!Tag::where('name', $tags[$i])->exists()) {
                         $tag = new Tag();
