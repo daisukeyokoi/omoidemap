@@ -63,21 +63,48 @@
 								</div>
 						</div>
 						<div class="tweet-episode">
-							<p>
-								エピソード:&nbsp;{{$post->episode}}
-							</p>
-							<p>
-								年代:&nbsp;{{AppUtil::photoAgeLabel()[$post->age]}}
-							</p>
-							<p>
-								撮影時の気持ち:&nbsp;{{AppUtil::photoFeelingLabel()[$post->feeling]}}
-							</p>
-							<p>
-								撮影場所:&nbsp;{{AppUtil::postNumberRemove($post->address)}}
-							</p>
-							<p>
-								撮影した日:&nbsp;{{date('Y年n月', strtotime($post->photo_date))}}
-							</p>
+							<table class="episode">
+								<tr>
+									<th>
+										エピソード
+									</th>
+									<td>
+										{{$post->episode}}
+									</td>
+								</tr>
+								<tr>
+									<th>
+										年代
+									</th>
+									<td>
+										{{AppUtil::photoAgeLabel()[$post->age]}}
+									</td>
+								</tr>
+								<tr>
+									<th>
+										撮影時の気持ち
+									</th>
+									<td>
+										{{AppUtil::photoFeelingLabel()[$post->feeling]}}
+									</td>
+								</tr>
+								<tr>
+									<th>
+										撮影場所
+									</th>
+									<td>
+										{{AppUtil::postNumberRemove($post->address)}}
+									</td>
+								</tr>
+								<tr>
+									<th>
+										撮影した日
+									</th>
+									<td>
+										{{date('Y年n月', strtotime($post->photo_date))}}
+									</td>
+								</tr>
+							</table>
 						</div>
 					</div>
 					<div class="tweet-comment">

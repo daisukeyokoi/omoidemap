@@ -1864,6 +1864,30 @@ header h1 {
     padding: 5px 10px;
 }
 
+.mypage_list .timeline .tweet .tweet-main .tweet-episode .episode {
+    width: 100%;
+}
+
+.mypage_list .timeline .tweet .tweet-main .tweet-episode .episode tr {
+    display: table-row;
+    background-color: white;
+    width: 100%;
+    border-bottom: 2px solid rgb(249,248,246);
+}
+
+.mypage_list .timeline .tweet .tweet-main .tweet-episode .episode th {
+    width: 25%;
+    text-align: left !important;
+    padding: 12px 20px;
+    border-right: 2px solid rgb(249,248,246);
+}
+
+.mypage_list .timeline .tweet .tweet-main .tweet-episode .episode td {
+    width: 75%;
+    text-align: left !important;
+    padding: 12px;
+}
+
 .mypage_list .timeline .tweet .tweet-comment {
     width: 100%;
     overflow: hidden;
