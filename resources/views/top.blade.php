@@ -81,10 +81,16 @@ a:hover {
 	.sp_posting_btn {
 		bottom: 120px;
 	}
+	.fotter  {
+		display: none;
+	}
 }
 @media all and (max-width: 480px) {
 	.sp_posting_btn {
 		bottom: 60px;
+	}
+	.footer {
+		display: none;
 	}
 }
 </style>
