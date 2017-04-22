@@ -60,6 +60,9 @@
             <p>ランキングはありません</p>
         @endif
     </div>
+    <div class="pagination_field">
+        {!! $posts->appends(Input::get())->render() !!}
+    </div>
 </div>
 @stop
 @section('js_partial')

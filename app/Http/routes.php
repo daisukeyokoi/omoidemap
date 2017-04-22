@@ -214,6 +214,12 @@ Route::group(['middleware' => 'auth'], function() {
                 Route::post('/ajax/delete_tag', 'AdminController@ajaxDeleteTag');
             });
 
+            //　コメント関連
+            Route::group(['prefix' => 'comments'], function() {
+                Route::get('/', 'AdminController@getComments');
+                Route::post('/ajax/delete_comment', 'AdminController@ajaxDeleteComment');
+            });
+
             // イベント関連
             Route::group(['prefix' => 'event'], function() {
                 Route::get('/', 'AdminController@getEvents');

@@ -325,36 +325,37 @@ class TopController extends Controller
 
     ////////////////////////// ランキングページ///////////////////////
     public function getRanking(Request $request) {
+        $paginate_num = 20;
         if(isset($request->r_type)) {
             switch ($request->r_type) {
                 case 'prefectures':
                     if (isset($request->prefecture)) {
-                        $posts = Post::where('address', 'like', '%'.$request->prefecture.'%')->goodsSort()->take(3)->get();
+                        $posts = Post::where('address', 'like', '%'.$request->prefecture.'%')->goodsSort()->paginate($paginate_num);
                     }else {
-                        $posts = Post::where('address', 'like', '%東京都%')->goodsSort()->take(3)->get();
+                        $posts = Post::where('address', 'like', '%東京都%')->goodsSort()->paginate($paginate_num);
                     }
                     break;
                 case 'category':
                     if (isset($request->feeling)) {
-                        $posts = Post::where('feeling', $request->feeling)->goodsSort()->take(3)->get();
+                        $posts = Post::where('feeling', $request->feeling)->goodsSort()->paginate($paginate_num);
                     }else {
-                        $posts = Post::where('feeling', 1)->goodsSort()->take(3)->get();
+                        $posts = Post::where('feeling', 1)->goodsSort()->paginate($paginate_num);
                     }
                     break;
                 case 'go':
-                    $posts = Post::goesSort()->take(3)->get();
+                    $posts = Post::goesSort()->paginate($paginate_num);
                     break;
                 default:
-                    $posts = Post::goodsSort()->take(3)->get();
+                    $posts = Post::goodsSort()->paginate($paginate_num);
                     break;
             }
         }else {
-            $posts = Post::goodsSort()->take(3)->get();
+            $posts = Post::goodsSort()->paginate($paginate_num);
         }
         $rank = 0;
         $prefectures = Prefecture::all();
-        $tags = Tag::postsSort()->take(30)->get();
-        return view('ranking.index', compact('posts', 'rank', 'prefectures', 'tags'));
+        //$tags = Tag::postsSort()->take(30)->get();
+        return view('ranking.index', compact('posts', 'rank', 'prefectures'));
     }
 
     // public function ajaxGetRankingPrefectures(Request $request) {

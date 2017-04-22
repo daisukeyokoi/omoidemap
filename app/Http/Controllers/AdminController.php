@@ -26,6 +26,7 @@ use App\EventPost;
 use Illuminate\Support\Facades\DB;
 use App\Inquiry;
 use App\InquiryResponse;
+use Illuminate\Http\JsonResponse;
 
 class AdminController extends Controller
 {
@@ -172,6 +173,25 @@ class AdminController extends Controller
         }
     }
 
+    //////////////////////////////////////////////// コメント関連 /////////////////////////////
+    public function getComments() {
+        $comments = Comment::orderBy('created_at', 'desc')->paginate(20);
+        return view('admin.comments.index', compact('comments'));
+    }
+
+    public function ajaxDeleteComment(Request $request) {
+        if (!isset($request->comment_id)) {
+            $response = ['error' => 'comment_id'];
+            return JsonResponse::create($response);
+        }
+        $comment = Comment::find($request->comment_id);
+        if (empty($comment)) {
+            $response = ['error' => 'not_exist'];
+            return JsonResponse::create($response);
+        }
+        $comment->delete();
+        return JsonResponse::create();
+    }
     //////////////////////////////////////////////// イベント関連 /////////////////////////////
     public function getEvents(Request $request) {
         $today = Carbon::now();

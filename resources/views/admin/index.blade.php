@@ -5,6 +5,7 @@
         <a href="{{url('/admin/user')}}"><li>ユーザー</li></a>
         <a href="{{url('/admin/posts')}}"><li>記事</li></a>
         <a href="{{url('/admin/tags')}}"><li>タグ</li></a>
+        <a href="{{url('/admin/comments')}}"><li>コメント</li></a>
     </ul>
     <h2>イベント</h2>
     <ul class="top_ul_event">

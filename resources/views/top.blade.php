@@ -345,7 +345,7 @@ CustomMarker.prototype.draw = function() {
 					+ 	'<div class="marker_good_field">'
 					+		'<a href="' + markerData['url'] + '"><span>いいね!</span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i><span>' + markerData['good'] + '</span>'
 					+ 		'<span>コメント</span><i class="fa fa-commenting-o" aria-hidden="true"></i><span>' + markerData['comment'] + '</span></a>'
-					+		'<div><a href="#"><i class="fa fa-twitter-square marker_twitter fa-2x" aria-hidden="true"></i></a><a href="#"><i class="fa fa-facebook-official marker_facebook fa-2x" aria-hidden="true"></i></a><a href="#"><i class="fa fa-instagram marker_instagram fa-2x" aria-hidden="true"></i></a></div>'
+					// +		'<div><a href="#"><i class="fa fa-twitter-square marker_twitter fa-2x" aria-hidden="true"></i></a><a href="#"><i class="fa fa-facebook-official marker_facebook fa-2x" aria-hidden="true"></i></a><a href="#"><i class="fa fa-instagram marker_instagram fa-2x" aria-hidden="true"></i></a></div>'
 					+		'<a href="' + markerData['url'] + '"><div class="marker_feeling_field"><span class="btn btn-danger article_list_data_label">' + markerData['feeling'] + '</span>'
 					+		'<span class="btn btn-success article_list_data_label">' + markerData['age'] + '</span></div>'
 					+		'<div>' + markerData['tag'] + '</div></a>'
