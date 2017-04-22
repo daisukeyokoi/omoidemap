@@ -50,6 +50,18 @@ ul {
     list-style: none;
     padding: 0;
 }
+.active_border {
+    border: 2px red solid;
+}
+.btn-group>.btn-group:first-child:not(:last-child)>.btn:last-child, .btn-group>.btn-group:first-child:not(:last-child)>.dropdown-toggle {
+    outline: 0;
+}
+.btn-group>.btn-group:not(:first-child):not(:last-child)>.btn {
+    outline: 0;
+}
+.btn-group>.btn-group:last-child:not(:first-child)>.btn:first-child {
+    outline: 0;
+}
 
 .fav_flag {
     color: red;
@@ -88,6 +100,7 @@ header h1 {
 }
 .header_left img{
     width: 100%;
+    margin-top: 8px;
 }
 .header_right {
   float: left;
@@ -309,12 +322,14 @@ header h1 {
 	width: 90%;
 	margin: 0 auto;
 	overflow: hidden;
+    margin-bottom: 50px;
 }
 .top_main {
-    width: 63%;
+    width: 90%;
     float: left;
     overflow: hidden;
     margin-bottom: 50px;
+    margin-top: 20px;
 }
 .top_img {
     width: 100%;
@@ -359,7 +374,7 @@ header h1 {
 .top_map {
     width: 100%;
     height: auto;
-    padding-top: 68px;
+    padding-top: 20px;
     overflow: hidden;
     padding-bottom: 50px;
     float: left;
@@ -381,11 +396,10 @@ header h1 {
 }
 .top_prefectures {
     background-color: #F9F7F4;
-    width: 35%;
+    width: 100%;
     float: right;
-    margin-top: 122px;
     overflow: hidden;
-    height: 600px;
+    height: auto;
 }
 .top_region {
     overflow: hidden;
@@ -416,10 +430,16 @@ header h1 {
     width: 100%;
     float: left;
 }
-.top_article_list h2 {
-    font-size: 22px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid black;
+.top_article_list_title {
+    background-color: #DCDDDE;
+    font-size: 20px;
+    overflow: hidden;
+}
+.top_article_list_title h3 {
+    border-left: 10px solid #FF7C6C;
+    margin: 7px;
+    padding-left: 7px;
+
 }
 .top_article_list ul{
     overflow: hidden;
@@ -427,15 +447,15 @@ header h1 {
 .top_article_list ul li {
     overflow: hidden;
     border-bottom: 1px solid #C1C6C4;
-    padding-bottom: 20px;
-    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 .article_list_main {
     overflow: hidden;
 }
 .article_list_img {
-    width: 110px;
-    height: 110px;
+    width: 90px;
+    height: 90px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -444,7 +464,7 @@ header h1 {
     margin-right: 3%;
 }
 .article_list_data {
-    width: 77%;
+    width: 70%;
     float: left;
 }
 .article_list_data_label {
@@ -464,7 +484,7 @@ header h1 {
 .article_list_data_title {
     margin-bottom: 5px;
     overflow: hidden;
-    height: 60px;
+    height: 40px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
@@ -569,17 +589,26 @@ header h1 {
 #prev {
     margin-top: 10px;
 }
+.marker_wrap {
+    overflow: hidden;
+    margin-bottom: 5px;
+}
 .marker_img {
-	width: 250px;
-	height: 170px;
+	width: 90px;
+	height: 90px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    float: left;
 }
 .marker_title {
     margin: 10px 0;
     font-weight: bold;
     font-size: 14px;
+}
+.marker_good_field {
+    float: right;
+    margin-left: 5px;
 }
 .marker_good_field span{
     margin-right: 5px;
@@ -587,7 +616,45 @@ header h1 {
 .marker_good_field i {
     margin-right: 2px;
 }
-
+.marker_feeling_field {
+    margin-top: 5px;
+}
+.marker_twitter {
+    padding-right: 10px;
+}
+.marker_facebook {
+    padding-right: 10px;
+}
+.marker_episode {
+    width: 250px;
+    word-break: break-all;
+}
+.map_btn_all {
+    background-color: #67D1D8;
+    color: white;
+    outline: 0;
+}
+.map_btn_travel {
+    background-color: #FED05F;
+    color: white;
+    outline: 0;
+}
+.map_btn_date {
+    background-color: #FF93A6;
+    color: white;
+}
+.map_btn_everyday {
+    background-color: #AFD79B;
+    color: white;
+}
+.map_btn_eat {
+    background-color: #F9674C;
+    color: white;
+}
+.map_btn_lodging {
+    background-color: #A087C9;
+    color: white;
+}
 .top_tag_field {
     position: absolute;
     bottom: 0;
@@ -1033,13 +1100,6 @@ header h1 {
 .tag_img h1 {
     color: white;
     margin-top: 70px;
-}
-.tag_img button {
-    margin-top: 20px;
-}
-.tag_img #unfollowBtn {
-    background-color: rgb(184,200,190);
-    color: white;
 }
 
 .relation_tag {
@@ -1512,6 +1572,33 @@ header h1 {
     margin: 20px auto 50px auto;
 }
 
+/* ========================================
+  お問い合わせページ
+======================================== */
+.inquiry_box {
+    width: 60%;
+    margin: 100px auto;
+}
+.inquiry_box h1{
+    margin-bottom: 50px;
+    font-size: 26px;
+}
+.inquiry_box span {
+    margin-left: 2%;
+}
+.inquiry_box table>tbody>tr>td {
+    padding: 30px;
+}
+.inquiry_btn_field {
+    text-align: center;
+}
+.inquiry_btn_field button {
+    margin-top: 30px;
+    background-color: white;
+    border: black 1px solid;
+}
+
+
 
 /* ========================================
   マイページ
@@ -1531,6 +1618,7 @@ header h1 {
     width: 100%;
     padding: 20px 10%;
     overflow: hidden;
+    border-bottom: 1px solid #444;
     background-color: white;
 }
 
@@ -1594,34 +1682,6 @@ header h1 {
     text-decoration: none;
     background-color: #dbd8c8;
     transition: .2s;
-}
-
-.mypage_list .smart_menu {
-    display: none;
-    width: 100%;
-    margin-top: 2px;
-    overflow: hidden;
-}
-
-.mypage_list .smart_menu a {
-    float: left;
-    width: 19.64%;
-    height: 30px;
-    margin-right: 0.3%;
-    background-color: white;
-    text-align: center;
-}
-
-.mypage_list .smart_menu a:first-child {
-    margin: 0 0.3%;
-}
-
-.mypage_list .smart_menu a.selected {
-    background-color: rgb(243,242,237);
-}
-
-.mypage_list .smart_menu a i{
-    margin-top: 9px;
 }
 
 .mypage_list .main-content {
@@ -1716,29 +1776,20 @@ header h1 {
     background-color: black;
 }
 
-.mypage_list .timeline .tweet .tweet-main .tweet-tags {
+.mypage_list .timeline .tweet .tweet-main .tweet-tags{
     height: 40px;
     overflow: hidden;
     background-color: white;
 }
 
-.mypage_list .timeline .tweet .tweet-main .tweet-tags li {
+.mypage_list .timeline .tweet .tweet-main .tweet-tags li{
     float: left;
+    font-size: 10px;
     margin-left: 10px;
     margin-top: 7px;
+    padding: 5px;
     border: 1px solid #dbd8c8;
     border-radius: 3px;
-}
-
-.mypage_list .timeline .tweet .tweet-main .tweet-tags li a {
-    width: 100%;
-    padding: 2px 5px;
-    font-size: 10px;
-    text-decoration: none;
-}
-
-.mypage_list .timeline .tweet .tweet-main .tweet-tags li a:hover {
-    text-decoration: underline;
 }
 
 .tweet-image{
@@ -1766,185 +1817,11 @@ header h1 {
     padding: 5px 10px;
 }
 
-.mypage_list .timeline .tweet .tweet-comment {
-    width: 100%;
-    overflow: hidden;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .more_comments {
+.mypage_list .timeline .tweet .tweet-comment{
     width: 100%;
     height: 30px;
-    text-align: center;
-    cursor: pointer;
-    padding-top: 5px;
-    background-color: rgb(249,248,246);
-}
-
-.mypage_list .timeline .tweet .tweet-comment .more_comments .mouseovered {
-    width: 100%;
-    height: 30px;
-    text-align: center;
-    cursor: pointer;
-    padding-top: 5px;
-    background-color: rgb(249,248,246);
-}
-
-.mypage_list .timeline .tweet .tweet-comment .mouseovered {
-    background-color: rgb(233,231,222);
-}
-
-.mypage_list .timeline .tweet .tweet-comment .comment {
-    width: 100%;
-    padding: 10px;
     border-top: 2px solid rgb(243,242,237);
     overflow: hidden;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .comment .comment_user_image {
-    width: 50px;
-    height: 50px;
-    float: left;
-    padding: 2px 0 0 5px;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .comment .comment_detail {
-    width: calc(100% - 50px - 60px);
-    /*height: 50px;*/
-    float: left;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .comment .comment_detail p {
-    padding: 0;
-    margin: 0;
-    font-size: 12px;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .comment .comment_detail p:last-child {
-    padding-top: 5px;
-    margin: 0;
-    font-size: 10px;
-    color: gray;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .comment .comment_detail .comment_update {
-    display: none;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .comment .comment_setting {
-    width: 60px;
-    float: right;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .comment .comment_detail .comment_created_at {
-    width: 100%;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .comment .comment_setting i {
-    cursor: pointer;
-    float: right;
-    margin-right: 15px;
-}
-
-.mypage_list .timeline .tweet .tweet-comment img {
-    width: 30px;
-    height: 30px;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .new_comment {
-    width: 100%;
-    padding: 10px;
-    border-top: 2px solid rgb(243,242,237);
-    overflow: hidden;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .new_comment .comment_user_image {
-    width: 50px;
-    height: 50px;
-    float: left;
-    padding: 2px 0 0 5px;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .new_comment form {
-    width: calc(100% - 65px);
-    float: left;
-}
-
-.mypage_list .timeline .tweet .tweet-comment .new_comment form input {
-    margin-top: 10px;
-}
-
-.mypage_list .timeline .good_modal {
-    width: 400px;
-    margin: 1.5em auto 0;
-    padding: 10px 0;
-    border: 2px solid #aaa;
-    background: #fff;
-    z-index: 2;
-    position: fixed;
-    display: none;
-    overflow: hidden;
-}
-
-.mypage_list .timeline .good_modal h4 {
-    padding: 0 15px;
-}
-
-.mypage_list .timeline .good_modal #modal_close {
-    float: right;
-}
-
-.mypage_list .timeline .good_modal #modal_close {
-    text-decoration: none;
-}
-
-.mypage_list .timeline .good_modal #modal_close:hover {
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.mypage_list .good_users {
-    overflow: auto;
-    height: 240px;
-}
-
-.mypage_list .no_good {
-    width: 100%;
-    margin-top: 100px;
-    text-align: center;
-}
-
-.mypage_list .no_good p {
-    font-size: 20px;
-}
-
-.mypage_list .good_users .good_user {
-    overflow: hidden;
-    padding: 10px 0;
-    border: 1px solid rgb(243,242,237);
-}
-
-.mypage_list .good_users .good_user img {
-    width: 50px;
-    height: 50px;
-    float: left;
-    margin-left: 15px;
-}
-
-.mypage_list .good_users .good_user p {
-    float: left;
-    margin-left: 20px;
-    font-size: 20px;
-}
-
-.modal_overlay {
-    z-index: 1;
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 120%;
-    background-color: rgba(0, 0, 0, 0.75);
 }
 
 .mypage_list .side {
@@ -2023,7 +1900,6 @@ header h1 {
 .mypage_list .follow_tags {
     width: 80%;
     margin: 0 auto;
-    padding-bottom: 30px;
 }
 
 .mypage_list .clearfix {
@@ -2039,39 +1915,25 @@ header h1 {
     margin: 0 0 10px 4%;
     background-color: white;
     border-radius: 5px;
-    overflow: hidden;
 }
 
-.mypage_list .tag .tag_icon {
-    width: 30px;
-    height: 30px;
+.mypage_list .tag i{
+    margin: 10px 10px 0;
     float: left;
 }
 
-.mypage_list .tag .tag_icon i{
-    margin: 10px 0 0 10px;
-}
-
-.mypage_list .tag .tag_name {
-    width: calc(100% - 30px - 30px);
-    overflow: hidden;
-    margin: 0;
+.mypage_list .tag p{
+    margin-top: 6px;
     float: left;
 }
 
-.mypage_list .tag .tag_name a{
-    width: 100%;
-    text-decoration: none;
-    padding-top: 6px;
-    padding-left: 5px;
-    float: left;
+.mypage_list .tag a p{
+    margin: 0 0 0 9px;
+    font-size: 20px;
+    color: white;
 }
 
-.mypage_list .tag a:hover{
-    text-decoration: underline;
-}
-
-.mypage_list .search_tags .tag .follow{
+.mypage_list .search_tags .tag a{
     width: 30px;
     height: 30px;
     float: right;
@@ -2080,25 +1942,13 @@ header h1 {
     -webkit-border-bottom-right-radius: 5px;
 }
 
-.mypage_list .follow_tags .tag .unfollow{
+.mypage_list .follow_tags .tag a{
     width: 30px;
     height: 30px;
     float: right;
     background-color: green;
     -webkit-border-top-right-radius: 5px;
     -webkit-border-bottom-right-radius: 5px;
-}
-
-.mypage_list .search_tags .tag .follow p{
-    margin: 0 0 0 9px;
-    font-size: 20px;
-    color: white;
-}
-
-.mypage_list .follow_tags .tag .unfollow p{
-    margin: 0 0 0 9px;
-    font-size: 20px;
-    color: white;
 }
 
 .mypage_list .search_tags .tag .mouseovered {
@@ -2109,13 +1959,21 @@ header h1 {
     background-color: rgb(219,216,200);
 }
 
+.mypage_list .tag-timeline {
+    width: 80%;
+    height: 100px;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
 .mypage_list .profile-content {
     width: 80%;
     overflow: hidden;
     margin: 0 auto;
 }
 
-.mypage_list .profile-content .profile-side {
+.mypage_list .profile-content .side {
     width: 25%;
     float: left;
     position: relative;
@@ -2123,7 +1981,7 @@ header h1 {
     background-color: rgb(243,242,237);
 }
 
-.mypage_list .profile-content .profile-side .setting li {
+.mypage_list .profile-content .side .setting li {
     height: 30px;
     width: 100%;
     margin-bottom: 2px;
@@ -2131,16 +1989,16 @@ header h1 {
     padding: 5px 15px;
 }
 
-.mypage_list .profile-content .profile-side .setting li i {
+.mypage_list .profile-content .side .setting li i {
     width: 20px;
     height: 20px;
 }
 
-.mypage_list .profile-content .profile-side .setting .selected {
+.mypage_list .profile-content .side .setting .selected {
     background-color: #dbd8c8;
 }
 
-.mypage_list .profile-content .profile-side .setting .mouseovered {
+.mypage_list .profile-content .side .setting .mouseovered {
     background-color: rgb(249,248,246);
 }
 
@@ -2162,15 +2020,6 @@ header h1 {
 .mypage_list .profile-content .profile-main .title i {
     width: 20px;
     height: 20px;
-}
-
-.mypage_list .profile-content .profile-main .select_title {
-    display: none;
-    width: 100%;
-    height: 30px;
-    margin: 0 auto 15px;
-    background-color: white;
-    padding: 5px 15px;
 }
 
 .mypage_list .profile-content .profile-main .sub_title {
@@ -2200,10 +2049,6 @@ header h1 {
 
 .mypage_list .profile-content .profile-main .content .img_form input {
     float: left;
-}
-
-.mypage_list .profile-content .profile-main .content .img_form #submitBtn {
-    display: none;
 }
 
 .mypage_list .profile-content #profile .content th {
@@ -3175,18 +3020,14 @@ footer a:hover {
 
     /*タグページ*/
     .tag_article_list li {
-        width: 100%;
-        margin-bottom: 20px;
-        border: 1px solid #C1C6C4;
+        width: 47%;
+        margin-right: 6%;
     }
-    .tag_img {
-        height: 200px;
+    .tag_article_list li:nth-child(3n) {
+        margin-right: 6%;
     }
-    .tag_img h1 {
-        margin-top: 20px;
-    }
-    .tag_img button {
-        margin-top: 15px;
+    .tag_article_list li:nth-child(2n) {
+        margin-right: 0;
     }
 
     /*検索ページ*/
@@ -3211,57 +3052,6 @@ footer a:hover {
         float: none;
     }
 
-    /*マイページ*/
-    .mypage_list .status #name {
-        margin: 65px 0 0 120px;
-    }
-    .mypage_list .status .menu {
-        display: none;
-    }
-    .mypage_list .smart_menu {
-        display: block;
-    }
-    .mypage_list .main-content {
-        width: 100%;
-    }
-    .mypage_list .main-content .timeline {
-        width: 100%;
-    }
-    .mypage_list .side {
-        display: none;
-    }
-    .mypage_list .profile-content {
-        width: 95%;
-    }
-    .mypage_list .profile-content .profile-side {
-        display: none;
-    }
-    .mypage_list .profile-content .profile-main {
-        width: 100%;
-    }
-    .mypage_list .profile-content .profile-main .title {
-        display: none;
-    }
-    .mypage_list .profile-content .profile-main .select_title {
-        display: block;
-    }
-    .mypage_list .profile-content .profile-main .content .img_form input {
-        margin-top: 10px;
-    }
-
-    /*タグフォローページ*/
-    .mypage_list .tag_search {
-        width: 90%;
-        margin: 20px auto;
-    }
-    .mypage_list .tag{
-        width: 100%;
-        /*float: left;*/
-        margin: 0 auto 10px;
-        overflow: hidden;
-    }
-    .mypage_list .follow-block {
-        width: 95%;
     /*//////////////ランキングページ*/
     /*ヘッダー*/
     .ranking_header {

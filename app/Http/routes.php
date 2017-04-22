@@ -61,6 +61,14 @@ Route::group(['prefix' => 'new_post'], function() {
     Route::get('/', 'TopController@getNewPost');
 });
 
+// お問い合わせ
+Route::group(['prefix' => 'inquiry'], function () {
+    Route::get('/', 'TopController@getInquiry');
+    Route::post('/', 'TopController@postInquiry');
+    Route::post('/complete', 'TopController@postConfirmInquiry');
+    Route::get('/complete', 'TopController@getCompleteInquiry');
+});
+
 // ログアウト (認証済みが前提だが未認証でもokなのでフィルタ外)
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
@@ -212,6 +220,13 @@ Route::group(['middleware' => 'auth'], function() {
                 Route::post('/delete', 'AdminController@deleteTags');
                 Route::post('/ajax/create_tag', 'AdminController@ajaxCreateTag');
                 Route::post('/ajax/delete_tag', 'AdminController@ajaxDeleteTag');
+            });
+
+            // お問い合わせ関連
+            Route::group(['prefix' =>  'inquiry'], function(){
+                Route::get('/', 'AdminController@getInquiry');
+                Route::get('/{id}', 'AdminController@getInquiryDetail');
+                Route::post('/', 'AdminController@postInquiryResponse');
             });
 
             //　コメント関連
