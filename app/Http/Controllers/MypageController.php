@@ -25,6 +25,8 @@ use Carbon\Carbon;
 use App\Event;
 use App\User;
 use App\Good;
+use App\Favorite;
+use App\Go;
 use App\Prefecture;
 
 class MypageController extends Controller
@@ -67,6 +69,34 @@ class MypageController extends Controller
             }
         }
         return view('mypage.good', compact('user', 'good_posts'));
+    }
+
+    // お気に入りページ表示
+    public function getFavorite() {
+        $user = Auth::user();
+        $favorites = Favorite::where('user_id', $user->id)->get();
+        $favorite_posts = [];
+        if (count($favorites)>0) {
+            foreach ($favorites as $favorite) {
+                $favorite_post = Post::find($favorite->post_id);
+                array_push($favorite_posts, $favorite_post);
+            }
+        }
+        return view('mypage.favorite', compact('user', 'favorite_posts'));
+    }
+
+    // 行きたいページ表示
+    public function getGoes() {
+        $user = Auth::user();
+        $goes = Go::where('user_id', $user->id)->get();
+        $goes_posts = [];
+        if (count($goes)>0) {
+            foreach ($goes as $go) {
+                $go_post = Post::find($go->post_id);
+                array_push($goes_posts, $go_post);
+            }
+        }
+        return view('mypage.goes', compact('user', 'goes_posts'));
     }
 
     // フォロー中のタグページ表示

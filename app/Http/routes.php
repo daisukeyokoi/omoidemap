@@ -162,6 +162,12 @@ Route::group(['middleware' => 'auth'], function () {
             // いいねページ
             Route::get('/good', 'MypageController@getGood');
 
+            // お気に入りページ
+            Route::get('/favorite', 'MypageController@getFavorite');
+
+            // 行きたいページ
+            Route::get('/goes', 'MypageController@getGoes');
+
             // フォロー中のタグページ
             Route::group(['prefix' => 'followtag'], function() {
               Route::get('/', 'MypageController@getFollowtag');
