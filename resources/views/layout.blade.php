@@ -4,7 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>思い出MAP</title>
+    <meta name="description" content="思い出の場所の写真とエピソードを投稿するサイトです。自分にとってはなんでもない風景でも、誰かにとっては特別な場所かもしれない。それを集めて地図にする。">
+    <meta name="keywords" content="思い出,旅行,まっぷ,写真,食事,デート, おもいでまっぷ,思い出マップ">
+    <meta property="og:url" content="{{Request::url()}}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="思い出マップ">
+    <meta property="og:description" content="思い出の場所の写真とエピソードを投稿するサイトです。自分にとってはなんでもない風景でも、誰かにとっては特別な場所かもしれない。それを集めて地図にする。">
+    <title>思い出マップ</title>
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">

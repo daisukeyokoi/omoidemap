@@ -162,7 +162,14 @@ class MypageController extends Controller
 
     // 投稿ページ表示
     public function getArticlePost() {
-        $tags = Tag::take(10)->get();
+        // $tags = Tag::take(10)->get();
+        $tags = Tag::leftJoin('followtags', 'tags.id', '=', 'followtags.tag_id')
+                    ->selectRaw('tags.*, count(followtags.tag_id) as count')
+                    ->groupBy('tags.id')
+                    ->orderBy('count', 'desc')
+                    ->take(10)
+                    ->get();
+        Log::info($tags);
         $today = Carbon::now();
         return view('mypage.articlepost.index', compact('tags', 'today'));
     }
