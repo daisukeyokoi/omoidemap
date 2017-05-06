@@ -169,7 +169,6 @@ class MypageController extends Controller
                     ->orderBy('count', 'desc')
                     ->take(10)
                     ->get();
-        Log::info($tags);
         $today = Carbon::now();
         return view('mypage.articlepost.index', compact('tags', 'today'));
     }

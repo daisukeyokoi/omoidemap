@@ -12,14 +12,16 @@
     <div class="login_box_title">
         ログイン
     </div>
-    <div class="twitter_login btn">
-        <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
-        <a href="{{url('/auth/twitter')}}">twitterでログインする</a>
-    </div>
-    <div class="facebook_login btn">
-        <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
-        <a href="{{url('/auth/facebook')}}">facebookでログインする</a>
-    </div>
+    <a href="{{url('/auth/twitter')}}">
+        <div class="twitter_login btn">
+            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>twitterでログインする
+        </div>
+    </a>
+    <a href="{{url('/auth/facebook')}}">
+        <div class="facebook_login btn">
+            <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>facebookでログインする
+        </div>
+    </a>
     @include('parts.errormessage')
     <form action="{{url('/login')}}" method="post">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
