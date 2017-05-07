@@ -29,6 +29,6 @@ class Kernel extends ConsoleKernel
                  ->hourly();
         // イベントの状態を変更
         $schedule->command('event:updatestate')
-                 ->everyMinute();
+                 ->daily();
     }
 }
