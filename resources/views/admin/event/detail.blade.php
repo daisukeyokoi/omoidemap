@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <td>説明文</td>
-            <td>{{$event->description}}</td>
+            <td style="word-break: break-all;">{{$event->description}}</td>
         </tr>
         <tr>
             <td>開催期間</td>

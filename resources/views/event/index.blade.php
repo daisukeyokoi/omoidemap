@@ -20,7 +20,7 @@ use App\Event;
     <div class="e_date">
         {{str_replace('-', '/', $event->start)}}&nbsp;~&nbsp;{{str_replace('-', '/', $event->end)}}
     </div>
-    <div class="e_description">
+    <div class="e_description" style="word-break: break-all; text-align: left;">
         {!! nl2br($event->description) !!}
     </div>
 </div>
