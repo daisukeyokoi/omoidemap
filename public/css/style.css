@@ -109,11 +109,13 @@ header h1 {
 .header_right {
   float: left;
   overflow: hidden;
-  height: 55px;
+  height: 61px;
 }
 .header_right div {
     font-size: 18px;
     padding: 15px;
+    padding-top: 18px;
+    padding-bottom: 18px;
     color: #525252;
     font-weight: normal;
     border-left: 1px solid #C1C6C4;
@@ -131,7 +133,7 @@ header h1 {
     font-size: 24px;
 }
 .header_search input {
-    height: 55px;
+    height: 61px;
     width: 100%;
     color: black;
     padding-left: 50px;

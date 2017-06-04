@@ -29,10 +29,10 @@ class CreatePostsTable extends Migration
             $table->string('address');
 
             // 緯度
-            $table->float('lat');
+            $table->double('lat');
 
             // 経度
-            $table->float('lng');
+            $table->double('lng');
 
             // イベントID
             $table->integer('event_id');
