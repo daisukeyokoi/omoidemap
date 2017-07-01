@@ -46,5 +46,7 @@
             <a href="{{url('/mypage')}}"><li>マイページ</li></a>
         @endif
         <a href="{{url('/ranking')}}"><li>ランキング</li></a>
+        <a href="{{url("/footer?title=おもいでマップについて")}}"><li>おもいでマップについて</li></a>
+        <a href="{{url("/footer?title=SpecialThanks")}}"><li>Special Thanks</li></a>
     </ul>
 </nav>

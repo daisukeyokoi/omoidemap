@@ -4,7 +4,7 @@
         <p class="footer_title">コンテンツ</p>
         <ul>
             <a href="{{url('/')}}"><li>TOP</li></a>
-            <a href="{{url("/footer?title=おもいでマップへの想い")}}"><li>おもいでマップへの想い</li></a>
+            <a href="{{url("/footer?title=おもいでマップについて")}}"><li>おもいでマップについて</li></a>
             <a href="{{url('/ranking')}}"><li>ランキング</li></a>
             <a href="{{url("/footer?title=SpecialThanks")}}"><li>Special Thanks</li></a>
         </ul>
