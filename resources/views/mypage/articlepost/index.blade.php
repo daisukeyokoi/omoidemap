@@ -425,8 +425,9 @@ ul {
 
         // 地図のオプションを設定する
         var mapOptions = {
-            zoom: 20,
+            zoom: 10,
             center: latlng ,		// 中心座標 [latlng]
+            gestureHandling: 'greedy'  //1本指スクロール
         };
 
         // [canvas]に、[mapOptions]の内容の、地図のインスタンス([map])を作成する
@@ -481,8 +482,9 @@ ul {
 
         // 地図表示に関するオプション
         var mapOptions = {
-            zoom: 18,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            gestureHandling: 'greedy'  //1本指スクロール
         };
 
         // 地図を表示させるインスタンスを生成
@@ -533,8 +535,9 @@ ul {
         var geocoder = new google.maps.Geocoder();
 
         var mapOptions = {
-            zoom: 20,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: 18,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            gestureHandling: 'greedy'  //1本指スクロール
         };
 
         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);

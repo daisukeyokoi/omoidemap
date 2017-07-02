@@ -604,6 +604,7 @@ function addressFocus(address, map, type) {
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					scrollwheel: true,
 					disableDefaultUI: true,
+					gestureHandling: 'greedy'  //1本指スクロール
 				};
 			}else {
 				// 地図表示に関するオプション
@@ -612,6 +613,7 @@ function addressFocus(address, map, type) {
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					scrollwheel: true,
 					disableDefaultUI: true,
+					gestureHandling: 'greedy'  //1本指スクロール
 				};
 			}
 
