@@ -437,8 +437,13 @@ function init(type, default_flg) {
     var mapOptions = {
         zoom: zoom,
         center: latlng ,		// 中心座標 [latlng]
-		scrollwheel: true,
-		disableDefaultUI: true,
+				scrollwheel: true,
+				disableDefaultUI: false,
+				zoomControlOptions: {
+				position: google.maps.ControlPosition.RIGHT_CENTER
+			} ,
+				gestureHandling: 'greedy'  //1本指スクロール
+
     };
 
     // [canvas]に、[mapOptions]の内容の、地図のインスタンス([map])を作成する
